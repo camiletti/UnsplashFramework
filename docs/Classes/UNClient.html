@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>UNClient Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/UNClient" class="dashAnchor"></a>
+    <a title="UNClient Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (100% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        UNClient Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/UNClient.html">UNClient</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/ResponseStatusCode.html">ResponseStatusCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/UNErrorReason.html">UNErrorReason</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/UNPhotoImageSize.html">UNPhotoImageSize</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/UNSort.html">UNSort</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/UIImageView.html">UIImageView</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/UNImageRequester.html">UNImageRequester</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/UNCategory.html">UNCategory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/UNCategoryAPILocations.html">UNCategoryAPILocations</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/UNCollection.html">UNCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:17UnsplashFramework13UNCredentialsV">UNCredentials</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/UNError.html">UNError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/UNPhoto.html">UNPhoto</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/UNProfileImageLinks.html">UNProfileImageLinks</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/UNUser.html">UNUser</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>UNClient</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">UNClient</span></code></pre>
+
+                </div>
+              </div>
+            <p>The UNClient is the point of access to every Unsplash request.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Properties"></a>
+                <a name="//apple_ref/swift/Section/Properties" class="dashAnchor"></a>
+                <a href="#/Properties">
+                  <h3 class="section-name">Properties</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17UnsplashFramework8UNClientC6sharedACvZ"></a>
+                    <a name="//apple_ref/swift/Variable/shared" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17UnsplashFramework8UNClientC6sharedACvZ">shared</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns a shared singleton object.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">shared</span> <span class="o">=</span> <span class="kt">UNClient</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17UnsplashFramework8UNClientC14hasCredentialsSbv"></a>
+                    <a name="//apple_ref/swift/Property/hasCredentials" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17UnsplashFramework8UNClientC14hasCredentialsSbv">hasCredentials</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Boolean value indicating whether the credentials have been set.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span>  <span class="k">var</span> <span class="nv">hasCredentials</span> <span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Credentials"></a>
+                <a name="//apple_ref/swift/Section/Credentials" class="dashAnchor"></a>
+                <a href="#/Credentials">
+                  <h3 class="section-name">Credentials</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17UnsplashFramework8UNClientC8setAppIDySS_SS6secrettF"></a>
+                    <a name="//apple_ref/swift/Method/setAppID(_:secret:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17UnsplashFramework8UNClientC8setAppIDySS_SS6secrettF">setAppID(_:secret:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the credentials for the Unsplash client. This function should only be called once.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setAppID</span><span class="p">(</span><span class="n">_</span> <span class="nv">appID</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">secret</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>appID</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The application ID Unsplash provided you with.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>secret</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The secret Unsplash provided you with.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Listing%20photos"></a>
+                <a name="//apple_ref/swift/Section/Listing photos" class="dashAnchor"></a>
+                <a href="#/Listing%20photos">
+                  <h3 class="section-name">Listing photos</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17UnsplashFramework8UNClientC10listPhotosySi4page_Si13photosPerPageAA6UNSortO9sortingByySayAA7UNPhotoVG_AA7UNErrorVSgtc10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/listPhotos(page:photosPerPage:sortingBy:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17UnsplashFramework8UNClientC10listPhotosySi4page_Si13photosPerPageAA6UNSortO9sortingByySayAA7UNPhotoVG_AA7UNErrorVSgtc10completiontF">listPhotos(page:photosPerPage:sortingBy:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get a single page from the list of all photos.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">listPhotos</span><span class="p">(</span><span class="nv">page</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span>
+                       <span class="nv">photosPerPage</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+                       <span class="n">sortingBy</span> <span class="nv">sort</span><span class="p">:</span> <span class="kt"><a href="../Enums/UNSort.html">UNSort</a></span><span class="p">,</span>
+                       <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">UNPhotoQueryClosure</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>page</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Page number to retrieve.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>photosPerPage</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Number of items per page.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>sort</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>How to sort the photos.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion handler that will be called with the results (Executed on the main thread).</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Fetching%20images%20from%20photos"></a>
+                <a name="//apple_ref/swift/Section/Fetching images from photos" class="dashAnchor"></a>
+                <a href="#/Fetching%20images%20from%20photos">
+                  <h3 class="section-name">Fetching images from photos</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17UnsplashFramework8UNClientC10fetchImageyAA7UNPhotoV4from_AA0fE4SizeO02inH0yAF_AISo7UIImageCSgAA7UNErrorVSgtc10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/fetchImage(from:inSize:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17UnsplashFramework8UNClientC10fetchImageyAA7UNPhotoV4from_AA0fE4SizeO02inH0yAF_AISo7UIImageCSgAA7UNErrorVSgtc10completiontF">fetchImage(from:inSize:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Fetches the image corresponding to the photo on the specified size.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">fetchImage</span><span class="p">(</span><span class="n">from</span> <span class="nv">photo</span><span class="p">:</span> <span class="kt"><a href="../Structs/UNPhoto.html">UNPhoto</a></span><span class="p">,</span>
+                       <span class="n">inSize</span> <span class="nv">size</span><span class="p">:</span> <span class="kt"><a href="../Enums/UNPhotoImageSize.html">UNPhotoImageSize</a></span><span class="p">,</span>
+                       <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Structs/UNPhoto.html">UNPhoto</a></span><span class="p">,</span> <span class="kt"><a href="../Enums/UNPhotoImageSize.html">UNPhotoImageSize</a></span><span class="p">,</span> <span class="kt">UIImage</span><span class="p">?,</span> <span class="kt"><a href="../Structs/UNError.html">UNError</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>photo</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The photo to download the image from.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>size</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>One of the available sizes for the image to be downloaded.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure to handle the result. It will be called on the main thread.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17UnsplashFramework8UNClientC14fetchDataImageyAA7UNPhotoV4from_AA0gF4SizeO02inI0yAF_AI10Foundation0E0VSgAA7UNErrorVSgtc10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/fetchDataImage(from:inSize:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17UnsplashFramework8UNClientC14fetchDataImageyAA7UNPhotoV4from_AA0gF4SizeO02inI0yAF_AI10Foundation0E0VSgAA7UNErrorVSgtc10completiontF">fetchDataImage(from:inSize:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Fetches the image corresponding to the photo on the specified size.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">fetchDataImage</span><span class="p">(</span><span class="n">from</span> <span class="nv">photo</span><span class="p">:</span> <span class="kt"><a href="../Structs/UNPhoto.html">UNPhoto</a></span><span class="p">,</span>
+                           <span class="n">inSize</span> <span class="nv">size</span><span class="p">:</span> <span class="kt"><a href="../Enums/UNPhotoImageSize.html">UNPhotoImageSize</a></span><span class="p">,</span>
+                           <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">UNFetchDataImageClosure</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>photo</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The photo to download the image from.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>size</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>One of the available sizes for the image to be downloaded.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion closure to handle the result. The image will be passed as a Data.
+        It will be called on the main thread.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17UnsplashFramework8UNClientC25fetchDataImageExclusivelyyAA7UNPhotoV4from_AA0hF4SizeO02inJ0AA16UNImageRequester_p3fortF"></a>
+                    <a name="//apple_ref/swift/Method/fetchDataImageExclusively(from:inSize:for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17UnsplashFramework8UNClientC25fetchDataImageExclusivelyyAA7UNPhotoV4from_AA0hF4SizeO02inJ0AA16UNImageRequester_p3fortF">fetchDataImageExclusively(from:inSize:for:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The image will be fetched and passed back to the specified requester. This function is exclusive
+since the requester will only have one active request at a time. Any new request by the same object
+will cancel the previous one. This is useful for table views or collection views where the cell
+may be reuse for another photo before the previous requested image is dowloaded.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">fetchDataImageExclusively</span><span class="p">(</span><span class="n">from</span> <span class="nv">photo</span><span class="p">:</span> <span class="kt"><a href="../Structs/UNPhoto.html">UNPhoto</a></span><span class="p">,</span>
+                                      <span class="n">inSize</span> <span class="nv">size</span><span class="p">:</span> <span class="kt"><a href="../Enums/UNPhotoImageSize.html">UNPhotoImageSize</a></span><span class="p">,</span>
+                                      <span class="k">for</span> <span class="nv">requester</span><span class="p">:</span> <span class="kt"><a href="../Protocols/UNImageRequester.html">UNImageRequester</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>photo</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The photo that corresponds to the desired image.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>size</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The size of the image to be downloaded.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>requester</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The object that is interested in the image and the one who will be called back.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2017 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2017-12-03)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
