@@ -90,9 +90,6 @@
 		6E2B29051FD208E5000BB4CA /* UNCollectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNCollectionTests.swift; sourceTree = "<group>"; };
 		6E36AA691FCB0AE3007095F1 /* QueryManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryManagerTests.swift; sourceTree = "<group>"; };
 		6E36AA6B1FCB0F22007095F1 /* ImageDownloadManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloadManagerTests.swift; sourceTree = "<group>"; };
-		6E3B87151FC7502800C3AD2B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		6E3B87171FC75CE500C3AD2B /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		6E3B871B1FC75E0E00C3AD2B /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		6E6358EB1FC86E72004D56DB /* ImagesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesManager.swift; sourceTree = "<group>"; };
 		6E6358ED1FC8784A004D56DB /* URLSessionTaskOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionTaskOperation.swift; sourceTree = "<group>"; };
 		6E753F591FD2F6D600852512 /* UNCategoryAPILocationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNCategoryAPILocationsTests.swift; sourceTree = "<group>"; };
@@ -124,7 +121,10 @@
 		6E87EE121FBF004300DA5A0B /* UNCategoryAPILocations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNCategoryAPILocations.swift; sourceTree = "<group>"; };
 		6E87EE141FBF032F00DA5A0B /* UNPhotoImageLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNPhotoImageLinks.swift; sourceTree = "<group>"; };
 		6E8D079A1FD47791006EF44A /* UNImageRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNImageRequester.swift; sourceTree = "<group>"; };
-		6E95F7321FD4998E0082D6AE /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		6EA2F1371FD4B20200CED44D /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = SOURCE_ROOT; };
+		6EA2F1381FD4B20200CED44D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		6EA2F1391FD4B24100CED44D /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = SOURCE_ROOT; };
+		6EA2F13A1FD4B24100CED44D /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = SOURCE_ROOT; };
 		6EA4E51F1FD299FA00664951 /* UNPhotoExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNPhotoExtensionTests.swift; sourceTree = "<group>"; };
 		6EA4E5281FD29E0700664951 /* Unsplash_Framework_macOS_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unsplash_Framework_macOS_Tests.swift; sourceTree = "<group>"; };
 		6EA4E52A1FD29E0700664951 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -263,8 +263,8 @@
 		6E3B87161FC75CB500C3AD2B /* Deployment */ = {
 			isa = PBXGroup;
 			children = (
-				6E3B87171FC75CE500C3AD2B /* LICENSE */,
-				6E3B871B1FC75E0E00C3AD2B /* Package.swift */,
+				6EA2F1391FD4B24100CED44D /* LICENSE */,
+				6EA2F13A1FD4B24100CED44D /* Package.swift */,
 			);
 			name = Deployment;
 			sourceTree = "<group>";
@@ -368,8 +368,8 @@
 		6E95F7311FD4995D0082D6AE /* Documentation */ = {
 			isa = PBXGroup;
 			children = (
-				6E3B87151FC7502800C3AD2B /* README.md */,
-				6E95F7321FD4998E0082D6AE /* CHANGELOG.md */,
+				6EA2F1371FD4B20200CED44D /* CHANGELOG.md */,
+				6EA2F1381FD4B20200CED44D /* README.md */,
 			);
 			name = Documentation;
 			sourceTree = "<group>";
