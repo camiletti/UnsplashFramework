@@ -1,14 +1,12 @@
 ![Alamofire: Elegant Networking in Swift](https://cdn.rawgit.com/camiletti/UnsplashFramework/master/UnsplashFramework.png)
 
 <center>
-[![Build Status](https://travis-ci.org/camiletti/UnsplashFramework.svg?branch=master)](https://travis-ci.org/camiletti/UnsplashFramework)
-[![codecov](https://codecov.io/gh/camiletti/UnsplashFramework/branch/master/graph/badge.svg)](https://codecov.io/gh/camiletti/UnsplashFramework)
+<a href="https://travis-ci.org/camiletti/UnsplashFramework"><img src="https://travis-ci.org/camiletti/UnsplashFramework.svg?branch=master" /></a>
+<a href="https://codecov.io/gh/camiletti/UnsplashFramework"><img src="https://codecov.io/gh/camiletti/UnsplashFramework/branch/master/graph/badge.svg" /></a>
 <a href="#-documentation"><img src="https://cdn.rawgit.com/camiletti/UnsplashFramework/master/docs/badge.svg" /></a>
-[![Language](https://img.shields.io/badge/swift-4.0-orange.svg?style=flat)](https://developer.apple.com/swift)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/licenses/MIT)
+<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift-4.0-orange.svg?style=flat" /></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" /></a>
 </center>
-
-<br>
 
 ## 📷 Introduction
 The idea behind this project is to make an easy-to-use, well tested and well documented client framework for Unsplash.
