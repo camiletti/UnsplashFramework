@@ -11,10 +11,17 @@ env:
   - LANG=en_US.UTF-8
   - PROJECT="UnsplashFramework.xcodeproj"
   - IOS_FRAMEWORK_SCHEME="UnsplashFramework iOS"
-  
-  - secure: i1ZBJVl3DNzZp3bbgGyuaVdhg4BWVVLPILyIXMzOiB79f7X1NRufejcr37NAOoKXyZSFmL0UMaN+hHqVT+hqQZ6zWRa0tMY8SYX9GUFGugvbUxIaOejH/BjwCGDbk8pkKlB42FJmb+qr6s7DwOc6BiEwPU2+DxFefTR5avhfpXzTUui8258cNgGS+qqL8V6VEoJY1Rb82a/PfbYpmSCjgI1F3Mb1Y5QOPQ8hl40U+naISS+QK0QBRQ7SQoKhe7+PRXlTN6n3zVP7Be9+730NdFrrmIKzIIo0X/70LwhRZGkjYQR5zd1iz2NRqYJ1tCHaz2n1Uiy7VSZ2/eLKucf+S5DodT1wTTIdz/St5BttifNTAFj6qp9YrNLdL2SwG+mWCjbfFbPFwFRIQJG3Nvl77jT5KW62wr4BO8bbaHTX47tQnc6MDcn2nqg7R2zBOzKihek+vWADVHMwm7RLeOg+hvE3J7Ks6iIvhwQA9vXDnn8edFHSfQGJ72rR0/ZMLR4q9ysQeXBZvY9oD3GVDAl4DRS+qF8Y/4sMq4nb7HQafxUi64pvnuqoEiMYwRdGq7Nn4mbA0oqtrhfBmcL+oRdVSF0JllojbYhedwqm2tVWaeF6UPL7xmVEdAyZIhRjccuU7wXcQAtBnTrGuB2rwpKb5huxiwLU4yMX/BQJFqJluio=
-  - secure: PPd7t2TB2/WbhycrGvDMOMvL/L3yp9P+MD8XbY23IYkSE6UP8wb8kwMQjh9c4Iz3VJ5K/rxf6rzRcaZRCYHATtLR4t8THBq38qds4vTGpHEsWi6eoPjsprB0Hcv3Qlcr0TpQo6ijodZLzwwbUN8El43Tyt/6m9KC4XFy7SzSk/V+TIor4fiYfu4rOc+O7LjKCFJjd41h7k2ZhlGGkLdaemQIqWj3ahlIyi3gK4xcizImPJgGBETaoTNkqsc9VBzI7OzZ5IqRESOpbPGk81BICgAgw87aGShjTzMcRQEEEi5kmTEwHeU86eY21cOY9zD/LwJ/pR6ncCmNIg9rHzIToQAjnZ6Ix8N4NFugN5NmZwTjZMnMRVZ3KRoppm3guTlf8Y78GgQYfOX25tskmL8tvlgipdODCOwkfFbcU9hAkcCfyeAGeDkrGzJRzPho5I7qGWycj8aLUD6E9dNI19TIGdm9+IfMF+YAsaMfvp1ukIhm8RIgOrl0jLi/sloto8ojzcl3FEVmXiUeaSp6f9+zJTmZv4GpXUBTKT+bif1T7lT2gvxT5swDUrjj7XRcdZORPIfrRue87QXsGAXq0Tn61aOX3IGrG37n3gfQn9G/TmhHobDmL1Vi9bqPzNeYgcSaLECeHv+JtKl5jZhoZrsOTGlsjbci8OW67+Qoag4zyA4=
+  - IOS_SDK=iphonesimulator11.1
 
   matrix:
-  - DESTINATION="OS=11.1,name=iPhone X"         SCHEME="$IOS_FRAMEWORK_SCHEME"  RUN_TESTS="YES"  BUILD_EXAMPLE="YES"
-  - DESTINATION="OS=10.3.1,name=iPhone 7 Plus"  SCHEME="$IOS_FRAMEWORK_SCHEME"  RUN_TESTS="YES"  BUILD_EXAMPLE="YES"
+  - DESTINATION="OS=11.1,name=iPhone X"         SDK="$IOS_SDK" SCHEME="$IOS_FRAMEWORK_SCHEME"  RUN_TESTS="YES"  BUILD_EXAMPLE="YES"
+  - DESTINATION="OS=10.3.1,name=iPhone 7 Plus"  SDK="$IOS_SDK" SCHEME="$IOS_FRAMEWORK_SCHEME"  RUN_TESTS="YES"  BUILD_EXAMPLE="YES"
+
+script:
+  - if [ $RUN_UI_TESTS == "YES" ] && [ $SDK == $IOS_SDK ]; then
+      ONLY_ACTIVE_ARCH=YES  test
+      xcodebuild clean build -project "$PROJECT" -scheme "$IOS_FRAMEWORK_SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO -enableCodeCoverage YES test;
+    fi
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -J 'UnsplashFramework'  -cF ios
