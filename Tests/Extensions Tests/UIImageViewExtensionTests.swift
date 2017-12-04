@@ -34,7 +34,7 @@ class UIImageViewExtensionTests: XCTestCase
     {
         super.setUp()
         
-        UNClient.shared.setAppID(ApplicationID, secret: Secret)
+        UNClient.shared.setAppID(UnsplashKeys.appID, secret: UnsplashKeys.secret)
     }
     
     

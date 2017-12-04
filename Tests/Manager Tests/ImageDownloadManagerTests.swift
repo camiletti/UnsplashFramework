@@ -44,7 +44,7 @@ class ImageDownloadManagerTests: XCTestCase
     {
         super.setUp()
         
-        let credentials = UNCredentials(appID: ApplicationID, secret: Secret)
+        let credentials = UNCredentials(appID: UnsplashKeys.appID, secret: UnsplashKeys.secret)
         self.imageDownloadManager = ImageDownloadManager(withCredentials: credentials)
     }
     

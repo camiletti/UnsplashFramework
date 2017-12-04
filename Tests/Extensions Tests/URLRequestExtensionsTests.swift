@@ -36,7 +36,7 @@ class URLSessionExtensionsTests: XCTestCase
     {
         // Parameters
         let id = "abc"
-        let authHeaderValue = "Client-ID " + ApplicationID
+        let authHeaderValue = "Client-ID " + UnsplashKeys.appID
         let parameters = PhotoListParameters(pageNumber: 1,
                                              photosPerPage: 10,
                                              sortOrder: .popular)
@@ -59,7 +59,7 @@ class URLSessionExtensionsTests: XCTestCase
             let request = URLRequest.publicRequest(HTTPMethod.get,
                                                    forEndpoint: endpoint,
                                                    parameters: parameters,
-                                                   credentials: UNCredentials(appID: ApplicationID, secret: Secret))
+                                                   credentials: UNCredentials(appID: UnsplashKeys.appID, secret: UnsplashKeys.secret))
             
             // Assertions
             XCTAssert(request.httpMethod == HTTPMethod.get.rawValue)

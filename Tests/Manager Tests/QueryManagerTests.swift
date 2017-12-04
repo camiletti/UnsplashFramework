@@ -33,7 +33,7 @@ class QueryManagerTests: XCTestCase
     // MARK: - Properties
     
     private var queryManager : QueryManager!
-    private let credentials  = UNCredentials(appID: ApplicationID, secret: Secret)
+    private let credentials  = UNCredentials(appID: UnsplashKeys.appID, secret: UnsplashKeys.secret)
     private var urlSessionSimulationQueue : DispatchQueue!
     
     

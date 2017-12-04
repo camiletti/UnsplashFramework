@@ -60,7 +60,7 @@ class UNClientTests: XCTestCase
     
     func configureClient()
     {
-        self.client.setAppID(ApplicationID, secret: Secret)
+        self.client.setAppID(UnsplashKeys.appID, secret: UnsplashKeys.secret)
     }
     
     
@@ -480,7 +480,7 @@ class UNClientTests: XCTestCase
     func testHasCredentialsAfterSettingThem()
     {
         XCTAssert(self.client.hasCredentials == false)
-        self.client.setAppID(ApplicationID, secret: Secret)
+        self.client.setAppID(UnsplashKeys.appID, secret: UnsplashKeys.secret)
         XCTAssert(self.client.hasCredentials == true)
     }
 }
