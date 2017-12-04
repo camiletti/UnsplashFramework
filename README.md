@@ -1,13 +1,14 @@
-#  UnsplashFramework
-Lightweight framework for Unsplash in Swift
+![Alamofire: Elegant Networking in Swift](https://cdn.rawgit.com/camiletti/UnsplashFramework/master/UnsplashFramework.png)
 
-
+<center>
 [![Build Status](https://travis-ci.org/camiletti/UnsplashFramework.svg?branch=master)](https://travis-ci.org/camiletti/UnsplashFramework)
 [![codecov](https://codecov.io/gh/camiletti/UnsplashFramework/branch/master/graph/badge.svg)](https://codecov.io/gh/camiletti/UnsplashFramework)
-<a href="#documentation"><img src="https://raw.githubusercontent.com/camiletti/UnsplashFramework/master/docs/badge.svg" /></a>
+<a href="#-documentation"><img src="https://cdn.rawgit.com/camiletti/UnsplashFramework/master/docs/badge.svg" /></a>
 [![Language](https://img.shields.io/badge/swift-4.0-orange.svg?style=flat)](https://developer.apple.com/swift)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/licenses/MIT)
+</center>
 
+<br>
 
 ## 📷 Introduction
 The idea behind this project is to make an easy-to-use, well tested and well documented client framework for Unsplash.
@@ -23,12 +24,21 @@ The idea behind this project is to make an easy-to-use, well tested and well doc
 - [ ] Users
 
 
+## Requirement
+
+- iOS 10.3+
+- XCode 9.1+
+
+
 ## ⬇️ Installation
 
 Coming soon
 
 
 ## 🎛 Use
+```swift
+import UnsplashFramework
+```
 
 ### Credentials
 
@@ -89,7 +99,7 @@ self.client.fetchImage(from: samplePhoto,
 
 ## 📖 Documentation
 
-[Full documentation](http://htmlpreview.github.io/?https://github.com/camiletti/UnsplashFramework/blob/master/docs/Classes/UNClient.html)
+[Full documentation here](http://htmlpreview.github.io/?https://github.com/camiletti/UnsplashFramework/blob/master/docs/Classes/UNClient.html)
 
 
 ## 🐦 Contact
@@ -99,6 +109,9 @@ self.client.fetchImage(from: samplePhoto,
 
 ## 📄 License
 
+UnsplashFramework is under MIT license.
+
+```
 Copyright 2017 Pablo Camiletti
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -117,3 +130,4 @@ PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIG
 HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
 CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
 OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
