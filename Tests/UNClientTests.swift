@@ -75,7 +75,11 @@ class UNClientTests: XCTestCase
         self.client.listPhotos(page: 1, sortingBy: .popular)
         { (photos, error) in
             
-            popularPhotosExpectation.fulfill()
+            if  photos.isEmpty == false,
+                error == nil
+            {
+                popularPhotosExpectation.fulfill()
+            }
         }
         
         wait(for: [popularPhotosExpectation], timeout: ExpectationTimeout)
@@ -92,13 +96,21 @@ class UNClientTests: XCTestCase
         self.client.listPhotos(page: 1, sortingBy: .popular)
         { (photos, error) in
             
-            listExpectationA.fulfill()
+            if  photos.isEmpty == false,
+                error == nil
+            {
+                listExpectationA.fulfill()
+            }
         }
         
         self.client.listPhotos(page: 2, sortingBy: .latest)
         { (photos, error) in
             
-            listExpectationB.fulfill()
+            if photos.isEmpty == false,
+                error == nil
+            {
+                listExpectationB.fulfill()
+            }
         }
         
         wait(for: [listExpectationA, listExpectationB], timeout: ExpectationTimeout)
@@ -122,6 +134,27 @@ class UNClientTests: XCTestCase
         
         wait(for: [popularPhotosExpectation], timeout: ExpectationTimeout)
     }
+    
+    
+    func testListingPublicPhotosWithInvalidCredentials()
+    {
+        let popularPhotosExpectation = expectation(description: "Receive an error and no photos")
+        self.client.setAppID(UnsplashKeys.invalidAppID, secret: UnsplashKeys.invalidSecret)
+        
+        self.client.listPhotos(page: 1, sortingBy: .popular)
+        { (photos, error) in
+            
+            if  photos.isEmpty,
+                let error = error,
+                error.reason == UNErrorReason.serverError(ResponseStatusCode.unauthorized)
+            {
+                popularPhotosExpectation.fulfill()
+            }
+        }
+        
+        wait(for: [popularPhotosExpectation], timeout: ExpectationTimeout)
+    }
+    
     
     // MARK: - Test fetching images
     

@@ -129,7 +129,9 @@ class QueryManagerTests: XCTestCase
         let noPhotosAndAnErrorExpectation = expectation(description: "To receive an empty array of photos and an error")
         
         // Parameters
-        let completionHandler : UNPhotoQueryClosure = { (photos, error) in
+        let completionHandler : UNPhotoQueryClosure =
+        { (photos, error) in
+            
             if  photos.count == 0, let error = error,
                 error.reason == expectedError.reason
                 // We don't care about the reason description in this case

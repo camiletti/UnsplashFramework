@@ -33,6 +33,9 @@ import Foundation
 /// For more info on how to get them please check https://unsplash.com/developers
 class UnsplashKeys
 {
+    
+    // MARK: - Valid credentials
+    
     class var appID : String
     {
         return ProcessInfo.processInfo.environment["UNSPLASH_APP_ID"]!
@@ -42,5 +45,19 @@ class UnsplashKeys
     class var secret : String
     {
         return ProcessInfo.processInfo.environment["UNSPLASH_SECRET"]!
+    }
+    
+    
+    // MARK: - Invalid credentials
+    
+    class var invalidAppID : String
+    {
+        return ""
+    }
+    
+    
+    class var invalidSecret : String
+    {
+        return ""
     }
 }

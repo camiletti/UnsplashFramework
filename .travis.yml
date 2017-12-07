@@ -12,12 +12,10 @@ env:
   - PROJECT="UnsplashFramework.xcodeproj"
   - IOS_SCHEME="UnsplashFramework iOS"
   - IOS_SDK=iphonesimulator11.1
-  - secure: VLh8B1NiWyeWgbV2DSaqF/S/ZrMqYfsyOtpgWrAgorzs6DV08KY7shUADqeH8igVnicEByNzBOkwLtRoS6AIZUwbryfZ4EyfzsNW5pEbX9W1cEpjsUWwlCxZucz39xF3eSNv2pfEahmJme1/k8HEX6vxRKsSori08U3zsaIoyyhOI7tJftEVOYazhSRJSj3vcyNwzghpVnDcoRvNu7dE6TI2zjlx1h4hmTJJo3nNRemz2Q0mSzQY6VK5uA/gK8aQ5QTnGGr4dZzzHZSu05kNrN4nCXWS+oX4O3tiK+TSEkIM8eLdsg1RJZN+Vbk8o93/TfMirJd1b6LTyVhMymVyd7oDtkwGmnvxGbAKXu86khjScITrglq77ldAYtH4dnCSD/5qQbu7fD8hNISerS0AWX/ehxvKiyynNtm8ixbCK9by5o4e6GI9E0R3LENK0i/9yFoFwUJy9woRBC5UCi19MZYoH7WeaAz1QY5GqQ76YaZbbm+qwa8ceyQCJe5B6aGaiMs/Z5VZna8X2q1r4lBrKgGp/l8WgCTbbCMlt1XCqcwzv7own2zN687SP/na4ybysXuHrv1rBCtF/ISyBY5+kKde4Q9erX8jJdPCOY5InJqeJYMUcwXtXAxrf3HtgW/W2tFlL4+GH8Ky6F3pRsPqkdbNJSODMnPq573R32kcBNU=
-  - secure: T19SWlWk0i/2/Z2l1U1XNsP2cuTZrg3JWRdXC4yOL62fg/3puuSGGrHTxhNksQcGgEGJcOVWzNjkeDofbdaSp0moomD34r3UJCIHJoKvDW5Ez6P8QDJRzsaB+6WxKPTfx4IEaY4yCFzapzpJE1rWT5ivmKhItEhWVO6fOVAJ1VoiTUAx6Ugj6L6FTJaY1F+MrPznQROF72ZZfG3y3X4V9YdG/Et3wbir7Op6yR4TXn5Mtv3wwKyrZLucvWVMe5O08VqxzUKD66GtSgNjAwrbptgviN3b14D0dySleJZash65U43Bljm9kkoFbCc7BXnUragkFG1hypJHWRVHKXyU3d/dgQJ5hHDLbc3TMo54DS0U8aqZL0L+E7+D6TZH64iVtRydAv/FfjwN1qTLKSDV/bcuZh2cjhBO3zK6Urp20LKyIcgLPkWjrKVIEbKlrH1g8i0oS1iv9YdiJQ30u6A/xNU+LvryJs1BcFY15Y/yLTrRFgJgVzuWo6Y7MnMM8mGyMlldaGsxS+qNam1ff13QplEnzeNACK+18pBL8vGA0w99UiRU9d3sRfsLA6YNwU1L+PM74R+OKha2dZDPpzL2JHnLvG/rNtl/r9zzQUD4UuTFQqJyefgrYZwvVsoLyO/WdEc1wqAI3Y8ISgr+sbRWfG/LT0gNsUsDCLmntXcmZZo=
 
   matrix:
-  - DESTINATION="OS=11.1,name=iPhone X"         SDK="$IOS_SDK"  SCHEME="$IOS_SCHEME"  RUN_TESTS="YES"  POD_LINT="NO"
-  - DESTINATION="OS=10.3.1,name=iPhone 7 Plus"  SDK="$IOS_SDK"  SCHEME="$IOS_SCHEME"  RUN_TESTS="YES"  POD_LINT="NO"
+  - DESTINATION="OS=11.1,name=iPhone X"         SDK="$IOS_SDK"  SCHEME="$IOS_SCHEME"  RUN_TESTS="NO"  POD_LINT="YES"
+  - DESTINATION="OS=10.3.1,name=iPhone 7 Plus"  SDK="$IOS_SDK"  SCHEME="$IOS_SCHEME"  RUN_TESTS="NO"  POD_LINT="NO"
 
 script:
   - set -o pipefail
@@ -25,9 +23,9 @@ script:
   - xcodebuild -showsdks
 
   - if [ $RUN_TESTS == "YES" ]; then
-      xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration Debug -sdk "$SDK" -destination "$DESTINATION" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO ENABLE_TESTABILITY=YES test;
+      xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration Debug -sdk "$SDK" -destination "$DESTINATION" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO ENABLE_TESTABILITY=YES test | xcpretty;
     else
-      xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration Debug -sdk "$SDK" -destination "$DESTINATION" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO build;
+      xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration Debug -sdk "$SDK" -destination "$DESTINATION" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO build | xcpretty;
     fi
 
   - if [ $POD_LINT == "YES" ]; then
