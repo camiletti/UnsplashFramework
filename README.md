@@ -29,7 +29,21 @@ The idea behind this project is to make an easy-to-use, well tested and well doc
 
 ## ⬇️ Installation
 
-Coming soon
+### CocoaPods
+
+Add the following to your `Podfile`:
+
+```ruby
+pod 'UnsplashFramework', '~> 0.1'
+```
+
+### Carthage
+
+Add the following to your `Cartfile`:
+
+```ogdl
+github "camiletti/UnsplashFramework" ~> 0.1
+```
 
 
 ## 🎛 Use
