@@ -1,11 +1,14 @@
 ![UnsplashFramework](https://cdn.rawgit.com/camiletti/UnsplashFramework/master/UnsplashFramework.png)
 
 <p align="center">
-<a href="https://travis-ci.org/camiletti/UnsplashFramework"><img src="https://travis-ci.org/camiletti/UnsplashFramework.svg?branch=master" /></a>
-<a href="#-documentation"><img src="https://cdn.rawgit.com/camiletti/UnsplashFramework/master/docs/badge.svg" /></a>
-<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift-4.0-orange.svg?style=flat" /></a>
-<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/github/license/mashape/apistatus.svg" /></a>
+	<a href="https://travis-ci.org/camiletti/UnsplashFramework"><img src="https://travis-ci.org/camiletti/UnsplashFramework.svg?branch=master" /></a>
+	<a href="#-documentation"><img src="https://cdn.rawgit.com/camiletti/UnsplashFramework/master/docs/badge.svg" /></a>
+	<a href="https://cocoapods.org/pods/UnsplashFramework"><img src="https://img.shields.io/cocoapods/v/UnsplashFramework.svg" /></a>
+	<a href="#carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" /></a>
+	<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift-4.0-orange.svg?style=flat" /></a>
+	<a href="#-license"><img src="https://img.shields.io/cocoapods/l/UnsplashFramework.svg" /></a>
 </p>
+
 
 ## 📷 Introduction
 The idea behind this project is to make an easy-to-use, well tested and well documented client framework for Unsplash.
