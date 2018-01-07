@@ -90,19 +90,19 @@ UNClient.shared.listPhotos(page: 1,
 ### Searching photos
 
 ```swift
-UNClient.shared..searchPhotos(query: query,
-                              page: page,
-                              photosPerPage: photosPerPage,
-                              collections: nil,
-                              orientation: .landscape)
+UNClient.shared.searchPhotos(query: "Forest",
+                             page: 1,
+                             photosPerPage: 10,
+                             collections: nil,
+                             orientation: .landscape)
     { (result) in
-
+        
         switch result {
         case .success(let searchResult):
         searchResult.photos.forEach({ (photo) in
             print("Photo with ID: \(photo.id) from user: \(photo.user.username) main color: \(photo.hexColor)")
         })
-            
+        
         case .failure(let error):
             print("Error: \(error.reason)")
         }
