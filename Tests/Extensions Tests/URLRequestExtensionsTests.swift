@@ -74,9 +74,9 @@ class URLSessionExtensionsTests: XCTestCase
     
     func expectedURL(withEndpoint endpoint: Endpoint, parameters: PhotoListParameters) -> URL?
     {
-        return URL(string: APIScheme + "://" + APILocation + endpoint.string() + "?" +
-                           PhotoListParameters.pageNumberName + "=\(parameters.pageNumber)&" +
-                           PhotoListParameters.photosPerPage  + "=\(parameters.photosPerPage)&" +
-                           PhotoListParameters.sortOrderName  + "=\(parameters.sortOrder)")
+        return URL(string: APIScheme + "://" + APILocation + endpoint.string() + "?"               +
+                           PhotoListParameters.pageNumberName    + "=\(parameters.pageNumber)&"    +
+                           PhotoListParameters.photosPerPageName + "=\(parameters.photosPerPage)&" +
+                           PhotoListParameters.sortOrderName     + "=\(parameters.sortOrder)")
     }
 }
