@@ -72,6 +72,8 @@ class DemoData
     }
     
     
+    // MARK: - Valid data
+    
     /// Creates a new valid UNPhoto with sample data
     ///
     /// - Returns: Valid photo
@@ -130,6 +132,69 @@ class DemoData
                        imageLinks: imageLinks,
                        apiLocations: apiLocations)
     }
+    
+    
+    class func getValidUser() -> UNUser
+    {
+        return UNUser(id: "QV5S1rtoUJ0",
+                      username: "unsplash",
+                      name: "Unsplash",
+                      firstName: "Unsplash",
+                      lastName: nil,
+                      twitterUsername: "unsplash",
+                      portfolioURL: URL(string: "http://unsplash.com"),
+                      bio: "Make something awesome.",
+                      location: "Montreal, Canada",
+                      totalLikes: 18708,
+                      totalPhotos: 0,
+                      totalCollections: 126,
+                      profileImageLinks: self.getValidProfileImageLinks(),
+                      apiLocations: self.getValidUserAPILocations())
+    }
+    
+    
+    class func getValidCollection() -> UNCollection
+    {
+        return UNCollection(id: 334800,
+                            title: "Reflections",
+                            publishedDate: nil,
+                            updatedDate: nil,
+                            isCurated: false,
+                            coverPhoto: nil,
+                            user: self.getValidUser(),
+                            apiLocations: self.getValidCollectionAPILocations())
+    }
+    
+    
+    class func getValidCollectionAPILocations() -> UNCollectionAPILocations
+    {
+        return UNCollectionAPILocations(apiCollectionURL: URL(string: "https://api.unsplash.com/collections/334800")!,
+                                        apiPhotosInCollectionURL: URL(string: "https://api.unsplash.com/collections/334800/photos")!,
+                                        externalCollectionURL: URL(string: "https://unsplash.com/collections/334800/unsplashframework-testing")!)
+    }
+    
+    
+    class func getValidProfileImageLinks() -> UNProfileImageLinks
+    {
+        return UNProfileImageLinks(small: URL(string: "https://images.unsplash.com/profile-1441945026710-480e4372a5b5?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=32&w=32&s=6676f08bc1f6638d9d97e28f53252937"),
+                                   medium: URL(string: "https://images.unsplash.com/profile-1441945026710-480e4372a5b5?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=64&w=64&s=fb59ebefbd52e943eb5abf68d7edc020"),
+                                   big: URL(string: "https://images.unsplash.com/profile-1441945026710-480e4372a5b5?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=128&w=128&s=a506ec7dcb2fe02cb7089bea78c4df68"))
+    }
+    
+    
+    class func getValidUserAPILocations() -> UNUserAPILocations
+    {
+        return UNUserAPILocations(apiProfileURL: URL(string: "https://api.unsplash.com/users/unsplash")!,
+                                  apiPhotosURL: URL(string: "https://api.unsplash.com/users/unsplash/photos")!,
+                                  apiLikesURL: URL(string: "https://api.unsplash.com/users/unsplash/likes")!,
+                                  apiPortfolioURL: URL(string: "https://api.unsplash.com/users/unsplash/portfolio")!,
+                                  apiFollowingURL: URL(string: "https://api.unsplash.com/users/unsplash/following")!,
+                                  apiFollowersURL: URL(string: "https://api.unsplash.com/users/unsplash/followers")!,
+                                  externalProfileURL: URL(string: "https://unsplash.com/@unsplash")!)
+    }
+    
+    
+    // MARK: - Invalid data
     
     
     /// Creates a new invalid UNPhoto

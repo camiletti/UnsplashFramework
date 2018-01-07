@@ -70,19 +70,12 @@ class UNClientTests: XCTestCase
     {
         self.configureClient()
         
-        let popularPhotosExpectation = expectation(description: "Receive list of most popular photos")
+        let photosExpectation = expectation(description: "Receive list of most popular photos")
+        let completionChecker = self.completionForListingPhotosSuccessfully(expectation: photosExpectation)
         
-        self.client.listPhotos(page: 1, sortingBy: .popular)
-        { (photos, error) in
-            
-            if  photos.isEmpty == false,
-                error == nil
-            {
-                popularPhotosExpectation.fulfill()
-            }
-        }
+        self.client.listPhotos(page: 1, sortingBy: .popular, completion: completionChecker)
         
-        wait(for: [popularPhotosExpectation], timeout: ExpectationTimeout)
+        wait(for: [photosExpectation], timeout: ExpectationTimeout)
     }
     
     
@@ -93,25 +86,11 @@ class UNClientTests: XCTestCase
         let listExpectationA = expectation(description: "Receive the list from the first request")
         let listExpectationB = expectation(description: "Receive the list from the second request")
         
-        self.client.listPhotos(page: 1, sortingBy: .popular)
-        { (photos, error) in
-            
-            if  photos.isEmpty == false,
-                error == nil
-            {
-                listExpectationA.fulfill()
-            }
-        }
+        let completionCheckerA = self.completionForListingPhotosSuccessfully(expectation: listExpectationA)
+        let completionCheckerB = self.completionForListingPhotosSuccessfully(expectation: listExpectationB)
         
-        self.client.listPhotos(page: 2, sortingBy: .latest)
-        { (photos, error) in
-            
-            if photos.isEmpty == false,
-                error == nil
-            {
-                listExpectationB.fulfill()
-            }
-        }
+        self.client.listPhotos(page: 1, sortingBy: .popular, completion: completionCheckerA)
+        self.client.listPhotos(page: 2, sortingBy: .latest,  completion: completionCheckerB)
         
         wait(for: [listExpectationA, listExpectationB], timeout: ExpectationTimeout)
     }
@@ -119,40 +98,145 @@ class UNClientTests: XCTestCase
     
     func testListingPublicPhotosWithoutCredentials()
     {
-        let popularPhotosExpectation = expectation(description: "Receive an error and no photos")
+        let errorExpectation = expectation(description: "Receive an error and no photos")
+        let completionChecker : UNPhotoListClosure = self.completionForQueryWithoutCredentials(expectation: errorExpectation)
         
-        self.client.listPhotos(page: 1, sortingBy: .popular)
-        { (photos, error) in
-            
-            if  photos.isEmpty,
-                let error = error,
-                error.reason == UNErrorReason.credentialsNotSet
-            {
-                popularPhotosExpectation.fulfill()
-            }
-        }
+        self.client.listPhotos(page: 1, sortingBy: .popular, completion: completionChecker)
         
-        wait(for: [popularPhotosExpectation], timeout: ExpectationTimeout)
+        wait(for: [errorExpectation], timeout: ExpectationTimeout)
     }
     
     
     func testListingPublicPhotosWithInvalidCredentials()
     {
-        let popularPhotosExpectation = expectation(description: "Receive an error and no photos")
         self.client.setAppID(UnsplashKeys.invalidAppID, secret: UnsplashKeys.invalidSecret)
         
-        self.client.listPhotos(page: 1, sortingBy: .popular)
-        { (photos, error) in
+        let errorExpectation = expectation(description: "Receive an error and no photos")
+        let completionChecker : UNPhotoListClosure = self.completionForQueryWithInvalidCredentials(expectation: errorExpectation)
+        
+        self.client.listPhotos(page: 1, sortingBy: .popular, completion: completionChecker)
+        
+        wait(for: [errorExpectation], timeout: ExpectationTimeout)
+    }
+    
+    
+    // MARK: - Tests for searching photos
+    
+    func testSimpleSearch()
+    {
+        self.configureClient()
+        let photosExpectation = expectation(description: "Receive a successful response with photos")
+        
+        let query = "Forest"
+        let page = 1
+        let photosPerPage = 8
+        
+        self.client.searchPhotos(query: query,
+                                 page: page,
+                                 photosPerPage: photosPerPage,
+                                 collections: nil,
+                                 orientation: nil)
+        { (result) in
             
-            if  photos.isEmpty,
-                let error = error,
-                error.reason == UNErrorReason.serverError(ResponseStatusCode.unauthorized)
+            switch result
             {
-                popularPhotosExpectation.fulfill()
+            case .success(let searchResult):
+                if searchResult.photos.count <= photosPerPage &&
+                   searchResult.photos.count > 0
+                {
+                    photosExpectation.fulfill()
+                }
+                else
+                {
+                    XCTFail("More photos received in the page than what was asked for.")
+                }
+                
+            case .failure(let error):
+                XCTFail("Request failed with error: \(error.reason)")
             }
         }
         
-        wait(for: [popularPhotosExpectation], timeout: ExpectationTimeout)
+        wait(for: [photosExpectation], timeout: ExpectationTimeout)
+    }
+    
+    
+    func testSearchingPhotoInCollectionAndWithGivenOrientation()
+    {
+        self.configureClient()
+        let photosExpectation = expectation(description: "Receive a successful response with photos")
+        
+        let query = "Reflections"
+        let page = 1
+        let photosPerPage = 8
+        let collection = DemoData.getValidCollection()
+        let orientation = UNPhotoOrientation.landscape
+        
+        self.client.searchPhotos(query: query,
+                                 page: page,
+                                 photosPerPage: photosPerPage,
+                                 collections: [collection],
+                                 orientation: orientation)
+        { (result) in
+            
+            switch result
+            {
+            case .success(let searchResult):
+                if searchResult.photos.count <= photosPerPage &&
+                   searchResult.photos.count > 0
+                {
+                    photosExpectation.fulfill()
+                }
+                else
+                {
+                    XCTFail("More photos received in the page than what was asked for.")
+                }
+                
+            case .failure(let error):
+                XCTFail("Request failed with error: \(error.reason)")
+            }
+        }
+        
+        wait(for: [photosExpectation], timeout: ExpectationTimeout)
+    }
+    
+    
+    func testSearchPhotosWithoutCredentials()
+    {
+        let errorExpectation = expectation(description: "Receive an error and no photos")
+        let completionChecker : UNPhotoSearchClosure = self.completionForQueryWithoutCredentials(expectation: errorExpectation)
+        
+        let query = "Forest"
+        let page = 1
+        let photosPerPage = 8
+        
+        self.client.searchPhotos(query: query,
+                                 page: page,
+                                 photosPerPage: photosPerPage,
+                                 completion: completionChecker)
+        
+        wait(for: [errorExpectation], timeout: ExpectationTimeout)
+    }
+    
+    
+    func testSearchPhotosWithInvalidCredentials()
+    {
+        self.client.setAppID(UnsplashKeys.invalidAppID, secret: UnsplashKeys.invalidSecret)
+        
+        let errorExpectation = expectation(description: "Receive an error and no photos")
+        let completionChecker : UNPhotoSearchClosure = self.completionForQueryWithInvalidCredentials(expectation: errorExpectation)
+        
+        let query = "Forest"
+        let page = 1
+        let photosPerPage = 8
+        
+        self.client.searchPhotos(query: query,
+                                 page: page,
+                                 photosPerPage: photosPerPage,
+                                 collections: nil,
+                                 orientation: nil,
+                                 completion: completionChecker)
+        
+        wait(for: [errorExpectation], timeout: ExpectationTimeout)
     }
     
     
@@ -515,5 +599,61 @@ class UNClientTests: XCTestCase
         XCTAssert(self.client.hasCredentials == false)
         self.client.setAppID(UnsplashKeys.appID, secret: UnsplashKeys.secret)
         XCTAssert(self.client.hasCredentials == true)
+    }
+    
+    
+    // MARK: - Helpers
+    
+    private func completionForQueryWithoutCredentials<T: Decodable>(expectation: XCTestExpectation) -> (UNResult<T>) -> Void
+    {
+        return { (result) in
+            
+            switch result
+            {
+            case .success(_):
+                XCTFail()
+                
+            case .failure(let error):
+                if error.reason == UNErrorReason.credentialsNotSet
+                {
+                    expectation.fulfill()
+                }
+            }
+        }
+    }
+    
+    
+    private func completionForQueryWithInvalidCredentials<T: Decodable>(expectation: XCTestExpectation) -> (UNResult<T>) -> Void
+    {
+        return { (result) in
+            
+            switch result
+            {
+            case .success(_):
+                XCTFail()
+                
+            case .failure(let error):
+                if error.reason == UNErrorReason.serverError(ResponseStatusCode.unauthorized)
+                {
+                    expectation.fulfill()
+                }
+            }
+        }
+    }
+    
+    
+    private func completionForListingPhotosSuccessfully(expectation: XCTestExpectation) -> UNPhotoListClosure
+    {
+        return { (result) in
+            
+            switch result
+            {
+            case .success(let photos):
+                if photos.isEmpty == false { expectation.fulfill() }
+                
+            case .failure(let error):
+                XCTFail("\(error.reason)")
+            }
+        }
     }
 }

@@ -26,6 +26,8 @@
 import Foundation
 
 
+// MARK: - Parameters URL Representable Protocol
+
 /// Protocol for getting the URL parameters as URLQueryItem.
 internal protocol ParametersURLRepresentable
 {
@@ -43,10 +45,11 @@ internal struct PhotoListParameters
     static let pageNumberName = "page"
     
     /// Amount of photos per page parameter's name.
-    static let photosPerPage  = "per_page"
+    static let photosPerPageName = "per_page"
     
     /// The sort order parameter's name.
-    static let sortOrderName  = "order_by"
+    static let sortOrderName = "order_by"
+    
     
     /// The requested page.
     let pageNumber    : Int
@@ -63,8 +66,83 @@ extension PhotoListParameters: ParametersURLRepresentable
 {
     func asQueryItems() -> [URLQueryItem]
     {
-        return [URLQueryItem(name: PhotoListParameters.pageNumberName, value: "\(self.pageNumber)"),
-                URLQueryItem(name: PhotoListParameters.photosPerPage, value: "\(self.photosPerPage)"),
-                URLQueryItem(name: PhotoListParameters.sortOrderName, value: "\(self.sortOrder.rawValue)")]
+        return [
+            URLQueryItem(name: PhotoListParameters.pageNumberName, value: "\(self.pageNumber)"),
+            URLQueryItem(name: PhotoListParameters.photosPerPageName,  value: "\(self.photosPerPage)"),
+            URLQueryItem(name: PhotoListParameters.sortOrderName,  value: "\(self.sortOrder.rawValue)")
+        ]
+    }
+}
+
+
+// MARK: - Parameter for searching photos
+
+/// The parameters' names and values that can be passed to Unsplash in a query.
+internal struct PhotoSearchParameters
+{
+    /// The requested query parameter's name.
+    static let queryName = "query"
+    
+    /// The requested page parameter's name.
+    static let pageNumberName = "page"
+    
+    /// Amount of photos per page parameter's name.
+    static let photosPerPageName  = "per_page"
+    
+    /// Collections to narrow search parameter's name.
+    static let collectionsName = "collections"
+    
+    /// Orientation of the desired photo parameter's name.
+    static let orientationName = "orientation"
+    
+    
+    /// Words that describe the photos to be searched.
+    let query         : String
+    
+    /// The requested page.
+    let pageNumber    : Int
+    
+    /// The desired amount of photos per page.
+    let photosPerPage : Int
+    
+    /// Collections to narrow search.
+    let collections   : [UNCollection]?
+    
+    /// Orientation of the desired photo.
+    let orientation   : UNPhotoOrientation?
+}
+
+
+extension PhotoSearchParameters: ParametersURLRepresentable
+{
+    func asQueryItems() -> [URLQueryItem]
+    {
+        var items =
+        [
+            URLQueryItem(name: PhotoSearchParameters.queryName,      value: "\(self.query)"),
+            URLQueryItem(name: PhotoSearchParameters.pageNumberName, value: "\(self.pageNumber)"),
+            URLQueryItem(name: PhotoSearchParameters.photosPerPageName,  value: "\(self.photosPerPage)")
+        ]
+        
+        // In case specific collections were specified
+        if  let collections = collections,
+            collections.isEmpty == false
+        {
+            var commaSeparatedIDs = collections.reduce("") { text, collection in text + ",\(collection.id)" }
+            commaSeparatedIDs.removeFirst() // Removes the first comma
+            let collectionsItem = URLQueryItem(name: PhotoSearchParameters.collectionsName,
+                                               value: commaSeparatedIDs)
+            items.append(collectionsItem)
+        }
+        
+        // In case a particular orientation was specified
+        if let orientation = self.orientation
+        {
+            let orientationItem = URLQueryItem(name: PhotoSearchParameters.orientationName,
+                                               value: orientation.rawValue)
+            items.append(orientationItem)
+        }
+        
+        return items
     }
 }

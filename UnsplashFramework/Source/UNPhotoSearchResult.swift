@@ -1,5 +1,5 @@
 //
-//  Closures.swift
+//  UNPhotoSearchResult.swift
 //  UnsplashFramework
 //
 //  Copyright 2017 Pablo Camiletti
@@ -26,11 +26,27 @@
 import Foundation
 
 
-public typealias UNPhotoListClosure = (_ result: UNResult<[UNPhoto]>) -> Void
-
-public typealias UNPhotoSearchClosure = (_ result: UNResult<UNPhotoSearchResult>) -> Void
-
-public typealias UNFetchDataImageClosure = (_ requestedPhoto : UNPhoto,
-                                            _ requestedSize: UNPhotoImageSize,
-                                            _ imageData: Data?,
-                                            _ error: UNError?) -> Void
+/// Holds the result returned from Unsplash for a given search.
+public struct UNPhotoSearchResult: Decodable
+{
+    
+    // MARK: - Properties
+    
+    /// The total amount of photos found for the given search.
+    public var totalPhotos : Int
+    
+    /// The total number of pages of photos found for the given search.
+    public var totalPages  : Int
+    
+    /// The photos contained in the requested page.
+    public var photos      : [UNPhoto]
+    
+    
+    /// Codable poperty mapping.
+    internal enum CodingKeys: String, CodingKey
+    {
+        case totalPhotos = "total"
+        case totalPages  = "total_pages"
+        case photos      = "results"
+    }
+}

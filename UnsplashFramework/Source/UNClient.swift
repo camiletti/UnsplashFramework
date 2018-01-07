@@ -107,19 +107,58 @@ public class UNClient
     public func listPhotos(page: Int,
                            photosPerPage: Int = 10,
                            sortingBy sort: UNSort,
-                           completion: @escaping UNPhotoQueryClosure)
+                           completion: @escaping UNPhotoListClosure)
     {
         if self.hasCredentials
         {
-            self.queryManager?.listPhotos(page: page,
-                                          photosPerPage: photosPerPage,
-                                          sortingBy: sort,
+            let parameters = PhotoListParameters(pageNumber: page,
+                                                 photosPerPage: photosPerPage,
+                                                 sortOrder: sort)
+            
+            self.queryManager?.listPhotos(with: parameters,
                                           completion: completion)
         }
         else
         {
             self.printMissingCredentialsWarning()
-            completion([UNPhoto](), UNError(reason: .credentialsNotSet))
+            completion(UNResult.failure(UNError(reason: .credentialsNotSet)))
+        }
+    }
+    
+    
+    // MARK: - Search photos
+    
+    /// Get a single page of photo results for a query.
+    ///
+    /// - Parameters:
+    ///   - query: Search terms.
+    ///   - page: Page number to retrieve.
+    ///   - photosPerPage: Number of items per page.
+    ///   - collections: Collection ID(‘s) to narrow search.
+    ///   - orientation: Filter search results by photo orientation.
+    ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
+    public func searchPhotos(query: String,
+                             page: Int,
+                             photosPerPage: Int,
+                             collections: [UNCollection]? = nil,
+                             orientation: UNPhotoOrientation? = nil,
+                             completion: @escaping UNPhotoSearchClosure)
+    {
+        if self.hasCredentials
+        {
+            let parameters = PhotoSearchParameters(query: query,
+                                                   pageNumber: page,
+                                                   photosPerPage: photosPerPage,
+                                                   collections: collections,
+                                                   orientation: orientation)
+            
+            self.queryManager?.searchPhotos(with: parameters,
+                                            completion: completion)
+        }
+        else
+        {
+            self.printMissingCredentialsWarning()
+            completion(UNResult.failure(UNError(reason: .credentialsNotSet)))
         }
     }
     

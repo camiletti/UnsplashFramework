@@ -1,5 +1,5 @@
 //
-//  Closures.swift
+//  UNResult.swift
 //  UnsplashFramework
 //
 //  Copyright 2017 Pablo Camiletti
@@ -26,11 +26,12 @@
 import Foundation
 
 
-public typealias UNPhotoListClosure = (_ result: UNResult<[UNPhoto]>) -> Void
-
-public typealias UNPhotoSearchClosure = (_ result: UNResult<UNPhotoSearchResult>) -> Void
-
-public typealias UNFetchDataImageClosure = (_ requestedPhoto : UNPhoto,
-                                            _ requestedSize: UNPhotoImageSize,
-                                            _ imageData: Data?,
-                                            _ error: UNError?) -> Void
+/// Enum representing the result of a given query.
+public enum UNResult <T>
+{
+    /// Successful query result with the obtained information.
+    case success(T)
+    
+    /// Failed query result with the reason of failure.
+    case failure(UNError)
+}

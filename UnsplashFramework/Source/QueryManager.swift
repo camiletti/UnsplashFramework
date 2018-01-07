@@ -35,7 +35,7 @@ class QueryManager
     private let credentials : UNCredentials
     
     /// Session used for querying Unsplash.
-    private let session = URLSession(configuration: .default)
+    private let session : URLSession
     
     
     /// Creates a client with the specified credentials.
@@ -45,24 +45,30 @@ class QueryManager
     public init(withCredentials credentials: UNCredentials)
     {
         self.credentials = credentials
+        self.session = URLSession(configuration: .default)
+    }
+    
+    
+    /// Specially to use in unit testing to mock network requests
+    ///
+    /// - Parameters:
+    ///   - credentials: The Unsplash client credentials.
+    ///   - session: The URLSession that will handle all the network tasks.
+    internal init(with credentials: UNCredentials, session: URLSession)
+    {
+        self.credentials = credentials
+        self.session = session
     }
     
     
     /// Get a single page from the list of all photos.
     ///
     /// - Parameters:
-    ///   - page: Page number to retrieve.
-    ///   - photosPerPage: Number of items per page.
-    ///   - sort: How to sort the photos.
+    ///   - parameters: The parameters .
     ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
-    public func listPhotos(page: Int,
-                           photosPerPage: Int = 10,
-                           sortingBy sort: UNSort,
-                           completion: @escaping UNPhotoQueryClosure)
+    public func listPhotos(with parameters: PhotoListParameters,
+                           completion: @escaping UNPhotoListClosure)
     {
-        let parameters = PhotoListParameters(pageNumber: page,
-                                             photosPerPage: photosPerPage,
-                                             sortOrder: sort)
         let request = URLRequest.publicRequest(.get,
                                                forEndpoint: .photos,
                                                parameters: parameters,
@@ -71,10 +77,38 @@ class QueryManager
         let task = self.session.dataTask(with: request)
         { (data, response, requestError) in
             
-            self.processListingPhotosResponse(data: data,
-                                              response: response,
-                                              requestError: requestError,
-                                              completion: completion)
+            self.processResponse(data: data,
+                                 response: response,
+                                 requestError: requestError,
+                                 decodableProtocol: [UNPhoto].self,
+                                 completion: completion)
+        }
+        
+        task.resume()
+    }
+    
+    
+    /// Get a single page of photo results for a query.
+    ///
+    /// - Parameters:
+    ///   - parameters: The parameters to narrow the search.
+    ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
+    internal func searchPhotos(with parameters: PhotoSearchParameters,
+                               completion: @escaping UNPhotoSearchClosure)
+    {
+        let request = URLRequest.publicRequest(.get,
+                                               forEndpoint: .photoSearch,
+                                               parameters: parameters,
+                                               credentials: self.credentials)
+        
+        let task = self.session.dataTask(with: request)
+        { (data, response, requestError) in
+            
+            self.processResponse(data: data,
+                                 response: response,
+                                 requestError: requestError,
+                                 decodableProtocol: UNPhotoSearchResult.self,
+                                 completion: completion)
         }
         
         task.resume()
@@ -88,28 +122,28 @@ class QueryManager
     ///   - response: response received from the server.
     ///   - requestError: connection error if there was one.
     ///   - completion: closure called with the data parsed or error if there was one.
-    internal func processListingPhotosResponse(data: Data?,
-                                               response: URLResponse?,
-                                               requestError: Error?,
-                                               completion: @escaping UNPhotoQueryClosure)
+    internal func processResponse<T: Decodable>(data: Data?,
+                                                response: URLResponse?,
+                                                requestError: Error?,
+                                                decodableProtocol: T.Type,
+                                                completion: @escaping (UNResult<T>) -> Void)
     {
-        var photos = [UNPhoto]()
-        var error  : UNError? = nil
+        var result: UNResult<T>
         
         if let unError = UNError.checkIfItIsAnError(response, and: requestError)
         {
-            error = unError
+            result = .failure(unError)
         }
         else if let data = data,
-            let decodedPhotos = try? JSONDecoder().decode([UNPhoto].self, from: data)
+                let decodedData = try? JSONDecoder().decode(decodableProtocol, from: data)
         {
-            photos = decodedPhotos
+            result = .success(decodedData)
         }
         else
         {
-            error = UNError(reason: .unableToParseDataCorrectly)
+            result = .failure(UNError(reason: .unableToParseDataCorrectly))
         }
         
-        DispatchQueue.main.async { completion(photos, error) }
+        DispatchQueue.main.async { completion(result) }
     }
 }

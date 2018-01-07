@@ -1,5 +1,5 @@
 //
-//  Closures.swift
+//  UNPhotoOrientation.swift
 //  UnsplashFramework
 //
 //  Copyright 2017 Pablo Camiletti
@@ -26,11 +26,15 @@
 import Foundation
 
 
-public typealias UNPhotoListClosure = (_ result: UNResult<[UNPhoto]>) -> Void
-
-public typealias UNPhotoSearchClosure = (_ result: UNResult<UNPhotoSearchResult>) -> Void
-
-public typealias UNFetchDataImageClosure = (_ requestedPhoto : UNPhoto,
-                                            _ requestedSize: UNPhotoImageSize,
-                                            _ imageData: Data?,
-                                            _ error: UNError?) -> Void
+/// Available orientations.
+public enum UNPhotoOrientation: String
+{
+    /// Landscape orientation
+    case landscape = "landscape"
+    
+    /// Portrait orientation
+    case portrait  = "portrait"
+    
+    /// Squarish orientation
+    case squarish  = "squarish"
+}
