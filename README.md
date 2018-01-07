@@ -18,9 +18,11 @@ The idea behind this project is to make an easy-to-use, well tested and well doc
 
 ## 🛠 Plan
 - [x] List photos
+- [x] Search photos
 - [x] Fetching images
 - [ ] List collections
-- [ ] Search
+- [ ] Search collections
+- [ ] Search user
 - [ ] Users
 
 
@@ -67,17 +69,44 @@ UNClient.shared.setAppID("Your_AppID", secret: "Your_Secret")
 
 
 ```swift
-UNClient.shared.listPhotos(page: 1, photosPerPage: 10, sortingBy: .popular) { (photos, error) in
+UNClient.shared.listPhotos(page: 1,
+                           photosPerPage: 10,
+                           sortingBy: .popular)
+    { (result) in
 
-    if let error = error {
-        print("Error: \(error.reason)")
-        return
+        switch result {
+        case .success(let photos):
+            photos.forEach({ (photo) in
+                print("Photo with ID: \(photo.id) from user: \(photo.user.username) main color: \(photo.hexColor)")
+            })
+
+        case .failure(let error):
+            print("Error: \(error.reason)")
     }
-    
-    photos.forEach({ (photo) in
-        print("Photo with ID: \(photo.id) from user: \(photo.user.username) main color: \(photo.hexColor)")
-    })
 }
+```
+
+
+### Searching photos
+
+```swift
+UNClient.shared..searchPhotos(query: query,
+                              page: page,
+                              photosPerPage: photosPerPage,
+                              collections: nil,
+                              orientation: .landscape)
+    { (result) in
+
+        switch result {
+        case .success(let searchResult):
+        searchResult.photos.forEach({ (photo) in
+            print("Photo with ID: \(photo.id) from user: \(photo.user.username) main color: \(photo.hexColor)")
+        })
+            
+        case .failure(let error):
+            print("Error: \(error.reason)")
+        }
+    }
 ```
 
 
