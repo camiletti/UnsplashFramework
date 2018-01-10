@@ -30,8 +30,8 @@ import Foundation
 public struct UNCredentials
 {
     /// Unsplash Application ID.
-    let appID  : String
+    public let appID  : String
     
     /// Unsplash Secret.
-    let secret : String
+    public let secret : String
 }
