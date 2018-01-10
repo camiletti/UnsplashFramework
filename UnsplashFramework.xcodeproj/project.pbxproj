@@ -72,6 +72,7 @@
 		6ECFE2CF1FBDAED4009BD9B6 /* UNError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECFE2CE1FBDAED4009BD9B6 /* UNError.swift */; };
 		6ECFE2D11FBDAFE5009BD9B6 /* ResponseStatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECFE2D01FBDAFE5009BD9B6 /* ResponseStatusCode.swift */; };
 		6ED40F5D1FCEFBEC009380EE /* PhotoDownloadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED40F5C1FCEFBEC009380EE /* PhotoDownloadRequest.swift */; };
+		6EDD8B8920066F1C006C3E1B /* UNImageFetchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDD8B8820066F1C006C3E1B /* UNImageFetchResult.swift */; };
 		6EF8797B1FF800D300FB20AC /* UNPhotoSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF8797A1FF800D300FB20AC /* UNPhotoSearchResult.swift */; };
 /* End PBXBuildFile section */
 
@@ -160,6 +161,7 @@
 		6ECFE2D01FBDAFE5009BD9B6 /* ResponseStatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseStatusCode.swift; sourceTree = "<group>"; };
 		6ED40F5C1FCEFBEC009380EE /* PhotoDownloadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDownloadRequest.swift; sourceTree = "<group>"; };
 		6ED5BA991FD16C2D006F229B /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
+		6EDD8B8820066F1C006C3E1B /* UNImageFetchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNImageFetchResult.swift; sourceTree = "<group>"; };
 		6EF8797A1FF800D300FB20AC /* UNPhotoSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNPhotoSearchResult.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -250,6 +252,7 @@
 				6E87EE0C1FBEEDD800DA5A0B /* UNCollectionAPILocations.swift */,
 				6E87EE121FBF004300DA5A0B /* UNCategoryAPILocations.swift */,
 				6EF8797A1FF800D300FB20AC /* UNPhotoSearchResult.swift */,
+				6EDD8B8820066F1C006C3E1B /* UNImageFetchResult.swift */,
 				6ECFE2CE1FBDAED4009BD9B6 /* UNError.swift */,
 				6E20082B1FBF5065005D6E30 /* UNSort.swift */,
 				6EBF56351FFE7E6D00E76556 /* UNResult.swift */,
@@ -538,6 +541,7 @@
 				6E87EE131FBF004300DA5A0B /* UNCategoryAPILocations.swift in Sources */,
 				6E7D08691FBCBE830048423E /* UIColor+Extensions.swift in Sources */,
 				6EF8797B1FF800D300FB20AC /* UNPhotoSearchResult.swift in Sources */,
+				6EDD8B8920066F1C006C3E1B /* UNImageFetchResult.swift in Sources */,
 				6E7D08631FBCB3450048423E /* Schema.swift in Sources */,
 				6ED40F5D1FCEFBEC009380EE /* PhotoDownloadRequest.swift in Sources */,
 				6EB5F4601FC6E453003AD6F6 /* ImageDownloadManager.swift in Sources */,

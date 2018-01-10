@@ -175,26 +175,26 @@ public class UNClient
     ///   - completion: The completion closure to handle the result. It will be called on the main thread.
     public func fetchImage(from photo: UNPhoto,
                            inSize size: UNPhotoImageSize,
-                           completion: @escaping (UNPhoto, UNPhotoImageSize, UIImage?, UNError?) -> Void)
+                           completion: @escaping UNImageFetchClosure)
     {
         self.fetchDataImage(from: photo, inSize: size)
         { (requestedPhoto, requestedSize, dataImage, error) in
             
             if let error = error
             {
-                completion(requestedPhoto, requestedSize, nil, error)
+                completion(.failure(error))
             }
             else if let dataImage = dataImage,
                     let image = UIImage(data: dataImage)
             {
-                completion(requestedPhoto, requestedSize, image, error)
+                let imageResult = UNImageFetchResult(requestedPhoto: requestedPhoto,
+                                                     requestedSize: requestedSize,
+                                                     image: image)
+                completion(.success(imageResult))
             }
             else
             {
-                completion(requestedPhoto,
-                           requestedSize,
-                           nil,
-                           UNError(reason: .unableToParseDataCorrectly))
+                completion(.failure(UNError(reason: .unableToParseDataCorrectly)))
             }
         }
     }

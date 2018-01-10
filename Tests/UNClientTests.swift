@@ -333,14 +333,22 @@ class UNClientTests: XCTestCase
         
         self.client.fetchImage(from: samplePhoto,
                                inSize: photoSize)
-        { (requestedPhoto, requestedSize, image, error) in
-            
-            if  requestedPhoto == samplePhoto,
-                photoSize == requestedSize,
-                error == nil,
-                image != nil
+        { (result) in
+            switch result
             {
-                imageDataExpectation.fulfill()
+            case .success(let fetchResult):
+                if  fetchResult.requestedPhoto == samplePhoto,
+                    fetchResult.requestedSize == photoSize
+                {
+                    imageDataExpectation.fulfill()
+                }
+                else
+                {
+                    XCTFail("The requested photo and size doesn't match")
+                }
+            
+            case .failure(let error):
+                XCTFail("fetchImage failed to fetch the image. Reason: \(error.reason)")
             }
         }
         
@@ -359,15 +367,22 @@ class UNClientTests: XCTestCase
         
         self.client.fetchImage(from: invalidPhoto,
                                inSize: photoSize)
-        { (requestedPhoto, requestedSize, image, error) in
+        { (result) in
             
-            if  requestedPhoto == invalidPhoto,
-                photoSize == requestedSize,
-                image == nil,
-                let error = error,
-                error.reason == UNErrorReason.serverError(ResponseStatusCode.notFound)
+            switch result
             {
-                imageDataExpectation.fulfill()
+            case .success(_):
+                XCTFail("No image is expected but instead an error")
+                
+            case .failure(let error):
+                if error.reason == UNErrorReason.serverError(ResponseStatusCode.notFound)
+                {
+                    imageDataExpectation.fulfill()
+                }
+                else
+                {
+                    XCTFail("The returned error is not the expected")
+                }
             }
         }
         

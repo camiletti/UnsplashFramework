@@ -1,5 +1,5 @@
 //
-//  Closures.swift
+//  UNImageFetchResult.swift
 //  UnsplashFramework
 //
 //  Copyright 2017 Pablo Camiletti
@@ -23,16 +23,23 @@
 //
 
 
-import Foundation
+#if os(iOS) || os(tvOS) || os(watchOS)
+
+import UIKit
 
 
-public typealias UNPhotoListClosure = (_ result: UNResult<[UNPhoto]>) -> Void
+/// Holds the image returned from Unsplash for a given photo and size.
+public struct UNImageFetchResult
+{
+    /// The photo requested to be fetched.
+    let requestedPhoto : UNPhoto
+    
+    /// The size of the photo requested to be fetched.
+    let requestedSize  : UNPhotoImageSize
+    
+    /// The image if the requested photo in the specified size.
+    let image          : UIImage
+}
 
-public typealias UNPhotoSearchClosure = (_ result: UNResult<UNPhotoSearchResult>) -> Void
 
-public typealias UNImageFetchClosure = (_ result: UNResult<UNImageFetchResult>) -> Void
-
-public typealias UNFetchDataImageClosure = (_ requestedPhoto : UNPhoto,
-                                            _ requestedSize: UNPhotoImageSize,
-                                            _ imageData: Data?,
-                                            _ error: UNError?) -> Void
+#endif
