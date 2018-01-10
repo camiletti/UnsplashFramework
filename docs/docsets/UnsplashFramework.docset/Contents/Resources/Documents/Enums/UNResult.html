@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>UNError Structure Reference</title>
+    <title>UNResult Enumeration Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Struct/UNError" class="dashAnchor"></a>
-    <a title="UNError Structure Reference"></a>
+    <a name="//apple_ref/swift/Enum/UNResult" class="dashAnchor"></a>
+    <a title="UNResult Enumeration Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">UnsplashFramework Docs</a> (100% documented)</p>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">UnsplashFramework Reference</a>
         <img id="carat" src="../img/carat.png" />
-        UNError Structure Reference
+        UNResult Enumeration Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -114,32 +114,25 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>UNError</h1>
+            <h1>UNResult</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">UNError</span> <span class="p">:</span> <span class="kt">Error</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">UNResult</span> <span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span></code></pre>
 
                 </div>
               </div>
-            <p>Struct to represent Unsplash errors to a given query.</p>
+            <p>Enum representing the result of a given query.</p>
 
           </section>
           <section class="section task-group-section">
             <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Properties"></a>
-                <a name="//apple_ref/swift/Section/Properties" class="dashAnchor"></a>
-                <a href="#/Properties">
-                  <h3 class="section-name">Properties</h3>
-                </a>
-              </div>
               <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:17UnsplashFramework7UNErrorV6reasonAA0C6ReasonOv"></a>
-                    <a name="//apple_ref/swift/Property/reason" class="dashAnchor"></a>
-                    <a class="token" href="#/s:17UnsplashFramework7UNErrorV6reasonAA0C6ReasonOv">reason</a>
+                    <a name="/s:17UnsplashFramework8UNResultO7successACyxGxcAEmlF"></a>
+                    <a name="//apple_ref/swift/Element/success" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17UnsplashFramework8UNResultO7successACyxGxcAEmlF">success</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -147,26 +140,30 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Types of things that might go wrong.</p>
+                        <p>Successful query result with the obtained information.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">reason</span> <span class="p">:</span> <span class="kt"><a href="../Enums/UNErrorReason.html">UNErrorReason</a></span></code></pre>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">success</span><span class="p">(</span><span class="kt">T</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:17UnsplashFramework7UNErrorV18reasonDescriptionsSaySSGv"></a>
-                    <a name="//apple_ref/swift/Property/reasonDescriptions" class="dashAnchor"></a>
-                    <a class="token" href="#/s:17UnsplashFramework7UNErrorV18reasonDescriptionsSaySSGv">reasonDescriptions</a>
+                    <a name="/s:17UnsplashFramework8UNResultO7failureACyxGAA7UNErrorVcAEmlF"></a>
+                    <a name="//apple_ref/swift/Element/failure" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17UnsplashFramework8UNResultO7failureACyxGAA7UNErrorVcAEmlF">failure</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -174,14 +171,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>All the reasons Unsplash returned on why the error happened.</p>
+                        <p>Failed query result with the reason of failure.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">reasonDescriptions</span> <span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span></code></pre>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">failure</span><span class="p">(</span><span class="kt"><a href="../Structs/UNError.html">UNError</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>UNProfileImageLinks Structure Reference</title>
+    <title>UNImageFetchResult Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Struct/UNProfileImageLinks" class="dashAnchor"></a>
-    <a title="UNProfileImageLinks Structure Reference"></a>
+    <a name="//apple_ref/swift/Struct/UNImageFetchResult" class="dashAnchor"></a>
+    <a title="UNImageFetchResult Structure Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">UnsplashFramework Docs</a> (100% documented)</p>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">UnsplashFramework Reference</a>
         <img id="carat" src="../img/carat.png" />
-        UNProfileImageLinks Structure Reference
+        UNImageFetchResult Structure Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -114,32 +114,25 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>UNProfileImageLinks</h1>
+            <h1>UNImageFetchResult</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">UNProfileImageLinks</span><span class="p">:</span> <span class="kt">Decodable</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">UNImageFetchResult</span></code></pre>
 
                 </div>
               </div>
-            <p>Holds the URLs for the different sizes of the user&rsquo;s profile image</p>
+            <p>Holds the image returned from Unsplash for a given photo and size.</p>
 
           </section>
           <section class="section task-group-section">
             <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Properties"></a>
-                <a name="//apple_ref/swift/Section/Properties" class="dashAnchor"></a>
-                <a href="#/Properties">
-                  <h3 class="section-name">Properties</h3>
-                </a>
-              </div>
               <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:17UnsplashFramework19UNProfileImageLinksV5small10Foundation3URLVSgv"></a>
-                    <a name="//apple_ref/swift/Property/small" class="dashAnchor"></a>
-                    <a class="token" href="#/s:17UnsplashFramework19UNProfileImageLinksV5small10Foundation3URLVSgv">small</a>
+                    <a name="/s:17UnsplashFramework18UNImageFetchResultV14requestedPhotoAA7UNPhotoVv"></a>
+                    <a name="//apple_ref/swift/Property/requestedPhoto" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17UnsplashFramework18UNImageFetchResultV14requestedPhotoAA7UNPhotoVv">requestedPhoto</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -147,14 +140,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>32 by 32 pixels.</p>
+                        <p>The photo requested to be fetched.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">small</span>  <span class="p">:</span> <span class="kt">URL</span><span class="p">?</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">requestedPhoto</span> <span class="p">:</span> <span class="kt"><a href="../Structs/UNPhoto.html">UNPhoto</a></span></code></pre>
 
                         </div>
                       </div>
@@ -164,9 +157,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:17UnsplashFramework19UNProfileImageLinksV6medium10Foundation3URLVSgv"></a>
-                    <a name="//apple_ref/swift/Property/medium" class="dashAnchor"></a>
-                    <a class="token" href="#/s:17UnsplashFramework19UNProfileImageLinksV6medium10Foundation3URLVSgv">medium</a>
+                    <a name="/s:17UnsplashFramework18UNImageFetchResultV13requestedSizeAA012UNPhotoImageG0Ov"></a>
+                    <a name="//apple_ref/swift/Property/requestedSize" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17UnsplashFramework18UNImageFetchResultV13requestedSizeAA012UNPhotoImageG0Ov">requestedSize</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -174,14 +167,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>64 by 64 pixels.</p>
+                        <p>The size of the photo requested to be fetched.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">medium</span> <span class="p">:</span> <span class="kt">URL</span><span class="p">?</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">requestedSize</span>  <span class="p">:</span> <span class="kt"><a href="../Enums/UNPhotoImageSize.html">UNPhotoImageSize</a></span></code></pre>
 
                         </div>
                       </div>
@@ -191,9 +184,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:17UnsplashFramework19UNProfileImageLinksV3big10Foundation3URLVSgv"></a>
-                    <a name="//apple_ref/swift/Property/big" class="dashAnchor"></a>
-                    <a class="token" href="#/s:17UnsplashFramework19UNProfileImageLinksV3big10Foundation3URLVSgv">big</a>
+                    <a name="/s:17UnsplashFramework18UNImageFetchResultV5imageSo7UIImageCv"></a>
+                    <a name="//apple_ref/swift/Property/image" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17UnsplashFramework18UNImageFetchResultV5imageSo7UIImageCv">image</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -201,74 +194,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>128 by 128 pixels.</p>
+                        <p>The image if the requested photo in the specified size.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">big</span>    <span class="p">:</span> <span class="kt">URL</span><span class="p">?</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:17UnsplashFramework19UNProfileImageLinksV2eeoiSbAC_ACtFZ"></a>
-                    <a name="//apple_ref/swift/Method/==(_:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:17UnsplashFramework19UNProfileImageLinksV2eeoiSbAC_ACtFZ">==(_:_:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Returns a Boolean value indicating whether the two UNProfileImageLinks have the same
-value for their variables.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="o">==</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">UNProfileImageLinks</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">UNProfileImageLinks</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:17UnsplashFramework19UNProfileImageLinksV2neoiSbAC_ACtFZ"></a>
-                    <a name="//apple_ref/swift/Method/!=(_:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:17UnsplashFramework19UNProfileImageLinksV2neoiSbAC_ACtFZ">!=(_:_:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Returns a Boolean value indicating whether the two UNProfileImageLinks have at least
-one value different.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="o">!=</span><span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">UNProfileImageLinks</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">UNProfileImageLinks</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">image</span>          <span class="p">:</span> <span class="kt">UIImage</span></code></pre>
 
                         </div>
                       </div>
