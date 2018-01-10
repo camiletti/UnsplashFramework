@@ -32,13 +32,13 @@ import UIKit
 public struct UNImageFetchResult
 {
     /// The photo requested to be fetched.
-    let requestedPhoto : UNPhoto
+    public let requestedPhoto : UNPhoto
     
     /// The size of the photo requested to be fetched.
-    let requestedSize  : UNPhotoImageSize
+    public let requestedSize  : UNPhotoImageSize
     
     /// The image if the requested photo in the specified size.
-    let image          : UIImage
+    public let image          : UIImage
 }
 
 
