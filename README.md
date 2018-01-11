@@ -127,18 +127,20 @@ imageView.setImage(from: photo, inSize: .small)
 ```swift
 let imageView = UIImageView()
 
-self.client.fetchImage(from: samplePhoto,
-                       inSize: .full) { (requestedPhoto, requestedSize, image, error) in
-
-    if let error = error {
-        print("Error: \(error.reason)")
-        return
-    }
+UNClient.shared.fetchImage(from: photo,
+                           inSize: .full)
+    { (result) in
     
-    imageView.image = image
+    switch result
+    {
+    case .success(let imageResult):
+        imageView.image = imageResult.image
+        
+    case .failure(let error):
+        print("Error: \(error.reason)")
+    }
 }
 ```
-
 
 ## 📖 Documentation
 
