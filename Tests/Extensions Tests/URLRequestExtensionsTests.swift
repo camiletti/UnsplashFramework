@@ -37,9 +37,9 @@ class URLSessionExtensionsTests: XCTestCase
         // Parameters
         let id = "abc"
         let authHeaderValue = "Client-ID " + UnsplashKeys.appID
-        let parameters = PhotoListParameters(pageNumber: 1,
-                                             photosPerPage: 10,
-                                             sortOrder: .popular)
+        let parameters = UNPhotoListParameters(pageNumber: 1,
+                                               photosPerPage: 10,
+                                               sortOrder: .popular)
         let endpoints : [Endpoint] = [.photos, .curatedPhotos, .randomPhoto,
                                       .singlePhoto(id), .singlePhotoStatistics(id),
                                       .singlePhotoDownload(id), .singlePhotoLike(id),
@@ -72,11 +72,11 @@ class URLSessionExtensionsTests: XCTestCase
     
     // MARK: - Helpers
     
-    func expectedURL(withEndpoint endpoint: Endpoint, parameters: PhotoListParameters) -> URL?
+    func expectedURL(withEndpoint endpoint: Endpoint, parameters: UNPhotoListParameters) -> URL?
     {
         return URL(string: APIScheme + "://" + APILocation + endpoint.string() + "?"               +
-                           PhotoListParameters.pageNumberName    + "=\(parameters.pageNumber)&"    +
-                           PhotoListParameters.photosPerPageName + "=\(parameters.photosPerPage)&" +
-                           PhotoListParameters.sortOrderName     + "=\(parameters.sortOrder)")
+                           UNPhotoListParameters.pageNumberName    + "=\(parameters.pageNumber)&"    +
+                           UNPhotoListParameters.photosPerPageName + "=\(parameters.photosPerPage)&" +
+                           UNPhotoListParameters.sortOrderName     + "=\(parameters.sortOrder)")
     }
 }

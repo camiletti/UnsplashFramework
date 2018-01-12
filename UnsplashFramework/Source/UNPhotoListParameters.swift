@@ -1,5 +1,5 @@
 //
-//  Parameters.swift
+//  UNPhotoListParameters.swift
 //  UnsplashFramework
 //
 //  Copyright 2017 Pablo Camiletti
@@ -26,12 +26,41 @@
 import Foundation
 
 
-// MARK: - Parameters URL Representable Protocol
-
-/// Protocol for getting the URL parameters as URLQueryItem.
-internal protocol ParametersURLRepresentable
+/// The parameters' names and values that can be passed to Unsplash in a query.
+internal struct UNPhotoListParameters
 {
-    /// Represents the URL parameters as an array of URLQueryItem.
-    func asQueryItems() -> [URLQueryItem]
+    /// The requested page parameter's name.
+    static let pageNumberName = "page"
+    
+    /// Amount of photos per page parameter's name.
+    static let photosPerPageName = "per_page"
+    
+    /// The sort order parameter's name.
+    static let sortOrderName = "order_by"
+    
+    
+    /// The requested page.
+    let pageNumber    : Int
+    
+    /// The desired amount of photos per page.
+    let photosPerPage : Int
+    
+    /// The desired sort order of the query's result.
+    let sortOrder     : UNSort
 }
 
+
+extension UNPhotoListParameters: ParametersURLRepresentable
+{
+    func asQueryItems() -> [URLQueryItem]
+    {
+        return [
+            URLQueryItem(name: UNPhotoListParameters.pageNumberName,
+                         value: "\(self.pageNumber)"),
+            URLQueryItem(name: UNPhotoListParameters.photosPerPageName,
+                         value: "\(self.photosPerPage)"),
+            URLQueryItem(name: UNPhotoListParameters.sortOrderName,
+                         value: "\(self.sortOrder.rawValue)")
+        ]
+    }
+}

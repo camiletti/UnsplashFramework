@@ -111,9 +111,9 @@ public class UNClient
     {
         if self.hasCredentials
         {
-            let parameters = PhotoListParameters(pageNumber: page,
-                                                 photosPerPage: photosPerPage,
-                                                 sortOrder: sort)
+            let parameters = UNPhotoListParameters(pageNumber: page,
+                                                   photosPerPage: photosPerPage,
+                                                   sortOrder: sort)
             
             self.queryManager?.listPhotos(with: parameters,
                                           completion: completion)
@@ -126,7 +126,7 @@ public class UNClient
     }
     
     
-    // MARK: - Search photos
+    // MARK: - Search
     
     /// Get a single page of photo results for a query.
     ///
@@ -146,14 +146,43 @@ public class UNClient
     {
         if self.hasCredentials
         {
-            let parameters = PhotoSearchParameters(query: query,
-                                                   pageNumber: page,
-                                                   photosPerPage: photosPerPage,
-                                                   collections: collections,
-                                                   orientation: orientation)
+            let parameters = UNPhotoSearchParameters(query: query,
+                                                     pageNumber: page,
+                                                     photosPerPage: photosPerPage,
+                                                     collections: collections,
+                                                     orientation: orientation)
             
             self.queryManager?.searchPhotos(with: parameters,
                                             completion: completion)
+        }
+        else
+        {
+            self.printMissingCredentialsWarning()
+            completion(UNResult.failure(UNError(reason: .credentialsNotSet)))
+        }
+    }
+    
+    
+    /// Get a single page of collections results for a query.
+    ///
+    /// - Parameters:
+    ///   - query: Search terms.
+    ///   - page: Page number to retrieve.
+    ///   - collectionsPerPage: Number of items per page.
+    ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
+    public func searchCollections(query: String,
+                                  page: Int,
+                                  collectionsPerPage: Int,
+                                  completion: @escaping UNCollectionSearchClosure)
+    {
+        if self.hasCredentials
+        {
+            let parameters = UNCollectionSearchParameters(query: query,
+                                                          pageNumber: page,
+                                                          collectionsPerPage: collectionsPerPage)
+            
+            self.queryManager?.searchCollections(with: parameters,
+                                                 completion: completion)
         }
         else
         {

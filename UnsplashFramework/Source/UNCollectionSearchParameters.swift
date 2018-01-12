@@ -1,5 +1,5 @@
 //
-//  UNPhotoSearchResult.swift
+//  UNCollectionSearchParameters.swift
 //  UnsplashFramework
 //
 //  Copyright 2017 Pablo Camiletti
@@ -22,31 +22,45 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
 import Foundation
 
 
-/// Holds the result returned from Unsplash for a given search.
-public struct UNPhotoSearchResult: Decodable
+/// The parameters' names and values that can be passed to Unsplash in a search.
+internal struct UNCollectionSearchParameters
 {
+    /// The requested query parameter's name.
+    static let queryName = "query"
     
-    // MARK: - Properties
+    /// The requested page parameter's name.
+    static let pageNumberName = "page"
     
-    /// The total amount of photos found for the given search.
-    public var totalPhotos : Int
-    
-    /// The total number of pages of photos found for the given search.
-    public var totalPages  : Int
-    
-    /// The photos contained in the requested page.
-    public var photos      : [UNPhoto]
+    /// Amount of collections per page parameter's name.
+    static let collectionsPerPageName  = "per_page"
     
     
-    /// Codable poperty mapping.
-    internal enum CodingKeys: String, CodingKey
+    /// Words that describe the photos to be searched.
+    let query         : String
+    
+    /// The requested page.
+    let pageNumber    : Int
+    
+    /// The desired amount of photos per page.
+    let collectionsPerPage : Int
+}
+
+
+extension UNCollectionSearchParameters: ParametersURLRepresentable
+{
+    func asQueryItems() -> [URLQueryItem]
     {
-        case totalPhotos = "total"
-        case totalPages  = "total_pages"
-        case photos      = "results"
+        return [
+            URLQueryItem(name: UNCollectionSearchParameters.queryName,
+                         value: "\(self.query)"),
+            URLQueryItem(name: UNCollectionSearchParameters.pageNumberName,
+                         value: "\(self.pageNumber)"),
+            URLQueryItem(name: UNCollectionSearchParameters.collectionsPerPageName,
+                         value: "\(self.collectionsPerPage)")
+        ]
     }
 }
+

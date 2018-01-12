@@ -68,11 +68,11 @@ class QueryManagerTests: XCTestCase
         
         let mockSession  = MockURLSession(mocking: .unexpectedData)
         let queryManager = QueryManager(with: self.credentials, session: mockSession)
-        let parameters   = PhotoSearchParameters(query: "Forest",
-                                                 pageNumber: 1,
-                                                 photosPerPage: 10,
-                                                 collections: nil,
-                                                 orientation: nil)
+        let parameters   = UNPhotoSearchParameters(query: "Forest",
+                                                   pageNumber: 1,
+                                                   photosPerPage: 10,
+                                                   collections: nil,
+                                                   orientation: nil)
         
         queryManager.searchPhotos(with: parameters)
         { (result) in

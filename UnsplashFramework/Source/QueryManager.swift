@@ -66,7 +66,7 @@ class QueryManager
     /// - Parameters:
     ///   - parameters: The parameters .
     ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
-    public func listPhotos(with parameters: PhotoListParameters,
+    public func listPhotos(with parameters: UNPhotoListParameters,
                            completion: @escaping UNPhotoListClosure)
     {
         let request = URLRequest.publicRequest(.get,
@@ -93,7 +93,7 @@ class QueryManager
     /// - Parameters:
     ///   - parameters: The parameters to narrow the search.
     ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
-    internal func searchPhotos(with parameters: PhotoSearchParameters,
+    internal func searchPhotos(with parameters: UNPhotoSearchParameters,
                                completion: @escaping UNPhotoSearchClosure)
     {
         let request = URLRequest.publicRequest(.get,
@@ -107,7 +107,34 @@ class QueryManager
             self.processResponse(data: data,
                                  response: response,
                                  requestError: requestError,
-                                 decodableProtocol: UNPhotoSearchResult.self,
+                                 decodableProtocol: UNSearchResult.self,
+                                 completion: completion)
+        }
+        
+        task.resume()
+    }
+    
+    
+    /// Get a single page of collection results for a query.
+    ///
+    /// - Parameters:
+    ///   - parameters: The parameters to narrow the search.
+    ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
+    internal func searchCollections(with parameters: UNCollectionSearchParameters,
+                                    completion: @escaping UNCollectionSearchClosure)
+    {
+        let request = URLRequest.publicRequest(.get,
+                                               forEndpoint: .collectionSearch,
+                                               parameters: parameters,
+                                               credentials: self.credentials)
+        
+        let task = self.session.dataTask(with: request)
+        { (data, response, requestError) in
+            
+            self.processResponse(data: data,
+                                 response: response,
+                                 requestError: requestError,
+                                 decodableProtocol: UNSearchResult.self,
                                  completion: completion)
         }
         

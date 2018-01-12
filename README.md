@@ -19,9 +19,9 @@ The idea behind this project is to make an easy-to-use, well tested and well doc
 ## 🛠 Plan
 - [x] List photos
 - [x] Search photos
+- [x] Search collections
 - [x] Fetching images
 - [ ] List collections
-- [ ] Search collections
 - [ ] Search user
 - [ ] Users
 

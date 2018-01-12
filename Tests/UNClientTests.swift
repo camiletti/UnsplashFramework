@@ -122,7 +122,7 @@ class UNClientTests: XCTestCase
     
     // MARK: - Tests for searching photos
     
-    func testSimpleSearch()
+    func testStandardPhotoSearch()
     {
         self.configureClient()
         let photosExpectation = expectation(description: "Receive a successful response with photos")
@@ -141,8 +141,8 @@ class UNClientTests: XCTestCase
             switch result
             {
             case .success(let searchResult):
-                if searchResult.photos.count <= photosPerPage &&
-                   searchResult.photos.count > 0
+                if searchResult.elements.count <= photosPerPage &&
+                   searchResult.elements.count > 0
                 {
                     photosExpectation.fulfill()
                 }
@@ -181,8 +181,8 @@ class UNClientTests: XCTestCase
             switch result
             {
             case .success(let searchResult):
-                if searchResult.photos.count <= photosPerPage &&
-                   searchResult.photos.count > 0
+                if searchResult.elements.count <= photosPerPage &&
+                   searchResult.elements.count > 0
                 {
                     photosExpectation.fulfill()
                 }
@@ -235,6 +235,82 @@ class UNClientTests: XCTestCase
                                  collections: nil,
                                  orientation: nil,
                                  completion: completionChecker)
+        
+        wait(for: [errorExpectation], timeout: ExpectationTimeout)
+    }
+    
+    
+    // MARK: - Tests for searching collections
+    
+    func testStandardCollectionSearch()
+    {
+        self.configureClient()
+        let collectionsExpectation = expectation(description: "Receive a successful response with collections")
+        
+        let query = "Forest"
+        let page = 1
+        let collectionsPerPage = 8
+        
+        self.client.searchCollections(query: query,
+                                      page: page,
+                                      collectionsPerPage: collectionsPerPage)
+        { (result) in
+            
+            switch result
+            {
+            case .success(let searchResult):
+                if  searchResult.elements.count <= collectionsPerPage &&
+                    searchResult.elements.count > 0
+                {
+                    collectionsExpectation.fulfill()
+                }
+                else
+                {
+                    XCTFail("More collections received in the page than what was asked for.")
+                }
+                
+            case .failure(let error):
+                XCTFail("Request failed with error: \(error.reason)")
+            }
+        }
+        
+        wait(for: [collectionsExpectation], timeout: ExpectationTimeout)
+    }
+    
+    
+    func testSearchCollectionsWithoutCredentials()
+    {
+        let errorExpectation = expectation(description: "Receive an error and no collectons")
+        let completionChecker : UNCollectionSearchClosure = self.completionForQueryWithoutCredentials(expectation: errorExpectation)
+        
+        let query = "Forest"
+        let page = 1
+        let collectionsPerPage = 8
+        
+        self.client.searchCollections(query: query,
+                                      page: page,
+                                      collectionsPerPage: collectionsPerPage,
+                                      completion: completionChecker)
+        
+        wait(for: [errorExpectation], timeout: ExpectationTimeout)
+    }
+    
+    
+    func testSearchCollectionsWithInvalidCredentials()
+    {
+        self.client.setAppID(UnsplashKeys.invalidAppID, secret: UnsplashKeys.invalidSecret)
+        
+        let errorExpectation = expectation(description: "Receive an error and no collectons")
+        let completionChecker : UNCollectionSearchClosure = self.completionForQueryWithInvalidCredentials(expectation: errorExpectation)
+        
+        let query = "Forest"
+        let page = 1
+        let collectionsPerPage = 8
+        
+        self.client.searchCollections(query: query,
+                                      page: page,
+                                      collectionsPerPage: collectionsPerPage,
+                                      completion: completionChecker)
         
         wait(for: [errorExpectation], timeout: ExpectationTimeout)
     }

@@ -1,8 +1,6 @@
 //
-//  Parameters.swift
+//  UNSearchResult.swift
 //  UnsplashFramework
-//
-//  Copyright 2017 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -26,12 +24,27 @@
 import Foundation
 
 
-// MARK: - Parameters URL Representable Protocol
-
-/// Protocol for getting the URL parameters as URLQueryItem.
-internal protocol ParametersURLRepresentable
+/// Holds the result returned from Unsplash for a given search.
+public struct UNSearchResult<Element: Decodable>: Decodable
 {
-    /// Represents the URL parameters as an array of URLQueryItem.
-    func asQueryItems() -> [URLQueryItem]
+    
+    // MARK: - Properties
+    
+    /// The total amount of elements found for the given search.
+    public let totalElements : Int
+    
+    /// The total number of pages of elements found for the given search.
+    public let totalPages    : Int
+    
+    /// The elements contained in the requested page.
+    public let elements      : [Element]
+    
+    
+    /// Codable poperty mapping.
+    internal enum CodingKeys: String, CodingKey
+    {
+        case totalElements = "total"
+        case totalPages    = "total_pages"
+        case elements      = "results"
+    }
 }
-
