@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>UNPhotoSearchResult Structure Reference</title>
+    <title>UNSearchResult Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Struct/UNPhotoSearchResult" class="dashAnchor"></a>
-    <a title="UNPhotoSearchResult Structure Reference"></a>
+    <a name="//apple_ref/swift/Struct/UNSearchResult" class="dashAnchor"></a>
+    <a title="UNSearchResult Structure Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">UnsplashFramework Docs</a> (100% documented)</p>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">UnsplashFramework Reference</a>
         <img id="carat" src="../img/carat.png" />
-        UNPhotoSearchResult Structure Reference
+        UNSearchResult Structure Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -99,10 +99,10 @@
                 <a href="../Structs/UNPhoto.html">UNPhoto</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Structs/UNPhotoSearchResult.html">UNPhotoSearchResult</a>
+                <a href="../Structs/UNProfileImageLinks.html">UNProfileImageLinks</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Structs/UNProfileImageLinks.html">UNProfileImageLinks</a>
+                <a href="../Structs/UNSearchResult.html">UNSearchResult</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/UNUser.html">UNUser</a>
@@ -114,10 +114,10 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>UNPhotoSearchResult</h1>
+            <h1>UNSearchResult</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">UNPhotoSearchResult</span><span class="p">:</span> <span class="kt">Decodable</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">UNSearchResult</span><span class="o">&lt;</span><span class="kt">Element</span><span class="p">:</span> <span class="kt">Decodable</span><span class="o">&gt;</span><span class="p">:</span> <span class="kt">Decodable</span></code></pre>
 
                 </div>
               </div>
@@ -137,9 +137,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:17UnsplashFramework19UNPhotoSearchResultV11totalPhotosSiv"></a>
-                    <a name="//apple_ref/swift/Property/totalPhotos" class="dashAnchor"></a>
-                    <a class="token" href="#/s:17UnsplashFramework19UNPhotoSearchResultV11totalPhotosSiv">totalPhotos</a>
+                    <a name="/s:17UnsplashFramework14UNSearchResultV13totalElementsSiv"></a>
+                    <a name="//apple_ref/swift/Property/totalElements" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17UnsplashFramework14UNSearchResultV13totalElementsSiv">totalElements</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -147,14 +147,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The total amount of photos found for the given search.</p>
+                        <p>The total amount of elements found for the given search.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">totalPhotos</span> <span class="p">:</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">totalElements</span> <span class="p">:</span> <span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -164,9 +164,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:17UnsplashFramework19UNPhotoSearchResultV10totalPagesSiv"></a>
+                    <a name="/s:17UnsplashFramework14UNSearchResultV10totalPagesSiv"></a>
                     <a name="//apple_ref/swift/Property/totalPages" class="dashAnchor"></a>
-                    <a class="token" href="#/s:17UnsplashFramework19UNPhotoSearchResultV10totalPagesSiv">totalPages</a>
+                    <a class="token" href="#/s:17UnsplashFramework14UNSearchResultV10totalPagesSiv">totalPages</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -174,14 +174,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The total number of pages of photos found for the given search.</p>
+                        <p>The total number of pages of elements found for the given search.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">totalPages</span>  <span class="p">:</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">totalPages</span>    <span class="p">:</span> <span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -191,9 +191,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:17UnsplashFramework19UNPhotoSearchResultV6photosSayAA0C0VGv"></a>
-                    <a name="//apple_ref/swift/Property/photos" class="dashAnchor"></a>
-                    <a class="token" href="#/s:17UnsplashFramework19UNPhotoSearchResultV6photosSayAA0C0VGv">photos</a>
+                    <a name="/s:17UnsplashFramework14UNSearchResultV8elementsSayxGv"></a>
+                    <a name="//apple_ref/swift/Property/elements" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17UnsplashFramework14UNSearchResultV8elementsSayxGv">elements</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -201,14 +201,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The photos contained in the requested page.</p>
+                        <p>The elements contained in the requested page.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">photos</span>      <span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/UNPhoto.html">UNPhoto</a></span><span class="p">]</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">elements</span>      <span class="p">:</span> <span class="p">[</span><span class="kt">Element</span><span class="p">]</span></code></pre>
 
                         </div>
                       </div>
@@ -220,7 +220,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2018 <a class="link" href="https://github.com/camiletti/UnsplashFramework" target="_blank" rel="external">Pablo Camiletti</a>. All rights reserved. (Last updated: 2018-01-10)</p>
+          <p>&copy; 2018 <a class="link" href="https://github.com/camiletti/UnsplashFramework" target="_blank" rel="external">Pablo Camiletti</a>. All rights reserved. (Last updated: 2018-01-12)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

@@ -99,10 +99,10 @@
                 <a href="../Structs/UNPhoto.html">UNPhoto</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Structs/UNPhotoSearchResult.html">UNPhotoSearchResult</a>
+                <a href="../Structs/UNProfileImageLinks.html">UNProfileImageLinks</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Structs/UNProfileImageLinks.html">UNProfileImageLinks</a>
+                <a href="../Structs/UNSearchResult.html">UNSearchResult</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/UNUser.html">UNUser</a>
@@ -357,19 +357,19 @@
             </div>
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Search%20photos"></a>
-                <a name="//apple_ref/swift/Section/Search photos" class="dashAnchor"></a>
-                <a href="#/Search%20photos">
-                  <h3 class="section-name">Search photos</h3>
+                <a name="/Search"></a>
+                <a name="//apple_ref/swift/Section/Search" class="dashAnchor"></a>
+                <a href="#/Search">
+                  <h3 class="section-name">Search</h3>
                 </a>
               </div>
               <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:17UnsplashFramework8UNClientC12searchPhotosySS5query_Si4pageSi13photosPerPageSayAA12UNCollectionVGSg11collectionsAA18UNPhotoOrientationOSg11orientationyAA8UNResultOyAA0M12SearchResultVGc10completiontF"></a>
+                    <a name="/s:17UnsplashFramework8UNClientC12searchPhotosySS5query_Si4pageSi13photosPerPageSayAA12UNCollectionVGSg11collectionsAA18UNPhotoOrientationOSg11orientationyAA8UNResultOyAA14UNSearchResultVyAA0M0VGGc10completiontF"></a>
                     <a name="//apple_ref/swift/Method/searchPhotos(query:page:photosPerPage:collections:orientation:completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:17UnsplashFramework8UNClientC12searchPhotosySS5query_Si4pageSi13photosPerPageSayAA12UNCollectionVGSg11collectionsAA18UNPhotoOrientationOSg11orientationyAA8UNResultOyAA0M12SearchResultVGc10completiontF">searchPhotos(query:page:photosPerPage:collections:orientation:completion:)</a>
+                    <a class="token" href="#/s:17UnsplashFramework8UNClientC12searchPhotosySS5query_Si4pageSi13photosPerPageSayAA12UNCollectionVGSg11collectionsAA18UNPhotoOrientationOSg11orientationyAA8UNResultOyAA14UNSearchResultVyAA0M0VGGc10completiontF">searchPhotos(query:page:photosPerPage:collections:orientation:completion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -454,6 +454,91 @@
                               <td>
                                 <div>
                                   <p>Filter search results by photo orientation.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion handler that will be called with the results (Executed on the main thread).</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17UnsplashFramework8UNClientC17searchCollectionsySS5query_Si4pageSi18collectionsPerPageyAA8UNResultOyAA14UNSearchResultVyAA12UNCollectionVGGc10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/searchCollections(query:page:collectionsPerPage:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17UnsplashFramework8UNClientC17searchCollectionsySS5query_Si4pageSi18collectionsPerPageyAA8UNResultOyAA14UNSearchResultVyAA12UNCollectionVGGc10completiontF">searchCollections(query:page:collectionsPerPage:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get a single page of collections results for a query.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">searchCollections</span><span class="p">(</span><span class="nv">query</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                              <span class="nv">page</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span>
+                              <span class="nv">collectionsPerPage</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span>
+                              <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">UNCollectionSearchClosure</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>query</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Search terms.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>page</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Page number to retrieve.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>collectionsPerPage</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Number of items per page.</p>
                                 </div>
                               </td>
                             </tr>
@@ -711,7 +796,7 @@ may be reuse for another photo before the previous requested image is dowloaded.
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2018 <a class="link" href="https://github.com/camiletti/UnsplashFramework" target="_blank" rel="external">Pablo Camiletti</a>. All rights reserved. (Last updated: 2018-01-10)</p>
+          <p>&copy; 2018 <a class="link" href="https://github.com/camiletti/UnsplashFramework" target="_blank" rel="external">Pablo Camiletti</a>. All rights reserved. (Last updated: 2018-01-12)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
