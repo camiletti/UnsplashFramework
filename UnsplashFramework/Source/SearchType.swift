@@ -10,7 +10,7 @@ import Foundation
 
 
 /// Representation of the available items that can be searched
-enum SearchType
+internal enum SearchType
 {
     /// Search of photos
     case photo
