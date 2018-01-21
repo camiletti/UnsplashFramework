@@ -28,8 +28,9 @@ import Foundation
 
 public typealias UNPhotoListClosure = (_ result: UNResult<[UNPhoto]>) -> Void
 
-public typealias UNPhotoSearchClosure = (_ result: UNResult<UNSearchResult<UNPhoto>>) -> Void
+public typealias UNPhotoSearchClosure      = (_ result: UNResult<UNSearchResult<UNPhoto>>)      -> Void
 public typealias UNCollectionSearchClosure = (_ result: UNResult<UNSearchResult<UNCollection>>) -> Void
+public typealias UNUserSearchClosure       = (_ result: UNResult<UNSearchResult<UNUser>>)       -> Void
 
 public typealias UNImageFetchClosure = (_ result: UNResult<UNImageFetchResult>) -> Void
 

@@ -144,22 +144,15 @@ public class UNClient
                              orientation: UNPhotoOrientation? = nil,
                              completion: @escaping UNPhotoSearchClosure)
     {
-        if self.hasCredentials
-        {
-            let parameters = UNPhotoSearchParameters(query: query,
-                                                     pageNumber: page,
-                                                     photosPerPage: photosPerPage,
-                                                     collections: collections,
-                                                     orientation: orientation)
-            
-            self.queryManager?.searchPhotos(with: parameters,
-                                            completion: completion)
-        }
-        else
-        {
-            self.printMissingCredentialsWarning()
-            completion(UNResult.failure(UNError(reason: .credentialsNotSet)))
-        }
+        let parameters = UNPhotoSearchParameters(query: query,
+                                                 pageNumber: page,
+                                                 photosPerPage: photosPerPage,
+                                                 collections: collections,
+                                                 orientation: orientation)
+        
+        self.search(.photo,
+                    with: parameters,
+                    completion: completion)
     }
     
     
@@ -175,14 +168,52 @@ public class UNClient
                                   collectionsPerPage: Int,
                                   completion: @escaping UNCollectionSearchClosure)
     {
+        let parameters = UNCollectionSearchParameters(query: query,
+                                                      pageNumber: page,
+                                                      collectionsPerPage: collectionsPerPage)
+        self.search(.collection,
+                    with: parameters,
+                    completion: completion)
+    }
+    
+    
+    /// Get a single page of users results for a query.
+    ///
+    /// - Parameters:
+    ///   - query: Search terms.
+    ///   - page: Page number to retrieve.
+    ///   - usersPerPage: Number of items per page.
+    ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
+    public func searchUsers(query: String,
+                            page: Int,
+                            usersPerPage: Int,
+                            completion: @escaping UNUserSearchClosure)
+    {
+        let parameters = UNUserSearchParameters(query: query,
+                                                pageNumber: page,
+                                                usersPerPage: usersPerPage)
+        
+        self.search(.user,
+                    with: parameters,
+                    completion: completion)
+    }
+    
+    
+    /// Makes a search according to the specified parameters.
+    ///
+    /// - Parameters:
+    ///   - searchType: The type of search to perform.
+    ///   - parameters: Parameters to filter the search.
+    ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
+    internal func search<T>(_ searchType: SearchType,
+                            with parameters: ParametersURLRepresentable,
+                            completion: @escaping (UNResult<UNSearchResult<T>>) -> Void)
+    {
         if self.hasCredentials
         {
-            let parameters = UNCollectionSearchParameters(query: query,
-                                                          pageNumber: page,
-                                                          collectionsPerPage: collectionsPerPage)
-            
-            self.queryManager?.searchCollections(with: parameters,
-                                                 completion: completion)
+            self.queryManager?.search(searchType,
+                                      with: parameters,
+                                      completion: completion)
         }
         else
         {

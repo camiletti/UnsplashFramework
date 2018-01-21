@@ -64,7 +64,7 @@ class QueryManager
     /// Get a single page from the list of all photos.
     ///
     /// - Parameters:
-    ///   - parameters: The parameters .
+    ///   - parameters: The parameters.
     ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
     public func listPhotos(with parameters: UNPhotoListParameters,
                            completion: @escaping UNPhotoListClosure)
@@ -88,43 +88,18 @@ class QueryManager
     }
     
     
-    /// Get a single page of photo results for a query.
+    /// Makes a query to Unsplash.
     ///
     /// - Parameters:
-    ///   - parameters: The parameters to narrow the search.
+    ///   - searchType: The type of search to perform.
+    ///   - parameters: Parameters to narrow the search.
     ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
-    internal func searchPhotos(with parameters: UNPhotoSearchParameters,
-                               completion: @escaping UNPhotoSearchClosure)
+    internal func search<T>(_ searchType: SearchType,
+                            with parameters: ParametersURLRepresentable,
+                            completion: @escaping (UNResult<UNSearchResult<T>>) -> Void)
     {
         let request = URLRequest.publicRequest(.get,
-                                               forEndpoint: .photoSearch,
-                                               parameters: parameters,
-                                               credentials: self.credentials)
-        
-        let task = self.session.dataTask(with: request)
-        { (data, response, requestError) in
-            
-            self.processResponse(data: data,
-                                 response: response,
-                                 requestError: requestError,
-                                 decodableProtocol: UNSearchResult.self,
-                                 completion: completion)
-        }
-        
-        task.resume()
-    }
-    
-    
-    /// Get a single page of collection results for a query.
-    ///
-    /// - Parameters:
-    ///   - parameters: The parameters to narrow the search.
-    ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
-    internal func searchCollections(with parameters: UNCollectionSearchParameters,
-                                    completion: @escaping UNCollectionSearchClosure)
-    {
-        let request = URLRequest.publicRequest(.get,
-                                               forEndpoint: .collectionSearch,
+                                               forEndpoint: searchType.endpoint,
                                                parameters: parameters,
                                                credentials: self.credentials)
         
