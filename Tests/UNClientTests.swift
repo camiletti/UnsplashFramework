@@ -200,46 +200,6 @@ class UNClientTests: XCTestCase
     }
     
     
-    func testSearchPhotosWithoutCredentials()
-    {
-        let errorExpectation = expectation(description: "Receive an error and no photos")
-        let completionChecker : UNPhotoSearchClosure = self.completionForQueryWithoutCredentials(expectation: errorExpectation)
-        
-        let query = "Forest"
-        let page = 1
-        let photosPerPage = 8
-        
-        self.client.searchPhotos(query: query,
-                                 page: page,
-                                 photosPerPage: photosPerPage,
-                                 completion: completionChecker)
-        
-        wait(for: [errorExpectation], timeout: ExpectationTimeout)
-    }
-    
-    
-    func testSearchPhotosWithInvalidCredentials()
-    {
-        self.client.setAppID(UnsplashKeys.invalidAppID, secret: UnsplashKeys.invalidSecret)
-        
-        let errorExpectation = expectation(description: "Receive an error and no photos")
-        let completionChecker : UNPhotoSearchClosure = self.completionForQueryWithInvalidCredentials(expectation: errorExpectation)
-        
-        let query = "Forest"
-        let page = 1
-        let photosPerPage = 8
-        
-        self.client.searchPhotos(query: query,
-                                 page: page,
-                                 photosPerPage: photosPerPage,
-                                 collections: nil,
-                                 orientation: nil,
-                                 completion: completionChecker)
-        
-        wait(for: [errorExpectation], timeout: ExpectationTimeout)
-    }
-    
-    
     // MARK: - Tests for searching collections
     
     func testStandardCollectionSearch()
@@ -278,39 +238,81 @@ class UNClientTests: XCTestCase
     }
     
     
-    func testSearchCollectionsWithoutCredentials()
+    // MARK: - Tests for searching users
+    
+    func testStandardUserSearch()
     {
-        let errorExpectation = expectation(description: "Receive an error and no collectons")
-        let completionChecker : UNCollectionSearchClosure = self.completionForQueryWithoutCredentials(expectation: errorExpectation)
+        self.configureClient()
+        let usersExpectation = expectation(description: "Receive a successful response with users")
         
-        let query = "Forest"
+        let query = "Pablo"
         let page = 1
-        let collectionsPerPage = 8
+        let usersPerPage = 8
         
-        self.client.searchCollections(query: query,
-                                      page: page,
-                                      collectionsPerPage: collectionsPerPage,
-                                      completion: completionChecker)
+        self.client.searchUsers(query: query,
+                                page: page,
+                                usersPerPage: usersPerPage)
+        { (result) in
+            
+            switch result
+            {
+            case .success(let searchResult):
+                if  searchResult.elements.count <= usersPerPage &&
+                    searchResult.elements.count > 0
+                {
+                    usersExpectation.fulfill()
+                }
+                else
+                {
+                    XCTFail("More users received in the page than what was asked for.")
+                }
+                
+            case .failure(let error):
+                XCTFail("Request failed with error: \(error.reason)")
+            }
+        }
+        
+        wait(for: [usersExpectation], timeout: ExpectationTimeout)
+    }
+    
+    
+    // MARK: - Search
+    
+    func testSearchWithoutCredentials()
+    {
+        let errorExpectation = expectation(description: "Receive an error and no photos")
+        let completionChecker : UNPhotoSearchClosure = self.completionForQueryWithoutCredentials(expectation: errorExpectation)
+        
+        let parameters = UNPhotoSearchParameters(query: "Forest",
+                                                 pageNumber: 1,
+                                                 photosPerPage: 8,
+                                                 collections: nil,
+                                                 orientation: nil)
+        
+        self.client.search(.photo,
+                           with: parameters,
+                           completion: completionChecker)
         
         wait(for: [errorExpectation], timeout: ExpectationTimeout)
     }
     
     
-    func testSearchCollectionsWithInvalidCredentials()
+    func testSearchWithInvalidCredentials()
     {
         self.client.setAppID(UnsplashKeys.invalidAppID, secret: UnsplashKeys.invalidSecret)
         
-        let errorExpectation = expectation(description: "Receive an error and no collectons")
-        let completionChecker : UNCollectionSearchClosure = self.completionForQueryWithInvalidCredentials(expectation: errorExpectation)
+        let errorExpectation = expectation(description: "Receive an error and no photos")
+        let completionChecker : UNPhotoSearchClosure = self.completionForQueryWithInvalidCredentials(expectation: errorExpectation)
         
-        let query = "Forest"
-        let page = 1
-        let collectionsPerPage = 8
+        let parameters = UNPhotoSearchParameters(query: "Forest",
+                                                 pageNumber: 1,
+                                                 photosPerPage: 8,
+                                                 collections: nil,
+                                                 orientation: nil)
         
-        self.client.searchCollections(query: query,
-                                      page: page,
-                                      collectionsPerPage: collectionsPerPage,
-                                      completion: completionChecker)
+        self.client.search(.photo,
+                           with: parameters,
+                           completion: completionChecker)
         
         wait(for: [errorExpectation], timeout: ExpectationTimeout)
     }

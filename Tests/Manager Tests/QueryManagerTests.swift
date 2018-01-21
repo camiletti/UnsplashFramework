@@ -74,7 +74,7 @@ class QueryManagerTests: XCTestCase
                                                    collections: nil,
                                                    orientation: nil)
         
-        queryManager.searchPhotos(with: parameters)
+        let completion : UNPhotoSearchClosure =
         { (result) in
             
             switch result
@@ -90,6 +90,9 @@ class QueryManagerTests: XCTestCase
                 else { XCTFail("The reason of the error is incorrect") }
             }
         }
+        
+        queryManager.search(SearchType.photo, with: parameters, completion: completion)
+        
         
         wait(for: [dataExpectation], timeout: ExpectationTimeout)
     }
