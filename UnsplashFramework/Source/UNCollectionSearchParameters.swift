@@ -38,13 +38,13 @@ internal struct UNCollectionSearchParameters
     static let collectionsPerPageName  = "per_page"
     
     
-    /// Words that describe the photos to be searched.
+    /// Words that describe the collections to be searched.
     let query         : String
     
     /// The requested page.
     let pageNumber    : Int
     
-    /// The desired amount of photos per page.
+    /// The desired amount of collections per page.
     let collectionsPerPage : Int
 }
 
