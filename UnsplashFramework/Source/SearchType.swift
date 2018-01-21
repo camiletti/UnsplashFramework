@@ -9,16 +9,23 @@
 import Foundation
 
 
+/// Representation of the available items that can be searched
 enum SearchType
 {
+    /// Search of photos
     case photo
+    
+    /// Search of collections
     case collection
+    
+    /// Search of users
     case user
 }
 
 
 extension SearchType
 {
+    /// Extension to get the endpoint for a type of search
     var endpoint: Endpoint
     {
         switch self {
