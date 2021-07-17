@@ -22,20 +22,17 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
 import Foundation
 
+extension Data {
 
-extension Data
-{
     /// Extension to check if the data represents an image.
     /// Taken from: https://stackoverflow.com/a/45758208
-    var isImageData: Bool
-    {
-        let array = self.withUnsafeBytes
-        {
+    var isImageData: Bool {
+        let array = withUnsafeBytes {
             [UInt8](UnsafeBufferPointer(start: $0, count: 10))
         }
+
         let intervals: [[UInt8]] =
         [
             [0x42, 0x4D], // bmp
@@ -45,22 +42,19 @@ extension Data
             [0x49, 0x49, 0x2A, 0x00], // tiff1
             [0x4D, 0x4D, 0x00, 0x2A] // tiff2
         ]
-        
-        for interval in intervals
-        {
+
+        for interval in intervals {
             var image = true
-            for i in 0..<interval.count
-            {
-                if array[i] != interval[i]
-                {
-                    image = false
-                    break
-                }
+            for i in 0 ..< interval.count where array[i] != interval[i] {
+                image = false
+                break
             }
-            
-            if image { return true }
+
+            if image {
+                return true
+            }
         }
-        
+
         return false
     }
 }

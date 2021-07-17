@@ -22,24 +22,23 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
 #if os(iOS) || os(tvOS) || os(watchOS)
 
 import UIKit
 
-
 /// Holds the image returned from Unsplash for a given photo and size.
-public struct UNImageFetchResult
-{
-    /// The photo requested to be fetched.
-    public let requestedPhoto : UNPhoto
-    
-    /// The size of the photo requested to be fetched.
-    public let requestedSize  : UNPhotoImageSize
-    
-    /// The image if the requested photo in the specified size.
-    public let image          : UIImage
-}
+public struct UNImageFetchResult {
 
+    // MARK: - Properties
+
+    /// The photo requested to be fetched.
+    public let requestedPhoto: UNPhoto
+
+    /// The size of the photo requested to be fetched.
+    public let requestedSize: UNPhotoImageSize
+
+    /// The image if the requested photo in the specified size.
+    public let image: UIImage
+}
 
 #endif

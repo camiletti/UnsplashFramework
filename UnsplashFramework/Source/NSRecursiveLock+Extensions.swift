@@ -6,15 +6,12 @@
 //  Copyright © 2017 Pablo Camiletti. All rights reserved.
 //
 
-
 import Foundation
 
+extension NSRecursiveLock {
 
-extension NSRecursiveLock
-{
     /// Closure that will be executed thread-safely.
-    func runCriticalScope<T>(closure: () -> T) -> T
-    {
+    func runCriticalScope<T>(closure: () -> T) -> T {
         lock()
         let value = closure()
         unlock()

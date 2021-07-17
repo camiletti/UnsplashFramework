@@ -22,49 +22,46 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+final class ImageDownloadManager {
 
-import Foundation
+    // MARK: - Declarations
 
+    private enum Constant {
+        static let operationQueueMaxConcurrency = 2
+    }
 
-private let OperationQueueMaxConcurrency = 2
-
-
-internal class ImageDownloadManager
-{
-    
     // MARK: - Properties
-    
+
     /// Unsplash client credentials.
-    private let credentials : UNCredentials
-    
+    private let credentials: UNCredentials
+
     /// Session used for fetching the images.
-    private let urlSession = URLSession(configuration: .default)
-    
+    private let urlSession: URLSession
+
     /// Queue to handle every fetch request.
     private let fetchQueue = OperationQueue()
-    
+
     /// Keeps track of all the exclusive image downloads and who requested them.
     private let exclusiveDownloadTracker = ImageDownloadExclusivelyTracker()
-    
+
     /// Makes sure the fetchDataImageExclusively(from:inSize:for:) function runs atomically.
     private let fetchDataImageExclusively🔐 = NSLock()
-    
-    
+
     // MARK: - Initializers
-    
+
     /// Creates a new manager with the specified credentials.
     ///
     /// - Parameter credentials: Unsplash client credentials.
-    init(withCredentials credentials: UNCredentials)
-    {
+    init(withCredentials credentials: UNCredentials,
+         urlSession: URLSession = URLSession(configuration: .default),
+         maxConcurrentOperationCount: Int = Constant.operationQueueMaxConcurrency) {
         self.credentials = credentials
-        
-        self.fetchQueue.maxConcurrentOperationCount = OperationQueueMaxConcurrency
+        self.urlSession = urlSession
+        self.fetchQueue.maxConcurrentOperationCount = maxConcurrentOperationCount
     }
-    
-    
+
     // MARK: - Fetching images from a photo
-    
+
     /// Fetches the image corresponding to the photo in the specified size and calls the
     /// completion handler when it's ready.
     ///
@@ -72,29 +69,25 @@ internal class ImageDownloadManager
     ///   - photo: The photo to download the image from.
     ///   - size: One of the available sizes for the image to be downloaded.
     ///   - completion: The completion closure to handle the result. The image will be passed as a Data.
-    internal func fetchDataImage(for photo: UNPhoto,
-                                 inSize size: UNPhotoImageSize,
-                                 completion: @escaping UNFetchDataImageClosure)
-    {
+    func fetchDataImage(for photo: UNPhoto,
+                        inSize size: UNPhotoImageSize,
+                        completion: @escaping UNFetchDataImageClosure) {
         // Create the fetch data task
         let url = photo.imageLinks.url(forSize: size)
-        
-        let processingResponseClosure =
-        { (data: Data?, response: URLResponse?, requestError: Error?) in
-                
-            let error : UNError? = UNError.checkIfItIsAnError(response, and: requestError)
-                
-            DispatchQueue.main.async { completion(photo, size, data, error) }
-        }
-        
-        let task = self.urlSession.dataTask(with: url,
-                                            completionHandler: processingResponseClosure)
-        
+
+        let processingResponseClosure = { (data: Data?, response: URLResponse?, requestError: Error?) in
+                let error = UNError.checkIfItIsAnError(response, and: requestError)
+                DispatchQueue.main.async { completion(photo, size, data, error) }
+            }
+
+        let task = urlSession.dataTask(with: url,
+                                       completionHandler: processingResponseClosure)
+
         // Add the fetch operation to the queue
         let taskOperation = URLSessionTaskOperation(with: task)
-        self.fetchQueue.addOperation(taskOperation)
+        fetchQueue.addOperation(taskOperation)
     }
-    
+
     /// Downloads the image and calls the requester when ready. This function is exclusive since the
     /// requester will only have one active request at a time. Any new request by the same object
     /// will cancel the previous one.
@@ -103,49 +96,42 @@ internal class ImageDownloadManager
     ///   - photo: The photo that corresponds to the desired image.
     ///   - size: The size of the image to be downloaded.
     ///   - requester: The object that is interested in the image and the one who will be called back.
-    internal func fetchDataImageExclusively(from photo: UNPhoto,
-                                            inSize size: UNPhotoImageSize,
-                                            for requester: UNImageRequester)
-    {
-        // Start the execution atomically
-        self.fetchDataImageExclusively🔐.lock()
-        
+    func fetchDataImageExclusively(from photo: UNPhoto,
+                                   inSize size: UNPhotoImageSize,
+                                   for requester: UNImageRequester) {
         // At any point of return in the function, unlock the 🔐
         defer { self.fetchDataImageExclusively🔐.unlock() }
-        
+
+        // Start the execution atomically
+        fetchDataImageExclusively🔐.lock()
+
         // Make sure the photo in that size is not already requested by the same requester
-        if  let downloadRequest = self.exclusiveDownloadTracker.downloadRequestForRequester(requester),
+        if  let downloadRequest = exclusiveDownloadTracker.downloadRequestForRequester(requester),
             downloadRequest.photo.id == photo.id,
-            downloadRequest.size == size
-        {
+            downloadRequest.size == size {
             return
         }
-        
+
         // Photo in that size is already being downloaded by another requester
-        if self.exclusiveDownloadTracker.isPhotoAlreadyRequested(photo: photo, inSize: size)
-        {
+        if exclusiveDownloadTracker.isPhotoAlreadyRequested(photo: photo, inSize: size) {
             // Add the new requester to the notification list for that photo and return
-            self.exclusiveDownloadTracker.setPhoto(photo, inSize: size, beingRequestedBy: requester)
+            exclusiveDownloadTracker.setPhoto(photo, inSize: size, beingRequestedBy: requester)
             return
         }
-        
+
         // The photo in that size is not currently being downloaded
-        self.exclusiveDownloadTracker.setPhoto(photo, inSize: size, beingRequestedBy: requester)
-        self.fetchDataImage(for: photo,
-                            inSize: size,
-                            completion:
-        { (requestedPhoto, requestedSize, dataImage, error) in
-            
-            if let requesters = self.exclusiveDownloadTracker.requestersForPhoto(photo, inSize: size)
-            {
+        exclusiveDownloadTracker.setPhoto(photo, inSize: size, beingRequestedBy: requester)
+        fetchDataImage(for: photo,
+                       inSize: size) { (_: UNPhoto, _: UNPhotoImageSize, dataImage: Data?, error: UNError?) in
+            if let requesters = self.exclusiveDownloadTracker.requestersForPhoto(photo, inSize: size) {
                 requesters.forEach({ $0.clientDidCompleteExclusiveImageRequest(for: photo,
                                                                                in: size,
                                                                                dataImage: dataImage,
                                                                                error: error) })
             }
-            
+
             // Update tracker
             self.exclusiveDownloadTracker.removePhotoRequest(photo: photo, inSize: size)
-        })
+        }
     }
 }

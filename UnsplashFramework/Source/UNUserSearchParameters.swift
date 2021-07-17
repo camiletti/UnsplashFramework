@@ -6,43 +6,43 @@
 //  Copyright © 2018 Pablo Camiletti. All rights reserved.
 //
 
-import Foundation
+struct UNUserSearchParameters {
 
+    // MARK: - Declarations
 
-internal struct UNUserSearchParameters
-{
-    /// The requested query parameter's name.
-    static let queryName = "query"
-    
-    /// The requested page parameter's name.
-    static let pageNumberName = "page"
-    
-    /// Amount of users per page parameter's name.
-    static let usersPerPageName  = "per_page"
-    
-    
+    private enum QueryParameterName {
+        /// The requested query parameter's name.
+        static let queryName = "query"
+
+        /// The requested page parameter's name.
+        static let pageNumberName = "page"
+
+        /// Amount of users per page parameter's name.
+        static let usersPerPageName = "per_page"
+    }
+
+    // MARK: - Properties
+
     /// Words that describe the users to be searched.
-    let query         : String
-    
+    let query: String
+
     /// The requested page.
-    let pageNumber    : Int
-    
+    let pageNumber: Int
+
     /// The desired amount of users per page.
-    let usersPerPage : Int
+    let usersPerPage: Int
 }
 
+// MARK: - ParametersURLRepresentable
+extension UNUserSearchParameters: ParametersURLRepresentable {
 
-extension UNUserSearchParameters: ParametersURLRepresentable
-{
-    func asQueryItems() -> [URLQueryItem]
-    {
-        return [
-            URLQueryItem(name: UNUserSearchParameters.queryName,
-                         value: "\(self.query)"),
-            URLQueryItem(name: UNUserSearchParameters.pageNumberName,
-                         value: "\(self.pageNumber)"),
-            URLQueryItem(name: UNUserSearchParameters.usersPerPageName,
-                         value: "\(self.usersPerPage)")
+    func asQueryItems() -> [URLQueryItem] {
+        [URLQueryItem(name: QueryParameterName.queryName,
+                      value: "\(query)"),
+         URLQueryItem(name: QueryParameterName.pageNumberName,
+                      value: "\(pageNumber)"),
+         URLQueryItem(name: QueryParameterName.usersPerPageName,
+                      value: "\(usersPerPage)")
         ]
     }
 }

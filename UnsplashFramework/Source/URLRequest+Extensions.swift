@@ -22,17 +22,8 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+extension URLRequest {
 
-import Foundation
-
-
-extension URLRequest
-{
-    ///
-    ///
-    /// - Parameter endpoint:
-    /// - Returns: Request with the necessary headers for a public action
-    
     /// Creates and returns a URLRequest with the necessary headers for a public action.
     ///
     /// - Parameters:
@@ -41,27 +32,25 @@ extension URLRequest
     ///   - parameters: The parameters for the request.
     ///   - credentials: Unsplash client credentials.
     /// - Returns: A new URLRequest containing the passed information.
-    internal static func publicRequest(_ method : HTTPMethod,
-                                      forEndpoint endpoint: Endpoint,
-                                      parameters: ParametersURLRepresentable,
-                                      credentials: UNCredentials) -> URLRequest
-    {
+    static func publicRequest(_ method: HTTPMethod,
+                              forEndpoint endpoint: Endpoint,
+                              parameters: ParametersURLRepresentable,
+                              credentials: UNCredentials) -> URLRequest {
         // Create new request
         let url = URLComponents(unsplashQuery: parameters.asQueryItems(),
                                 withPath: endpoint.string()).url!
         var request = URLRequest(url: url)
-        
-        // Method
+
+        // Set method
         request.httpMethod = method.rawValue
-        
+
         // Add authorization header
         request.addValue(APIAuthorizationHeader.value(withAppID: credentials.appID),
                          forHTTPHeaderField: APIAuthorizationHeader.field)
-        
+
         // Add API version header
         request.addValue(APIVersionHeader.value, forHTTPHeaderField: APIVersionHeader.field)
-        
+
         return request
     }
 }
-

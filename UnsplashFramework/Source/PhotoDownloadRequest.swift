@@ -22,44 +22,14 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
-
-
 /// Use to track a request related to a photo in a specific size.
-internal struct PhotoDownloadRequest
-{
+struct PhotoDownloadRequest: Hashable, Equatable {
+
+    // MARK: - Properties
+
     /// The requested photo.
-    internal var photo : UNPhoto
-    
+    var photo: UNPhoto
+
     /// The requested size of the photo.
-    internal var size  : UNPhotoImageSize
-}
-
-
-extension PhotoDownloadRequest : Hashable
-{
-    /// The computed hash value for the request.
-    var hashValue: Int
-    {
-        return (self.photo.id + "\(self.size)").hashValue
-    }
-}
-
-
-extension PhotoDownloadRequest : Equatable
-{
-    /// Returns a Boolean value indicating whether the two requests are equal.
-    static func ==(lhs: PhotoDownloadRequest, rhs: PhotoDownloadRequest) -> Bool
-    {
-        return  lhs.photo == rhs.photo &&
-                lhs.size  == rhs.size
-    }
-    
-    
-    /// Returns a Boolean value indicating whether the two requests are not equal.
-    static func !=(lhs: PhotoDownloadRequest, rhs: PhotoDownloadRequest) -> Bool
-    {
-        return  !(lhs == rhs)
-    }
+    var size: UNPhotoImageSize
 }

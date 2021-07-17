@@ -22,99 +22,88 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class QueryManagerTests: XCTestCase {
 
-private let ExpectationTimeout = 30.0
+    // MARK: - Declarations
 
-
-class QueryManagerTests: XCTestCase
-{
-    
-    // MARK: - Properties
-    
-    private var queryManager : QueryManager!
-    private let credentials  = UNCredentials(appID: UnsplashKeys.appID, secret: UnsplashKeys.secret)
-    private var urlSessionSimulationQueue : DispatchQueue!
-    
-    
-    // MARK: - Life cycle
-    
-    override func setUp()
-    {
-        super.setUp()
-        
-        self.queryManager = QueryManager(withCredentials: self.credentials)
-        self.urlSessionSimulationQueue = DispatchQueue(label: "")
+    private enum Constant {
+        static let ExpectationTimeout = 30.0
     }
-    
-    
-    override func tearDown()
-    {
-        self.queryManager = nil
-        self.urlSessionSimulationQueue = nil
-        
+
+    // MARK: - Properties
+
+    private var queryManager: QueryManager!
+
+    private let credentials: UNCredentials = UNCredentials(appID: UnsplashKeys.appID, secret: UnsplashKeys.secret)
+
+    private var urlSessionSimulationQueue: DispatchQueue!
+
+    // MARK: - Life cycle
+
+    override func setUp() {
+        super.setUp()
+
+        queryManager = QueryManager(with: credentials)
+        urlSessionSimulationQueue = DispatchQueue(label: "")
+    }
+
+    override func tearDown() {
+        queryManager = nil
+        urlSessionSimulationQueue = nil
+
         super.tearDown()
     }
-    
-    
+
     // MARK: - Test searching photos
-    
-    func testSearchingReturnsUnexpectedData()
-    {
+
+    func testSearchingReturnsUnexpectedData() {
         let dataExpectation = expectation(description: "The data received doesn't match the expected JSON format")
-        
-        let mockSession  = MockURLSession(mocking: .unexpectedData)
-        let queryManager = QueryManager(with: self.credentials, session: mockSession)
-        let parameters   = UNPhotoSearchParameters(query: "Forest",
-                                                   pageNumber: 1,
-                                                   photosPerPage: 10,
-                                                   collections: nil,
-                                                   orientation: nil)
-        
-        let completion : UNPhotoSearchClosure =
-        { (result) in
-            
-            switch result
-            {
+
+        let mockSession = MockURLSession(mocking: .unexpectedData)
+        let queryManager = QueryManager(with: credentials, session: mockSession)
+        let parameters = UNPhotoSearchParameters(query: "Forest",
+                                                 pageNumber: 1,
+                                                 photosPerPage: 10,
+                                                 collections: nil,
+                                                 orientation: nil)
+
+        let completion: UNPhotoSearchClosure = { (result) in
+
+            switch result {
             case .success(_):
                 XCTFail("The result should not be successful")
-                
+
             case .failure(let error):
-                if error.reason == UNErrorReason.unableToParseDataCorrectly
-                {
+                if error.reason == UNError.Reason.unableToParseDataCorrectly {
                     dataExpectation.fulfill()
+                } else {
+                    XCTFail("The reason of the error is incorrect")
                 }
-                else { XCTFail("The reason of the error is incorrect") }
             }
         }
-        
+
         queryManager.search(SearchType.photo, with: parameters, completion: completion)
-        
-        
-        wait(for: [dataExpectation], timeout: ExpectationTimeout)
+
+        wait(for: [dataExpectation], timeout: Constant.ExpectationTimeout)
     }
-    
-    
+
     // MARK: - Test processing listing photos
-    
-    func testProcessingListingPhotosWhenServerWasNotReached()
-    {
-        let expectedError = UNError(reason:.serverNotReached)
+
+    func testProcessingListingPhotosWhenServerWasNotReached() {
+        let expectedError = UNError(reason: .serverNotReached)
         let requestError = NSError(domain: "", code: 9999999, userInfo: nil)
         self.helpTestProcessingListingPhotosErrors(data: nil,
                                                    fakeServerResponse: nil,
                                                    requestError: requestError,
                                                    expectedError: expectedError)
     }
-    
-    
-    func testProcessingListingPhotosWhenStatusCodeIsNotSuccessful()
-    {
+
+    func testProcessingListingPhotosWhenStatusCodeIsNotSuccessful() {
         let data = "Garbage data".data(using: .utf8)
-        let serverResponse = HTTPURLResponse(url: URL(string: APILocation)!,
+        let serverResponse = HTTPURLResponse(url: URL(string: APIComponent.location)!,
                                              statusCode: ResponseStatusCode.unprocessableEntity.rawValue,
                                              httpVersion: nil,
                                              headerFields: nil)
@@ -124,12 +113,10 @@ class QueryManagerTests: XCTestCase
                                                    requestError: nil,
                                                    expectedError: expectedError)
     }
-    
-    
-    func testProcessingListingPhotosWhenUnexpectedDataIsReceived()
-    {
+
+    func testProcessingListingPhotosWhenUnexpectedDataIsReceived() {
         let data = "Garbage data".data(using: .utf8)
-        let serverResponse = HTTPURLResponse(url: URL(string: APILocation)!,
+        let serverResponse = HTTPURLResponse(url: URL(string: APIComponent.location)!,
                                              statusCode: ResponseStatusCode.success.rawValue,
                                              httpVersion: nil,
                                              headerFields: nil)
@@ -139,56 +126,46 @@ class QueryManagerTests: XCTestCase
                                                    requestError: nil,
                                                    expectedError: expectedError)
     }
-    
-    
-    func testProcessingListingPhotosWhenUnexpectedResponseIsReceived()
-    {
+
+    func testProcessingListingPhotosWhenUnexpectedResponseIsReceived() {
         let expectedError = UNError(reason: .unknownServerResponse)
         self.helpTestProcessingListingPhotosErrors(data: "Garbage data".data(using: .utf8),
                                                    fakeServerResponse: URLResponse(),
                                                    requestError: nil,
                                                    expectedError: expectedError)
     }
-    
-    
-    func testProcessingListingPhotosWhenNoDataNoResponseAndNoErrorAreReceived()
-    {
+
+    func testProcessingListingPhotosWhenNoDataNoResponseAndNoErrorAreReceived() {
         let expectedError = UNError(reason: .unknownError)
         self.helpTestProcessingListingPhotosErrors(data: nil,
                                                    fakeServerResponse: nil,
                                                    requestError: nil,
                                                    expectedError: expectedError)
     }
-    
-    
+
     func helpTestProcessingListingPhotosErrors(data: Data?,
                                                fakeServerResponse: URLResponse?,
                                                requestError: Error?,
-                                               expectedError: UNError)
-    {
+                                               expectedError: UnsplashFramework.UNError) {
         // Expectations
         let noPhotosAndAnErrorExpectation = expectation(description: "To receive an empty array of photos and an error")
-        
+
         // Parameters
-        let completionHandler : UNPhotoListClosure =
-        { (result) in
-            
+        let completionHandler: UNPhotoListClosure = { (result) in
             switch result {
             case .success(_):
                 XCTFail()
-                
+
             case .failure(let error):
-                if error.reason == expectedError.reason
-                // We don't care about the reason description in this case
-                {
+                if error.reason == expectedError.reason {
+                    // We don't care about the reason description in this case
                     noPhotosAndAnErrorExpectation.fulfill()
                 }
             }
         }
-        
+
         // Simulate URLSession independent thread
-        let workItem = DispatchWorkItem
-        {
+        let workItem = DispatchWorkItem {
             // Function to test
             self.queryManager.processResponse(data: data,
                                               response: fakeServerResponse,
@@ -196,39 +173,42 @@ class QueryManagerTests: XCTestCase
                                               decodableProtocol: [UNPhoto].self,
                                               completion: completionHandler)
         }
-        
-        self.urlSessionSimulationQueue.async(execute: workItem)
-        
-        wait(for: [noPhotosAndAnErrorExpectation], timeout: ExpectationTimeout)
-        if workItem.isCancelled == false { workItem.cancel() }
+
+        urlSessionSimulationQueue.async(execute: workItem)
+
+        wait(for: [noPhotosAndAnErrorExpectation], timeout: Constant.ExpectationTimeout)
+        if !workItem.isCancelled {
+            workItem.cancel()
+        }
     }
-    
-    
-    func testThatTheCompletionHandlerOfProcessListingPhotosResponseIsExecutedOnTheMainThread()
-    {
+
+    func testThatTheCompletionHandlerOfProcessListingPhotosResponseIsExecutedOnTheMainThread() {
         // Expectations
         let executionOnMainThreadExpectation = expectation(description: "Completion block executed on the main thread")
-        
+
         // Parameters
-        let completionHandler : UNPhotoListClosure = { (_) in
-            if Thread.isMainThread { executionOnMainThreadExpectation.fulfill() }
+        let completionHandler: UNPhotoListClosure = { _ in
+            if Thread.isMainThread {
+                executionOnMainThreadExpectation.fulfill()
+            }
         }
-        
+
         // Simulate URLSession independent thread
-        let workItem = DispatchWorkItem
-        {
+        let workItem = DispatchWorkItem {
             self.queryManager.processResponse(data: nil,
                                               response: nil,
                                               requestError: nil,
                                               decodableProtocol: [UNPhoto].self,
                                               completion: completionHandler)
         }
-        self.urlSessionSimulationQueue.async(execute: workItem)
-        
+        urlSessionSimulationQueue.async(execute: workItem)
+
         // Check
-        wait(for: [executionOnMainThreadExpectation], timeout: ExpectationTimeout)
-        
+        wait(for: [executionOnMainThreadExpectation], timeout: Constant.ExpectationTimeout)
+
         // Clean up
-        if workItem.isCancelled == false { workItem.cancel() }
+        if !workItem.isCancelled {
+            workItem.cancel()
+        }
     }
 }

@@ -22,165 +22,135 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class ImageDownloadManagerTests: XCTestCase {
 
-private let ExpectationTimeout = 60.0
+    // MARK: - Declarations
 
+    private enum Constant {
+        static let ExpectationTimeout = 60.0
+    }
 
-class ImageDownloadManagerTests: XCTestCase
-{
-    
     // MARK: - Properties
-    
-    private var imageDownloadManager : ImageDownloadManager!
-    
-    
+
+    private var imageDownloadManager: ImageDownloadManager!
+
     // MARK: - Life cycle
-    
-    override func setUp()
-    {
+
+    override func setUp() {
         super.setUp()
-        
+
         let credentials = UNCredentials(appID: UnsplashKeys.appID, secret: UnsplashKeys.secret)
         self.imageDownloadManager = ImageDownloadManager(withCredentials: credentials)
     }
-    
-    
-    override func tearDown()
-    {
+
+    override func tearDown() {
         self.imageDownloadManager = nil
-        
+
         super.tearDown()
     }
-    
-    
+
     // MARK: - Test fetching images
-    
-    func testFetchingOneImage()
-    {
+
+    func testFetchingOneImage() {
         let imageAndNoErrorExpectation = expectation(description: "To receive an image and no error")
-        
-        let samplePhoto = DemoData.getValidSamplePhoto()
+
+        let samplePhoto = DemoData.validSamplePhoto
         let photoSize = UNPhotoImageSize.full
-        
+
         self.imageDownloadManager.fetchDataImage(for: samplePhoto,
-                                                 inSize: photoSize)
-        { (requestedPhoto, requestedSize, dataImage, error) in
-            
-            if  samplePhoto == requestedPhoto,
-                requestedSize == photoSize,
-                error == nil,
-                let dataImage = dataImage,
-                UIImage(data: dataImage) != nil
-            {
+                                                 inSize: photoSize) { (requestedPhoto, requestedSize, dataImage, error) in
+            if samplePhoto == requestedPhoto,
+               requestedSize == photoSize,
+               error == nil,
+               let dataImage = dataImage,
+               UIImage(data: dataImage) != nil {
                 imageAndNoErrorExpectation.fulfill()
             }
         }
-        
-        wait(for: [imageAndNoErrorExpectation], timeout: ExpectationTimeout)
+
+        wait(for: [imageAndNoErrorExpectation], timeout: Constant.ExpectationTimeout)
     }
-    
-    
-    func testFetchingMultipleImages()
-    {
-        let photos = DemoData.validMultiplePhotosArray()
+
+    func testFetchingMultipleImages() {
+        let photos = DemoData.validMultiplePhotosArray
         let photoSize = UNPhotoImageSize.small
-        
+
         XCTAssert(photos.count > 1, "The amount of photos should be greater than 1 for this test")
-        
+
         let multipleImageAndNoErrorExpectation = expectation(description: "To receive an image and no error")
         multipleImageAndNoErrorExpectation.expectedFulfillmentCount = photos.count
-        
-        for photo in photos
-        {
-            self.imageDownloadManager.fetchDataImage(for: photo,
-                                                     inSize: photoSize)
-            { (requestedPhoto, requestedSize, dataImage, error) in
-                
-                if  photo == requestedPhoto,
-                    requestedSize == photoSize,
-                    error == nil,
-                    let dataImage = dataImage,
-                    UIImage(data: dataImage) != nil
-                {
+
+        for photo in photos {
+            imageDownloadManager.fetchDataImage(for: photo,
+                                                inSize: photoSize) { (requestedPhoto, requestedSize, dataImage, error) in
+                if photo == requestedPhoto,
+                   requestedSize == photoSize,
+                   error == nil,
+                   let dataImage = dataImage,
+                   UIImage(data: dataImage) != nil {
                     multipleImageAndNoErrorExpectation.fulfill()
                 }
             }
         }
-        
-        wait(for: [multipleImageAndNoErrorExpectation], timeout: ExpectationTimeout)
+
+        wait(for: [multipleImageAndNoErrorExpectation], timeout: Constant.ExpectationTimeout)
     }
-    
-    
-    func testFetchingAnImageFromAPhotoNotPointingToUnsplash()
-    {
-        var invalidPhoto = DemoData.getInvalidPhoto()
+
+    func testFetchingAnImageFromAPhotoNotPointingToUnsplash() {
+        var invalidPhoto = DemoData.invalidPhoto
         invalidPhoto.imageLinks.smallURL = URL(string: "http://")!
         let photoSize = UNPhotoImageSize.small
-        
+
         let noImageAndServerNotReachErrorExpectation = expectation(description: "To receive no image and an error")
-        
-        self.imageDownloadManager.fetchDataImage(for: invalidPhoto,
-                                                 inSize: photoSize)
-        { (requestedPhoto, requestedSize, dataImage, error) in
-            
-            if  invalidPhoto  == requestedPhoto,
-                requestedSize == photoSize,
-                dataImage     == nil,
-                error?.reason == .serverNotReached
-            {
+
+        imageDownloadManager.fetchDataImage(for: invalidPhoto,
+                                            inSize: photoSize) { (requestedPhoto, requestedSize, dataImage, error) in
+            if invalidPhoto == requestedPhoto,
+               requestedSize == photoSize,
+               dataImage == nil,
+               error?.reason == .serverNotReached {
                 noImageAndServerNotReachErrorExpectation.fulfill()
             }
         }
-        
-        wait(for: [noImageAndServerNotReachErrorExpectation], timeout: ExpectationTimeout)
+
+        wait(for: [noImageAndServerNotReachErrorExpectation], timeout: Constant.ExpectationTimeout)
     }
-    
-    
-    func testFetchingAnImageFromAnInvalidPhoto()
-    {
-        let invalidPhoto = DemoData.getInvalidPhoto()
+
+    func testFetchingAnImageFromAnInvalidPhoto() {
+        let invalidPhoto = DemoData.invalidPhoto
         let photoSize = UNPhotoImageSize.small
-        
+
         let noImageAndNotFoundErrorExpectation = expectation(description: "To receive no image and not found error")
-        
-        self.imageDownloadManager.fetchDataImage(for: invalidPhoto,
-                                                 inSize: photoSize)
-        { (requestedPhoto, requestedSize, dataImage, error) in
-            
-            if  invalidPhoto == requestedPhoto,
-                requestedSize == photoSize,
-                error?.reason == UNErrorReason.serverError(.notFound),
-                let dataImage = dataImage,
-                UIImage(data: dataImage) == nil
-            {
+
+        imageDownloadManager.fetchDataImage(for: invalidPhoto,
+                                            inSize: photoSize) { (requestedPhoto, requestedSize, dataImage, error) in
+            if invalidPhoto == requestedPhoto,
+               requestedSize == photoSize,
+               error?.reason == UNError.Reason.serverError(.notFound),
+               let dataImage = dataImage,
+               UIImage(data: dataImage) == nil {
                 noImageAndNotFoundErrorExpectation.fulfill()
             }
         }
-        
-        wait(for: [noImageAndNotFoundErrorExpectation], timeout: ExpectationTimeout)
+
+        wait(for: [noImageAndNotFoundErrorExpectation], timeout: Constant.ExpectationTimeout)
     }
-    
-    
-    func testThatTheFetchingImagesCompletionHandlerIsCalledOnTheMainThreat()
-    {
+
+    func testThatTheFetchingImagesCompletionHandlerIsCalledOnTheMainThreat() {
         let completionHandlerOnMainThreadExpectation = expectation(description: "Completion handler called on main thread")
-        
-        let samplePhoto = DemoData.getValidSamplePhoto()
-        
-        self.imageDownloadManager.fetchDataImage(for: samplePhoto,
-                                                 inSize: .full)
-        { (requestedPhoto, requestedSize, dataImage, error) in
-            
-            if Thread.current == .main
-            {
+
+        let samplePhoto = DemoData.validSamplePhoto
+
+        imageDownloadManager.fetchDataImage(for: samplePhoto,
+                                            inSize: .full) { (_, _, _, _) in
+            if Thread.current == .main {
                 completionHandlerOnMainThreadExpectation.fulfill()
             }
         }
-        
-        wait(for: [completionHandlerOnMainThreadExpectation], timeout: ExpectationTimeout)
+
+        wait(for: [completionHandlerOnMainThreadExpectation], timeout: Constant.ExpectationTimeout)
     }
 }

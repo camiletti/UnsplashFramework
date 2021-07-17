@@ -22,16 +22,14 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
 import Foundation
 
-
 /// Client credentials necessary to query Unsplash.
-public struct UNCredentials
-{
+public struct UNCredentials {
+
     /// Unsplash Application ID.
-    public let appID  : String
-    
+    public let appID: String
+
     /// Unsplash Secret.
-    public let secret : String
+    public let secret: String
 }

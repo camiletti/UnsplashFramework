@@ -22,38 +22,50 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
-
-
 /// Struct to represent Unsplash errors to a given query.
-public struct UNError : Error
-{
-    
+public struct UNError: Error {
+
+    // MARK: - Declarations
+
+    /// Reasons why a request can fail.
+    public enum Reason {
+
+        /// Couldn't contact Unsplash.
+        case serverNotReached
+        /// Unsplash couldn't fulfil the query. Check the ResponseStatusCode for more info.
+        case serverError(ResponseStatusCode?)
+        /// The data received does not match the expected format.
+        case unableToParseDataCorrectly
+        /// The response from the server could not be parsed.
+        case unknownServerResponse
+        /// No data, no response and no error was received.
+        case unknownError
+        /// AppID and Secret were not previously set.
+        case credentialsNotSet
+    }
+
     // MARK: - Properties
-    
+
     /// Types of things that might go wrong.
-    public let reason : UNErrorReason
-    
+    public let reason: Reason
+
     /// All the reasons Unsplash returned on why the error happened.
-    public let reasonDescriptions : [String]
-    
-    
+    public let reasonDescriptions: [String]
+
+    // MARK: - Life Cycle
+
     /// Creates a new error with the given reason.
     ///
     /// - Parameters:
     ///   - reason: The reason of the error.
     ///   - reasonDescriptions: Optional descriptions of the reason.
-    init(reason: UNErrorReason, reasonDescriptions: [String] = [String]())
-    {
+    init(reason: Reason, reasonDescriptions: [String] = [String]()) {
         self.reason = reason
         self.reasonDescriptions = reasonDescriptions
     }
-}
 
+    // MARK: - Actions
 
-internal extension UNError
-{
     /// Checks if the server response is an error or creates one with the passed error
     /// if it's different than nil.
     ///
@@ -61,88 +73,50 @@ internal extension UNError
     ///   - serverResponse: The response return by the server.
     ///   - error: Connection error if there was one.
     /// - Returns: Creates and returns an error if the parameter passes define one.
-    internal static func checkIfItIsAnError(_ serverResponse: URLResponse?, and error: Error?) -> UNError?
-    {
-        if let requestErrorUnwrapped = error
-        {
+    static func checkIfItIsAnError(_ serverResponse: URLResponse?, and error: Error?) -> UNError? {
+        if let requestErrorUnwrapped = error {
             return UNError(reason: .serverNotReached,
                            reasonDescriptions: [requestErrorUnwrapped.localizedDescription])
-        }
-        else if let response = serverResponse
-        {
-            if let response = response as? HTTPURLResponse
-            {
-                if response.statusCode != ResponseStatusCode.success.rawValue
-                {
+        } else if let response = serverResponse {
+            if let response = response as? HTTPURLResponse {
+                if response.statusCode != ResponseStatusCode.success.rawValue {
                     return UNError(reason: .serverError(ResponseStatusCode(rawValue: response.statusCode)))
-                    // TODO: Parse "error" field from response
                 }
-            }
-            else
-            {
+            } else {
                 return UNError(reason: .unknownServerResponse)
             }
-        }
-        else
-        {
+        } else {
             return UNError(reason: .unknownError)
         }
-        
+
         // No errors
         return nil
     }
 }
 
+// MARK: - Equatable
+extension UNError.Reason: Equatable {
 
-/// Reasons why a request can fail.
-public enum UNErrorReason
-{
-    /// Couldn't contact Unsplash.
-    case serverNotReached
-    
-    /// Unsplash couldn't fulfill the query. Check the ResponseStatusCode for more info.
-    case serverError(ResponseStatusCode?)
-    
-    /// The data received does not match the expected format.
-    case unableToParseDataCorrectly
-    
-    /// The response from the server could not be parsed.
-    case unknownServerResponse
-    
-    /// No data, no response and no error was received.
-    case unknownError
-    
-    /// AppID and Secret were not previously set.
-    case credentialsNotSet
-}
-
-
-extension UNErrorReason: Equatable
-{
     /// Returns a Boolean value indicating whether two error reason are equal.
-    public static func ==(lhs: UNErrorReason, rhs: UNErrorReason) -> Bool
-    {
-        switch (lhs, rhs)
-        {
+    public static func == (lhs: UNError.Reason, rhs: UNError.Reason) -> Bool {
+        switch (lhs, rhs) {
         case (.serverNotReached, .serverNotReached),
              (.unableToParseDataCorrectly, .unableToParseDataCorrectly),
              (.unknownServerResponse, .unknownServerResponse),
              (.unknownError, .unknownError),
              (.credentialsNotSet, .credentialsNotSet):
             return true
-            
+
         case (let .serverError(codeA), let .serverError(codeB)):
             return codeA == codeB
-            
+
         default:
             return false
         }
     }
-    
-    
+
     /// Returns a Boolean value indicating whether two error reason are not equal.
-    public static func !=(lhs: UNErrorReason, rhs: UNErrorReason) -> Bool
-    {
-        return !(lhs == rhs)
+    public static func != (lhs: UNError.Reason, rhs: UNError.Reason) -> Bool {
+        !(lhs == rhs)
     }
 }

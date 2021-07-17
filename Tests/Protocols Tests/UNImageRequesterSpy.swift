@@ -22,34 +22,29 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+typealias UNImageRequesterSpyClosure = (_ photo: UNPhoto, _ size: UNPhotoImageSize, _ dataImage: Data?, _ error: UnsplashFramework.UNError?) -> Void
 
-typealias UNImageRequesterSpyClosure = (_ photo: UNPhoto, _ size: UNPhotoImageSize, _ dataImage: Data?, _ error: UNError?) -> Void
+final class UNImageRequesterSpy {
 
+    private let closure: UNImageRequesterSpyClosure
 
-class UNImageRequesterSpy
-{
-    
-    private let closure : UNImageRequesterSpyClosure
-    
-    
-    init(with closure: @escaping UNImageRequesterSpyClosure)
-    {
+    // MARK: - Life Cycle
+
+    init(with closure: @escaping UNImageRequesterSpyClosure) {
         self.closure = closure
     }
 }
 
+// MARK: - UNImageRequester
+extension UNImageRequesterSpy: UNImageRequester {
 
-extension UNImageRequesterSpy: UNImageRequester
-{
     func clientDidCompleteExclusiveImageRequest(for photo: UNPhoto,
                                                 in size: UNPhotoImageSize,
                                                 dataImage: Data?,
-                                                error: UNError?)
-    {
-        self.closure(photo, size, dataImage, error)
+                                                error: UnsplashFramework.UNError?) {
+        closure(photo, size, dataImage, error)
     }
 }

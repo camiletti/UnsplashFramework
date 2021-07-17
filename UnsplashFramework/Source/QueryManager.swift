@@ -22,130 +22,98 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+class QueryManager {
 
-import Foundation
-
-
-class QueryManager
-{
-    
     // MARK: - Properties
-    
+
     /// Unsplash client credentials.
-    private let credentials : UNCredentials
-    
+    private let credentials: UNCredentials
+
     /// Session used for querying Unsplash.
-    private let session : URLSession
-    
-    
+    private let session: URLSession
+
+    // MARK: - Life Cycle
+
     /// Creates a client with the specified credentials.
     ///
     /// - Parameters:
     ///   - credentials: The Unsplash client credentials.
-    public init(withCredentials credentials: UNCredentials)
-    {
-        self.credentials = credentials
-        self.session = URLSession(configuration: .default)
-    }
-    
-    
-    /// Specially to use in unit testing to mock network requests
-    ///
-    /// - Parameters:
-    ///   - credentials: The Unsplash client credentials.
-    ///   - session: The URLSession that will handle all the network tasks.
-    internal init(with credentials: UNCredentials, session: URLSession)
-    {
+    init(with credentials: UNCredentials, session: URLSession = URLSession(configuration: .default)) {
         self.credentials = credentials
         self.session = session
     }
-    
-    
+
     /// Get a single page from the list of all photos.
     ///
     /// - Parameters:
     ///   - parameters: The parameters.
     ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
-    public func listPhotos(with parameters: UNPhotoListParameters,
-                           completion: @escaping UNPhotoListClosure)
-    {
+    func listPhotos(with parameters: UNPhotoListParameters,
+                    completion: @escaping UNPhotoListClosure) {
         let request = URLRequest.publicRequest(.get,
                                                forEndpoint: .photos,
                                                parameters: parameters,
                                                credentials: self.credentials)
-        
-        let task = self.session.dataTask(with: request)
-        { (data, response, requestError) in
-            
+        let task = session.dataTask(with: request) { (data, response, requestError) in
             self.processResponse(data: data,
                                  response: response,
                                  requestError: requestError,
                                  decodableProtocol: [UNPhoto].self,
                                  completion: completion)
         }
-        
+
         task.resume()
     }
-    
-    
+
     /// Makes a query to Unsplash.
     ///
     /// - Parameters:
     ///   - searchType: The type of search to perform.
     ///   - parameters: Parameters to narrow the search.
-    ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
-    internal func search<T>(_ searchType: SearchType,
-                            with parameters: ParametersURLRepresentable,
-                            completion: @escaping (UNResult<UNSearchResult<T>>) -> Void)
-    {
+    ///   - completion: The completion handler that will be called with the results (executed on the main thread).
+    func search<T>(_ searchType: SearchType,
+                   with parameters: ParametersURLRepresentable,
+                   completion: @escaping (UNResult<UNSearchResult<T>>) -> Void) {
         let request = URLRequest.publicRequest(.get,
                                                forEndpoint: searchType.endpoint,
                                                parameters: parameters,
                                                credentials: self.credentials)
-        
-        let task = self.session.dataTask(with: request)
-        { (data, response, requestError) in
-            
+
+        let task = self.session.dataTask(with: request) { (data, response, requestError) in
             self.processResponse(data: data,
                                  response: response,
                                  requestError: requestError,
                                  decodableProtocol: UNSearchResult.self,
                                  completion: completion)
         }
-        
+
         task.resume()
     }
-    
-    
+
     /// Parses the server's response.
     ///
     /// - Parameters:
     ///   - data: data received from the server.
     ///   - response: response received from the server.
     ///   - requestError: connection error if there was one.
-    ///   - completion: closure called with the data parsed or error if there was one.
-    internal func processResponse<T: Decodable>(data: Data?,
-                                                response: URLResponse?,
-                                                requestError: Error?,
-                                                decodableProtocol: T.Type,
-                                                completion: @escaping (UNResult<T>) -> Void)
-    {
+    ///   - completion: closure called with the data parsed or error if there was one  (executed on the main thread).
+    func processResponse<T: Decodable>(data: Data?,
+                                       response: URLResponse?,
+                                       requestError: Error?,
+                                       decodableProtocol: T.Type,
+                                       completion: @escaping (UNResult<T>) -> Void) {
         var result: UNResult<T>
-        
-        if let unError = UNError.checkIfItIsAnError(response, and: requestError)
-        {
+        let decoder = JSONDecoder.unsplashDecoder
+
+        if let unError = UNError.checkIfItIsAnError(response, and: requestError) {
             result = .failure(unError)
-        }
-        else if let data = data,
-                let decodedData = try? JSONDecoder().decode(decodableProtocol, from: data)
-        {
+        } else if let data = data,
+                  let decodedData = try? decoder.decode(decodableProtocol, from: data) {
             result = .success(decodedData)
-        }
-        else
-        {
+        } else {
             result = .failure(UNError(reason: .unableToParseDataCorrectly))
         }
-        
+
         DispatchQueue.main.async { completion(result) }
     }
 }

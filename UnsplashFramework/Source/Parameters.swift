@@ -22,16 +22,11 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
 import Foundation
 
-
-// MARK: - Parameters URL Representable Protocol
-
 /// Protocol for getting the URL parameters as URLQueryItem.
-internal protocol ParametersURLRepresentable
-{
+protocol ParametersURLRepresentable {
+
     /// Represents the URL parameters as an array of URLQueryItem.
     func asQueryItems() -> [URLQueryItem]
 }
-

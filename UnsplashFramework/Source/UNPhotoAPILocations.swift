@@ -22,57 +22,29 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
-
-
 /// Holds the API URLs for a photo.
-internal struct UNPhotoAPILocations: Decodable
-{
-    // MARK: - Properties
-    
-    /// Photo URL. Accessible only through the API.
-    internal var apiPhotoURL : URL
-    
-    /// Download photo URL. Accessible only through the API.
-    internal var apiDownloadURL : URL
-    
-    
-    /// Public link to the photo.
-    internal var externalPhotoURL : URL
-    
-    /// Public dowload link to the photo.
-    internal var externalDownloadURL : URL
-    
-    
-    /// Codable poperty mapping.
-    internal enum CodingKeys: String, CodingKey
-    {
-        case apiPhotoURL         = "self"
-        case apiDownloadURL      = "download_location"
-        case externalPhotoURL    = "html"
+struct UNPhotoAPILocations: Decodable, Equatable {
+
+    // MARK: - Declarations
+
+    enum CodingKeys: String, CodingKey {
+        case apiPhotoURL = "self"
+        case apiDownloadURL = "download_location"
+        case externalPhotoURL = "html"
         case externalDownloadURL = "download"
     }
-}
 
+    // MARK: - Properties
 
-extension UNPhotoAPILocations: Equatable
-{
-    /// Returns a Boolean value indicating whether the two UNPhotoAPILocations have the same
-    /// value for their variables.
-    internal static func ==(lhs: UNPhotoAPILocations, rhs: UNPhotoAPILocations) -> Bool
-    {
-        return  lhs.apiPhotoURL         == rhs.apiPhotoURL         &&
-                lhs.apiDownloadURL      == rhs.apiDownloadURL      &&
-                lhs.externalPhotoURL    == rhs.externalPhotoURL    &&
-                lhs.externalDownloadURL == rhs.externalDownloadURL
-    }
-    
-    
-    /// Returns a Boolean value indicating whether the two UNPhotoAPILocations have at least
-    /// one value different.
-    internal static func !=(lhs: UNPhotoAPILocations, rhs: UNPhotoAPILocations) -> Bool
-    {
-        return !(lhs == rhs)
-    }
+    /// Photo URL. Accessible only through the API.
+    var apiPhotoURL: URL
+
+    /// Download photo URL. Accessible only through the API.
+    var apiDownloadURL: URL
+
+    /// Public link to the photo.
+    var externalPhotoURL: URL
+
+    /// Public download link to the photo.
+    var externalDownloadURL: URL
 }

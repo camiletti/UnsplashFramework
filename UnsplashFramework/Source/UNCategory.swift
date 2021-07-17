@@ -22,57 +22,46 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
-
-
 /// Holds all the information about a category.
-public struct UNCategory: Decodable
-{
-    
-    // MARK: - Properties
-    
-    /// Unique identifier of the category.
-    public var id           : Int
-    
-    /// Title of the category.
-    public var title        : String?
-    
-    /// Number of photos the category has.
-    public var photoAmount  : Int
-    
-    /// API locations.
-    public var apiLocations : UNCategoryAPILocations
-    
-    
-    /// Codable poperty mapping.
-    internal enum CodingKeys: String, CodingKey
-    {
-        case id           = "id"
-        case title        = "title"
-        case photoAmount  = "photo_count"
+public struct UNCategory: Decodable {
+
+    // MARK: - Declarations
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case photoAmount = "photo_count"
         case apiLocations = "links"
     }
+
+    // MARK: - Properties
+
+    /// Unique identifier of the category.
+    public var id: Int
+
+    /// Title of the category.
+    public var title: String?
+
+    /// Number of photos the category has.
+    public var photoAmount: Int
+
+    /// API locations.
+    public var apiLocations: UNCategoryAPILocations
 }
 
-
-extension UNCategory: Equatable
-{
+// MARK: - Equatable
+extension UNCategory: Equatable {
     /// Returns a Boolean value indicating whether the two categories represent the same category.
     ///
     /// Discussion: Two categories are considered to be the same if they represent
     /// the same category; that is, if they have the same id, regardless
     /// if the other variables are different.
-    public static func ==(lhs: UNCategory, rhs: UNCategory) -> Bool
-    {
-        return lhs.id == rhs.id
+    public static func == (lhs: UNCategory, rhs: UNCategory) -> Bool {
+        lhs.id == rhs.id
     }
-    
-    
+
     /// Returns a Boolean value indicating whether two categories don't represent the same category.
-    public static func !=(lhs: UNCategory, rhs: UNCategory) -> Bool
-    {
-        return !(lhs == rhs)
+    public static func != (lhs: UNCategory, rhs: UNCategory) -> Bool {
+        !(lhs == rhs)
     }
 }
-

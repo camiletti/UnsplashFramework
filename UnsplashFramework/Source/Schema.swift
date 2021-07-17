@@ -22,67 +22,50 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+enum APIComponent {
+    /// Protocol.
+    static let scheme = "https"
 
-import Foundation
-
-
-/// Protocol.
-internal let APIScheme   = "https"
-
-/// Location.
-///
-/// As described at https://unsplash.com/documentation#location
-internal let APILocation = "api.unsplash.com"
-
+    /// Location.
+    ///
+    /// As described at https://unsplash.com/documentation#location
+    static let location = "api.unsplash.com"
+}
 
 /// Current version of the API header.
 ///
 /// As described at https://unsplash.com/documentation#version
-internal struct APIVersionHeader
-{
+enum APIVersionHeader {
     /// HTTP header field.
     static let field = "Accept-Version"
-    
+
     /// HTTP header value.
     static let value = "v1"
 }
 
-
 /// Public authentication header.
 ///
 /// As described at https://unsplash.com/documentation#public-actions
-internal struct APIAuthorizationHeader
-{
+enum APIAuthorizationHeader {
     /// HTTP header field.
     static let field = "Authorization"
-    
+
     /// HTTP header value.
-    static func value(withAppID appID: String) -> String
-    {
-        return "Client-ID " + appID
+    static func value(withAppID appID: String) -> String {
+        "Client-ID \(appID)"
     }
 }
-
 
 /// HTTP accepted verbs.
 ///
 /// As described at https://unsplash.com/documentation#http-verbs
-internal enum HTTPMethod : String
-{
+enum HTTPMethod: String {
     /// Method for retrieving resources.
-    case get    = "GET"
-    
+    case get = "GET"
     /// Method for creating resources.
-    case post   = "POST"
-    
+    case post = "POST"
     /// Method for updating resources.
-    case put    = "PUT"
-    
+    case put = "PUT"
     /// Method for deleting resources.
     case delete = "DELETE"
 }
-
-
-/// Date format.
-/// Example: "created_at": "2015-05-28T10:00:01-04:00".
-internal let ResponseDateFormat = "yyyy-MM-dd'T'HH:mm:ss-zz:zz"

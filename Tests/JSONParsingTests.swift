@@ -22,35 +22,37 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class JSONParsingTests: XCTestCase {
 
-class JSONParsingTests: XCTestCase
-{
-    
-    func testStandardJSONPhotoListParsing()
-    {
-        let data = DemoData.standardPhotoListResponse()
-        var photosArray : [UNPhoto]? = nil
-        
-        do { photosArray = try JSONDecoder().decode([UNPhoto].self, from: data) }
-        catch let error { print(error) }
-        
+    func testStandardJSONPhotoListParsing() {
+        let decoder = JSONDecoder.unsplashDecoder
+        let data = DemoData.standardPhotoListResponse
+        var photosArray: [UNPhoto]?
+
+        do {
+            photosArray = try decoder.decode([UNPhoto].self, from: data)
+        } catch {
+            print(error)
+        }
+
         XCTAssertNotNil(photosArray)
         XCTAssert(photosArray!.count == 10)
     }
-    
-    
-    func testJSONPhotoListWithCollectionAndCategoryParsing()
-    {
-        let data = DemoData.photoListOfPhotosBelongingToCollections()
-        var photosArray : [UNPhoto]? = nil
-        
-        do { photosArray = try JSONDecoder().decode([UNPhoto].self, from: data) }
-        catch let error { print(error) }
-        
+
+    func testJSONPhotoListWithCollectionAndCategoryParsing() {
+        let decoder = JSONDecoder.unsplashDecoder
+        let data = DemoData.photoListOfPhotosBelongingToCollections
+        var photosArray: [UNPhoto]?
+
+        do {
+            photosArray = try decoder.decode([UNPhoto].self, from: data)
+        } catch {
+            print(error)
+        }
+
         XCTAssertNotNil(photosArray)
         XCTAssertNotNil(photosArray?.first?.collections)
         XCTAssertNotNil(photosArray?.first?.collections.first?.coverPhoto?.categories)

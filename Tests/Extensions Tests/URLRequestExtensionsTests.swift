@@ -22,45 +22,40 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class URLSessionExtensionsTests: XCTestCase {
 
-class URLSessionExtensionsTests: XCTestCase
-{
-    
     // MARK: - Test request generation
-    
-    func testCreatingAPublicRequestForEveryEndpoint()
-    {
+
+    func testCreatingAPublicRequestForEveryEndpoint() {
         // Parameters
         let id = "abc"
         let authHeaderValue = "Client-ID " + UnsplashKeys.appID
         let parameters = UNPhotoListParameters(pageNumber: 1,
                                                photosPerPage: 10,
                                                sortOrder: .popular)
-        let endpoints : [Endpoint] = [.photos, .curatedPhotos, .randomPhoto,
-                                      .singlePhoto(id), .singlePhotoStatistics(id),
-                                      .singlePhotoDownload(id), .singlePhotoLike(id),
-                                      .photoSearch, .collectionSearch, .userSearch,
-                                      .collections, .featuredCollections, .curatedCollections,
-                                      .singleCollection(id), .singleCuratedCollection(id),
-                                      .photosInCollection(id), .photosInCuratedCollection(id),
-                                      .relatedCollections(id), .unsplashTotalStats,
-                                      .unsplashMonthlyStats]
-        
-        for endpoint in endpoints
-        {
+        let endpoints: [Endpoint] = [.photos, .curatedPhotos, .randomPhoto,
+                                     .singlePhoto(id), .singlePhotoStatistics(id),
+                                     .singlePhotoDownload(id), .singlePhotoLike(id),
+                                     .photoSearch, .collectionSearch, .userSearch,
+                                     .collections, .featuredCollections, .curatedCollections,
+                                     .singleCollection(id), .singleCuratedCollection(id),
+                                     .photosInCollection(id), .photosInCuratedCollection(id),
+                                     .relatedCollections(id), .unsplashTotalStats,
+                                     .unsplashMonthlyStats]
+
+        for endpoint in endpoints {
             // Expected results
             let expectedURL = self.expectedURL(withEndpoint: endpoint, parameters: parameters)
-            
+
             // Function to test
             let request = URLRequest.publicRequest(HTTPMethod.get,
                                                    forEndpoint: endpoint,
                                                    parameters: parameters,
                                                    credentials: UNCredentials(appID: UnsplashKeys.appID, secret: UnsplashKeys.secret))
-            
+
             // Assertions
             XCTAssert(request.httpMethod == HTTPMethod.get.rawValue)
             XCTAssert(request.url == expectedURL)
@@ -68,15 +63,13 @@ class URLSessionExtensionsTests: XCTestCase
             XCTAssert(request.value(forHTTPHeaderField: APIVersionHeader.field) == APIVersionHeader.value)
         }
     }
-    
-    
+
     // MARK: - Helpers
-    
-    func expectedURL(withEndpoint endpoint: Endpoint, parameters: UNPhotoListParameters) -> URL?
-    {
-        return URL(string: APIScheme + "://" + APILocation + endpoint.string() + "?"               +
-                           UNPhotoListParameters.pageNumberName    + "=\(parameters.pageNumber)&"    +
-                           UNPhotoListParameters.photosPerPageName + "=\(parameters.photosPerPage)&" +
-                           UNPhotoListParameters.sortOrderName     + "=\(parameters.sortOrder)")
+
+    func expectedURL(withEndpoint endpoint: Endpoint, parameters: UNPhotoListParameters) -> URL? {
+        URL(string: APIComponent.scheme + "://" + APIComponent.location + endpoint.string() + "?" +
+                UNPhotoListParameters.QueryParameterName.pageNumberName + "=\(parameters.pageNumber)&" +
+                UNPhotoListParameters.QueryParameterName.photosPerPageName + "=\(parameters.photosPerPage)&" +
+                UNPhotoListParameters.QueryParameterName.sortOrderName + "=\(parameters.sortOrder)")
     }
 }

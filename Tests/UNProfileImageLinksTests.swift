@@ -22,37 +22,32 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class UNProfileImageLinksTests: XCTestCase {
 
-class UNProfileImageLinksTests: XCTestCase
-{
-    func testEquality()
-    {
-        var profileImageLinksA = DemoData.getInvalidProfileImageLinks()
+    func testEquality() {
+        var profileImageLinksA = DemoData.invalidProfileImageLinks
         var profileImageLinksB = profileImageLinksA
-        
+
         XCTAssert(profileImageLinksA == profileImageLinksB)
-        
+
         profileImageLinksA.small = URL(string: "http://api.unsplash.com/1")!
         profileImageLinksB.small = URL(string: "http://api.unsplash.com/2")!
-        
+
         XCTAssert((profileImageLinksA == profileImageLinksB) == false)
     }
-    
-    
-    func testInequality()
-    {
-        var profileImageLinksA = DemoData.getInvalidProfileImageLinks()
+
+    func testInequality() {
+        var profileImageLinksA = DemoData.invalidProfileImageLinks
         var profileImageLinksB = profileImageLinksA
-        
+
         XCTAssert((profileImageLinksA != profileImageLinksB) == false)
-        
+
         profileImageLinksA.small = URL(string: "http://api.unsplash.com/1")!
         profileImageLinksB.small = URL(string: "http://api.unsplash.com/2")!
-        
+
         XCTAssert(profileImageLinksA != profileImageLinksB)
     }
 }

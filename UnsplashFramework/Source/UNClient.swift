@@ -22,81 +22,80 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
 #if os(iOS) || os(tvOS) || os(watchOS)
 import UIKit
 #endif
 
+public typealias UNPhotoListClosure = (_ result: UNResult<[UNPhoto]>) -> Void
+public typealias UNPhotoSearchClosure = (_ result: UNResult<UNSearchResult<UNPhoto>>) -> Void
+public typealias UNCollectionSearchClosure = (_ result: UNResult<UNSearchResult<UNCollection>>) -> Void
+public typealias UNUserSearchClosure = (_ result: UNResult<UNSearchResult<UNUser>>) -> Void
+public typealias UNImageFetchClosure = (_ result: UNResult<UNImageFetchResult>) -> Void
+public typealias UNFetchDataImageClosure = (_ requestedPhoto: UNPhoto,
+                                            _ requestedSize: UNPhotoImageSize,
+                                            _ imageData: Data?,
+                                            _ error: UNError?) -> Void
 
 /// The UNClient is the point of access to every Unsplash request.
-public class UNClient
-{
-    
+public class UNClient {
+
     // MARK: - Properties
-    
+
     /// Returns a shared singleton object.
     public static let shared = UNClient()
-    
+
     /// Unsplash client credentials.
-    private var credentials : UNCredentials?
-    
+    private var credentials: UNCredentials?
+
     /// Boolean value indicating whether the credentials have been set.
-    public  var hasCredentials : Bool
-    {
-        return self.credentials != nil
+    public var hasCredentials: Bool {
+        credentials != nil
     }
-    
-    private var _queryManager  : QueryManager?
-    private var _imagesManager : ImagesManager?
-    
-    private var queryManager  : QueryManager?
-    {
-        if  let credentials = self.credentials,
-            self._queryManager == nil
-        {
-            self._queryManager = QueryManager(withCredentials: credentials)
-            return self._queryManager
+
+    private var _queryManager: QueryManager?
+
+    private var _imagesManager: ImagesManager?
+
+    private var queryManager: QueryManager? {
+        if  let credentials = credentials,
+            _queryManager == nil {
+            _queryManager = QueryManager(with: credentials)
+            return _queryManager
         }
-        
-        return self._queryManager
+
+        return _queryManager
     }
-    
-    private var imagesManager : ImagesManager?
-    {
-        if  let credentials = self.credentials,
-            self._imagesManager == nil
-        {
-            self._imagesManager = ImagesManager(withCredentials: credentials)
-            return self._imagesManager
+
+    private var imagesManager: ImagesManager? {
+        guard let credentials = credentials else {
+            return nil
         }
-        
-        return self._imagesManager
+
+        if _imagesManager == nil {
+            _imagesManager = ImagesManager(withCredentials: credentials)
+        }
+
+        return _imagesManager
     }
-    
-    
+
     // MARK: - Credentials
-    
+
     /// Sets the credentials for the Unsplash client. This function should only be called once.
     ///
     /// - Parameters:
     ///   - appID: The application ID Unsplash provided you with.
     ///   - secret: The secret Unsplash provided you with.
-    public func setAppID(_ appID: String, secret: String)
-    {
-        if self.credentials == nil
-        {
-            self.credentials = UNCredentials(appID: appID, secret: secret)
+    public func setAppID(_ appID: String, secret: String) {
+        guard credentials == nil else {
+            print("⚠️ UNClient: AppID and Secret should only be set once. Resetting will be ignored.")
+            return
         }
-        else
-        {
-            print("☝️UNClient: AppID and Secret should only be set once. Resetting will be ignored.")
-        }
+
+        credentials = UNCredentials(appID: appID, secret: secret)
     }
-    
-    
+
     // MARK: - Listing photos
-    
+
     /// Get a single page from the list of all photos.
     ///
     /// - Parameters:
@@ -107,27 +106,23 @@ public class UNClient
     public func listPhotos(page: Int,
                            photosPerPage: Int = 10,
                            sortingBy sort: UNSort,
-                           completion: @escaping UNPhotoListClosure)
-    {
-        if self.hasCredentials
-        {
-            let parameters = UNPhotoListParameters(pageNumber: page,
-                                                   photosPerPage: photosPerPage,
-                                                   sortOrder: sort)
-            
-            self.queryManager?.listPhotos(with: parameters,
-                                          completion: completion)
-        }
-        else
-        {
-            self.printMissingCredentialsWarning()
+                           completion: @escaping UNPhotoListClosure) {
+        guard hasCredentials else {
+            printMissingCredentialsWarning()
             completion(UNResult.failure(UNError(reason: .credentialsNotSet)))
+            return
         }
+
+        let parameters = UNPhotoListParameters(pageNumber: page,
+                                               photosPerPage: photosPerPage,
+                                               sortOrder: sort)
+
+        queryManager?.listPhotos(with: parameters,
+                                 completion: completion)
     }
-    
-    
+
     // MARK: - Search
-    
+
     /// Get a single page of photo results for a query.
     ///
     /// - Parameters:
@@ -142,20 +137,18 @@ public class UNClient
                              photosPerPage: Int,
                              collections: [UNCollection]? = nil,
                              orientation: UNPhotoOrientation? = nil,
-                             completion: @escaping UNPhotoSearchClosure)
-    {
+                             completion: @escaping UNPhotoSearchClosure) {
         let parameters = UNPhotoSearchParameters(query: query,
                                                  pageNumber: page,
                                                  photosPerPage: photosPerPage,
                                                  collections: collections,
                                                  orientation: orientation)
-        
-        self.search(.photo,
-                    with: parameters,
-                    completion: completion)
+
+        search(.photo,
+               with: parameters,
+               completion: completion)
     }
-    
-    
+
     /// Get a single page of collections results for a query.
     ///
     /// - Parameters:
@@ -166,17 +159,15 @@ public class UNClient
     public func searchCollections(query: String,
                                   page: Int,
                                   collectionsPerPage: Int,
-                                  completion: @escaping UNCollectionSearchClosure)
-    {
+                                  completion: @escaping UNCollectionSearchClosure) {
         let parameters = UNCollectionSearchParameters(query: query,
                                                       pageNumber: page,
                                                       collectionsPerPage: collectionsPerPage)
-        self.search(.collection,
-                    with: parameters,
-                    completion: completion)
+        search(.collection,
+               with: parameters,
+               completion: completion)
     }
-    
-    
+
     /// Get a single page of users results for a query.
     ///
     /// - Parameters:
@@ -187,46 +178,40 @@ public class UNClient
     public func searchUsers(query: String,
                             page: Int,
                             usersPerPage: Int,
-                            completion: @escaping UNUserSearchClosure)
-    {
+                            completion: @escaping UNUserSearchClosure) {
         let parameters = UNUserSearchParameters(query: query,
                                                 pageNumber: page,
                                                 usersPerPage: usersPerPage)
-        
-        self.search(.user,
-                    with: parameters,
-                    completion: completion)
+
+        search(.user,
+               with: parameters,
+               completion: completion)
     }
-    
-    
+
     /// Makes a search according to the specified parameters.
     ///
     /// - Parameters:
     ///   - searchType: The type of search to perform.
     ///   - parameters: Parameters to filter the search.
     ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
-    internal func search<T>(_ searchType: SearchType,
-                            with parameters: ParametersURLRepresentable,
-                            completion: @escaping (UNResult<UNSearchResult<T>>) -> Void)
-    {
-        if self.hasCredentials
-        {
-            self.queryManager?.search(searchType,
-                                      with: parameters,
-                                      completion: completion)
-        }
-        else
-        {
-            self.printMissingCredentialsWarning()
+    func search<T>(_ searchType: SearchType,
+                   with parameters: ParametersURLRepresentable,
+                   completion: @escaping (UNResult<UNSearchResult<T>>) -> Void) {
+        guard hasCredentials else {
+            printMissingCredentialsWarning()
             completion(UNResult.failure(UNError(reason: .credentialsNotSet)))
+            return
         }
+
+        queryManager?.search(searchType,
+                             with: parameters,
+                             completion: completion)
     }
-    
-    
+
     // MARK: - Fetching images from photos
-    
+
     #if os(iOS) || os(tvOS) || os(watchOS)
-    
+
     /// Fetches the image corresponding to the photo on the specified size.
     ///
     /// - Parameters:
@@ -235,33 +220,24 @@ public class UNClient
     ///   - completion: The completion closure to handle the result. It will be called on the main thread.
     public func fetchImage(from photo: UNPhoto,
                            inSize size: UNPhotoImageSize,
-                           completion: @escaping UNImageFetchClosure)
-    {
-        self.fetchDataImage(from: photo, inSize: size)
-        { (requestedPhoto, requestedSize, dataImage, error) in
-            
-            if let error = error
-            {
+                           completion: @escaping UNImageFetchClosure) {
+        fetchDataImage(from: photo, inSize: size) { (requestedPhoto, requestedSize, dataImage, error) in
+            if let error = error {
                 completion(.failure(error))
-            }
-            else if let dataImage = dataImage,
-                    let image = UIImage(data: dataImage)
-            {
+            } else if let dataImage = dataImage,
+                      let image = UIImage(data: dataImage) {
                 let imageResult = UNImageFetchResult(requestedPhoto: requestedPhoto,
                                                      requestedSize: requestedSize,
                                                      image: image)
                 completion(.success(imageResult))
-            }
-            else
-            {
+            } else {
                 completion(.failure(UNError(reason: .unableToParseDataCorrectly)))
             }
         }
     }
-    
+
     #endif
-    
-    
+
     /// Fetches the image corresponding to the photo on the specified size.
     ///
     /// - Parameters:
@@ -271,22 +247,18 @@ public class UNClient
     ///                 It will be called on the main thread.
     public func fetchDataImage(from photo: UNPhoto,
                                inSize size: UNPhotoImageSize,
-                               completion: @escaping UNFetchDataImageClosure)
-    {
-        if self.hasCredentials
-        {
-            self.imagesManager?.dataImage(from: photo,
-                                          inSize: size,
-                                          completion: completion)
-        }
-        else
-        {
-            self.printMissingCredentialsWarning()
+                               completion: @escaping UNFetchDataImageClosure) {
+        guard hasCredentials else {
+            printMissingCredentialsWarning()
             completion(photo, size, nil, UNError(reason: .credentialsNotSet))
+            return
         }
+
+        imagesManager?.dataImage(from: photo,
+                                 inSize: size,
+                                 completion: completion)
     }
-    
-    
+
     /// The image will be fetched and passed back to the specified requester. This function is exclusive
     /// since the requester will only have one active request at a time. Any new request by the same object
     /// will cancel the previous one. This is useful for table views or collection views where the cell
@@ -298,30 +270,25 @@ public class UNClient
     ///   - requester: The object that is interested in the image and the one who will be called back.
     public func fetchDataImageExclusively(from photo: UNPhoto,
                                           inSize size: UNPhotoImageSize,
-                                          for requester: UNImageRequester)
-    {
-        if self.hasCredentials
-        {
-            self.imagesManager?.dataImageExclusivelyRequest(from: photo,
-                                                            inSize: size,
-                                                            for: requester)
-        }
-        else
-        {
-            self.printMissingCredentialsWarning()
+                                          for requester: UNImageRequester) {
+        guard hasCredentials else {
+            printMissingCredentialsWarning()
             requester.clientDidCompleteExclusiveImageRequest(for: photo,
                                                              in: size,
                                                              dataImage: nil,
                                                              error: UNError(reason: .credentialsNotSet))
+            return
         }
+
+        imagesManager?.dataImageExclusivelyRequest(from: photo,
+                                                   inSize: size,
+                                                   for: requester)
     }
-    
-    
+
     // MARK: - Helpers
-    
+
     /// Console warning reminding that the credentials were not yet set.
-    internal func printMissingCredentialsWarning()
-    {
+    private func printMissingCredentialsWarning() {
         print("✋ UNClient: AppID and Secret are not set. Please do this before calling any else.")
     }
 }

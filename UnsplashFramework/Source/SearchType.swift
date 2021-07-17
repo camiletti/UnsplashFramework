@@ -6,33 +6,26 @@
 //  Copyright © 2018 Pablo Camiletti. All rights reserved.
 //
 
-import Foundation
-
-
 /// Representation of the available items that can be searched
-internal enum SearchType
-{
+enum SearchType {
     /// Search of photos
     case photo
-    
     /// Search of collections
     case collection
-    
     /// Search of users
     case user
-}
 
+    // MARK: - Properties
 
-extension SearchType
-{
     /// Extension to get the endpoint for a type of search
-    var endpoint: Endpoint
-    {
+    var endpoint: Endpoint {
         switch self {
         case .photo:
             return .photoSearch
+
         case .collection:
             return .collectionSearch
+
         case .user:
             return .userSearch
         }

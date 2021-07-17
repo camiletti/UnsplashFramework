@@ -22,88 +22,81 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class URLSessionTaskOperationTests: XCTestCase {
 
-private let ExpectationTimeout = 60.0
+    // MARK: - Declarations
 
-
-class URLSessionTaskOperationTests: XCTestCase
-{
-    
-    private var session: URLSession!
-    private var operationQueue : OperationQueue!
-    
-    
-    override func setUp()
-    {
-        super.setUp()
-        self.session = URLSession(configuration: .default)
-        self.operationQueue = OperationQueue()
+    enum Constant {
+        static let ExpectationTimeout = 60.0
     }
-    
-    
-    override func tearDown()
-    {
-        self.session.invalidateAndCancel()
-        self.session = nil
-        
-        self.operationQueue.cancelAllOperations()
-        self.operationQueue = nil
+
+    // MARK: - Properties
+
+    private var session: URLSession!
+
+    private var operationQueue: OperationQueue!
+
+    override func setUp() {
+        super.setUp()
+        session = URLSession(configuration: .default)
+        operationQueue = OperationQueue()
+    }
+
+    override func tearDown() {
+        session.invalidateAndCancel()
+        session = nil
+
+        operationQueue.cancelAllOperations()
+        operationQueue = nil
         super.tearDown()
     }
-    
-    
-    func testTheOperationIsAsynchronous()
-    {
-        let url = URL(string:"https://httpbin.org/image/jpeg")!
+
+    func testTheOperationIsAsynchronous() {
+        let url = URL(string: "https://httpbin.org/image/jpeg")!
         let task = self.session.dataTask(with: url)
         let taskOperation = URLSessionTaskOperation(with: task)
-        
-        XCTAssert(taskOperation.isAsynchronous == true, "URLSessionTaskOperation are thought to be async")
+
+        XCTAssertTrue(taskOperation.isAsynchronous, "URLSessionTaskOperation are thought to be async")
     }
-    
-    
-    func testCancelingAnOperation()
-    {
-        let url = URL(string:"https://httpbin.org/image/jpeg")!
+
+    func testCancelingAnOperation() {
+        let url = URL(string: "https://httpbin.org/image/jpeg")!
         let task = self.session.dataTask(with: url)
         let taskOperation = URLSessionTaskOperation(with: task)
-        
-        self.operationQueue.isSuspended = true
-        self.operationQueue.addOperation(taskOperation)
+
+        operationQueue.isSuspended = true
+        operationQueue.addOperation(taskOperation)
         taskOperation.cancel()
-        
-        XCTAssert(taskOperation.isCancelled == true)
+
+        XCTAssertTrue(taskOperation.isCancelled)
     }
-    
-    
-    func testStartingAnOperationAfterItWasCancelled()
-    {
+
+    func testStartingAnOperationAfterItWasCancelled() {
         let exp = expectation(description: "Completion handler should be called with a cancel error")
-        
-        let url = URL(string:"https://httpbin.org/image/jpeg")!
-        let task = self.session.dataTask(with: url)
-        { (data, response, error) in
-            if  data == nil,
-                response == nil,
-                let error = error as NSError?,
-                error.code == NSURLErrorCancelled
-            {
+
+        let url = URL(string: "https://httpbin.org/image/jpeg")!
+        let task = self.session.dataTask(with: url) { (data, response, error) in
+            if data == nil,
+               response == nil,
+               let error = error as NSError?,
+               error.code == NSURLErrorCancelled {
                 exp.fulfill()
             }
         }
+
         let taskOperation = URLSessionTaskOperation(with: task)
-        
-        self.operationQueue.isSuspended = true
-        self.operationQueue.addOperation(taskOperation)
-        
+
+        operationQueue.isSuspended = true
+        operationQueue.addOperation(taskOperation)
+
         taskOperation.cancel()
-        self.operationQueue.isSuspended = false
-        
-        XCTAssert(taskOperation.isCancelled == true)
-        wait(for: [exp], timeout: ExpectationTimeout)
+        operationQueue.isSuspended = false
+
+        XCTAssertTrue(taskOperation.isCancelled)
+
+        wait(for: [exp], timeout: Constant.ExpectationTimeout)
     }
 }

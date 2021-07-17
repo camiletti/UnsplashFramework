@@ -22,80 +22,66 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class PhotoDownloadRequestTests: XCTestCase {
 
-class PhotoDownloadRequestTests: XCTestCase
-{
-    func testEqualityWithEqualPhotoAndSize()
-    {
-        let photo = DemoData.getValidSamplePhoto()
+    func testEqualityWithEqualPhotoAndSize() {
+        let photo = DemoData.validSamplePhoto
         let photoSize = UNPhotoImageSize.full
-        
+
         let photoRequestA = PhotoDownloadRequest(photo: photo, size: photoSize)
         let photoRequestB = PhotoDownloadRequest(photo: photo, size: photoSize)
-        
+
         XCTAssert(photoRequestA == photoRequestB)
     }
-    
-    
-    func testEqualityWithDifferentPhotosButSameSize()
-    {
-        let photosArray = DemoData.validMultiplePhotosArray()
+
+    func testEqualityWithDifferentPhotosButSameSize() {
+        let photosArray = DemoData.validMultiplePhotosArray
         let photoSize = UNPhotoImageSize.full
-        
+
         let photoRequestA = PhotoDownloadRequest(photo: photosArray[0], size: photoSize)
         let photoRequestB = PhotoDownloadRequest(photo: photosArray[1], size: photoSize)
-        
+
         XCTAssert((photoRequestA == photoRequestB) == false)
     }
-    
-    
-    func testEqualityWithTheSamePhotosButDifferentSize()
-    {
-        let photo = DemoData.getValidSamplePhoto()
-        
+
+    func testEqualityWithTheSamePhotosButDifferentSize() {
+        let photo = DemoData.validSamplePhoto
+
         let photoRequestA = PhotoDownloadRequest(photo: photo, size: .raw)
         let photoRequestB = PhotoDownloadRequest(photo: photo, size: .full)
-        
+
         XCTAssert((photoRequestA == photoRequestB) == false)
     }
-    
-    
-    func testInequalityWithEqualPhotoAndSize()
-    {
-        let photo = DemoData.getValidSamplePhoto()
+
+    func testInequalityWithEqualPhotoAndSize() {
+        let photo = DemoData.validSamplePhoto
         let photoSize = UNPhotoImageSize.full
-        
+
         let photoRequestA = PhotoDownloadRequest(photo: photo, size: photoSize)
         let photoRequestB = PhotoDownloadRequest(photo: photo, size: photoSize)
-        
+
         XCTAssert((photoRequestA != photoRequestB) == false)
     }
-    
-    
-    func testInequalityWithDifferentPhotosButSameSize()
-    {
-        let photosArray = DemoData.validMultiplePhotosArray()
+
+    func testInequalityWithDifferentPhotosButSameSize() {
+        let photosArray = DemoData.validMultiplePhotosArray
         let photoSize = UNPhotoImageSize.full
-        
+
         let photoRequestA = PhotoDownloadRequest(photo: photosArray[0], size: photoSize)
         let photoRequestB = PhotoDownloadRequest(photo: photosArray[1], size: photoSize)
-        
+
         XCTAssert(photoRequestA != photoRequestB)
     }
-    
-    
-    func testInequalityWithTheSamePhotosButDifferentSize()
-    {
-        let photo = DemoData.getValidSamplePhoto()
-        
+
+    func testInequalityWithTheSamePhotosButDifferentSize() {
+        let photo = DemoData.validSamplePhoto
+
         let photoRequestA = PhotoDownloadRequest(photo: photo, size: .raw)
         let photoRequestB = PhotoDownloadRequest(photo: photo, size: .full)
-        
+
         XCTAssert(photoRequestA != photoRequestB)
     }
-    
 }

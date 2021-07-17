@@ -22,43 +22,36 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class UNErrorReasonTests: XCTestCase {
 
-class UNErrorReasonTests: XCTestCase
-{
-    private let allReasons : [UNErrorReason] = [.serverNotReached,
-                                                .serverError(nil),
-                                                .unableToParseDataCorrectly,
-                                                .unknownServerResponse,
-                                                .unknownError,
-                                                .credentialsNotSet]
-    
-    
-    func testEquality()
-    {
-        for i in 0..<self.allReasons.count
-        {
-            let reasonA = self.allReasons[i]
-            let reasonB = self.allReasons[i]
-            
+    // MARK: - Properties
+
+    private let allReasons: [UnsplashFramework.UNError.Reason] = [.serverNotReached,
+                                                                  .serverError(nil),
+                                                                  .unableToParseDataCorrectly,
+                                                                  .unknownServerResponse,
+                                                                  .unknownError,
+                                                                  .credentialsNotSet]
+
+    func testEquality() {
+        for i in 0 ..< allReasons.count {
+            let reasonA = allReasons[i]
+            let reasonB = allReasons[i]
+
             XCTAssert(reasonA == reasonB)
         }
     }
-    
-    
-    func testInequality()
-    {
-        for i in 0..<self.allReasons.count-1
-        {
-            let reason = self.allReasons[i]
-            
-            for j in i+1..<self.allReasons.count
-            {
+
+    func testInequality() {
+        for i in 0 ..< allReasons.count - 1 {
+            let reason = allReasons[i]
+
+            for j in (i + 1) ..< allReasons.count {
                 let reasonToCompare = self.allReasons[j]
-                
+
                 XCTAssert(reason != reasonToCompare)
             }
         }

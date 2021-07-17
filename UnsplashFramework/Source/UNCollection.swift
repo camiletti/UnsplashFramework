@@ -22,105 +22,92 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import UIKit
-
-
 /// Holds all the information about a collection.
-public struct UNCollection
-{
-    
-    // MARK: - Properties
-    
-    /// The unique identifier of the collection.
-    public   var id            : Int
-    
-    /// The title of the collection.
-    public   var title         : String?
-    
-    /// Date when the collection was published.
-    public   var publishedDate : Date?
-    
-    /// Date when the collection was last updated.
-    public   var updatedDate   : Date?
-    
-    /// Boolean value indicating whether the collection is curated.
-    public   var isCurated     : Bool
-    
-    /// Cover photo of the collection.
-    public   var coverPhoto    : UNPhoto?
-    
-    /// User that owns the collection.
-    public   var user          : UNUser
-    
-    /// API locations.
-    internal var apiLocations  : UNCollectionAPILocations
-    
-    
-    /// Codable poperty mapping.
-    internal enum CodingKeys: String, CodingKey
-    {
-        case id            = "id"
-        case title         = "title"
+public struct UNCollection: Decodable {
+
+    // MARK: - Declarations
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
         case publishedDate = "published_at"
-        case updatedDate   = "updated_at"
-        case isCurated     = "curated"
-        case coverPhoto    = "cover_photo"
-        case user          = "user"
-        case apiLocations  = "links"
+        case updatedDate = "updated_at"
+        case isCurated = "curated"
+        case coverPhoto = "cover_photo"
+        case user
+        case apiLocations = "links"
     }
-}
 
+    // MARK: - Properties
 
-extension UNCollection: Decodable
-{
+    /// The unique identifier of the collection.
+    public var id: Int
+
+    /// The title of the collection.
+    public var title: String?
+
+    /// Date when the collection was published.
+    public var publishedDate: Date?
+
+    /// Date when the collection was last updated.
+    public var updatedDate: Date?
+
+    /// Boolean value indicating whether the collection is curated.
+    public var isCurated: Bool
+
+    /// Cover photo of the collection.
+    public var coverPhoto: UNPhoto?
+
+    /// User that owns the collection.
+    public var user: UNUser
+
+    /// API locations.
+    var apiLocations: UNCollectionAPILocations
+
+    // MARK: - Life Cycle
+
+    init(id: Int, title: String?, publishedDate: Date?, updatedDate: Date?, isCurated: Bool, coverPhoto: UNPhoto?, user: UNUser, apiLocations: UNCollectionAPILocations) {
+        self.id = id
+        self.title = title
+        self.publishedDate = publishedDate
+        self.updatedDate = updatedDate
+        self.isCurated = isCurated
+        self.coverPhoto = coverPhoto
+        self.user = user
+        self.apiLocations = apiLocations
+    }
+
     /// Creates a new instance by decoding from the given decoder.
     ///
     /// - Parameter decoder: Swift's decoder.
     /// - Throws: If a value that is non-optional is missing the function will throw.
-    public init(from decoder: Decoder) throws
-    {
-        // Create date formatter
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = ResponseDateFormat
-        
-        // Decode each value
+    public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try values.decode(Int.self, forKey: .id)
-        self.title = try? values.decode(String.self, forKey: .title)
-        if let publishedDateString = try? values.decode(String.self, forKey: .publishedDate)
-        {
-            self.publishedDate = dateFormatter.date(from: publishedDateString)
-        }
-        if let updatedDateString = try? values.decode(String.self, forKey: .updatedDate)
-        {
-            self.updatedDate = dateFormatter.date(from: updatedDateString)
-        }
-        self.isCurated = try values.decode(Bool.self, forKey: .isCurated)
-        self.coverPhoto = try? values.decode(UNPhoto.self, forKey: .coverPhoto)
-        self.user = try values.decode(UNUser.self, forKey: .user)
-        self.apiLocations = try values.decode(UNCollectionAPILocations.self, forKey: .apiLocations)
+        id = try values.decode(Int.self, forKey: .id)
+        title = try? values.decode(String.self, forKey: .title)
+        publishedDate = try? values.decode(Date.self, forKey: .publishedDate)
+        updatedDate = try? values.decode(Date.self, forKey: .updatedDate)
+        isCurated = try values.decode(Bool.self, forKey: .isCurated)
+        coverPhoto = try? values.decode(UNPhoto.self, forKey: .coverPhoto)
+        user = try values.decode(UNUser.self, forKey: .user)
+        apiLocations = try values.decode(UNCollectionAPILocations.self, forKey: .apiLocations)
     }
 }
 
+// MARK: - Equatable
+extension UNCollection: Equatable {
 
-extension UNCollection: Equatable
-{
-    
     /// Returns a Boolean value indicating whether the two collections represent the same collection.
     ///
     /// Discussion: Two collections are considered to be the same if they represent
     /// the same collection; that is, if they have the same id, regardless
     /// if the other variables are different.
-    public static func ==(lhs: UNCollection, rhs: UNCollection) -> Bool
-    {
-        return lhs.id == rhs.id
+    public static func == (lhs: UNCollection, rhs: UNCollection) -> Bool {
+        lhs.id == rhs.id
     }
-    
-    
+
     /// Returns a Boolean value indicating whether two collections don't represent the same collection.
-    public static func !=(lhs: UNCollection, rhs: UNCollection) -> Bool
-    {
-        return !(lhs == rhs)
+    public static func != (lhs: UNCollection, rhs: UNCollection) -> Bool {
+        !(lhs == rhs)
     }
 }

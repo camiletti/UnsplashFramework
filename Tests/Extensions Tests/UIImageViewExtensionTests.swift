@@ -22,70 +22,59 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class UIImageViewExtensionTests: XCTestCase {
 
-class UIImageViewExtensionTests: XCTestCase
-{
-    
-    override func setUp()
-    {
+    override func setUp() {
         super.setUp()
-        
         UNClient.shared.setAppID(UnsplashKeys.appID, secret: UnsplashKeys.secret)
     }
-    
-    
-    func testSettingTheImageFromAPhoto()
-    {
+
+    func testSettingTheImageFromAPhoto() {
         let checkExpectationIsFulfill = 10.0
         let expectationTimeout = checkExpectationIsFulfill + 5.0
-        
+
         let imageSetExpectation = expectation(description: "Image should be set")
-        
-        let photo = DemoData.getValidSamplePhoto()
+
+        let photo = DemoData.validSamplePhoto
         let size = UNPhotoImageSize.thumb
-        
+
         let imageView = UIImageView()
-        
+
         XCTAssert(imageView.image == nil)
         imageView.setImage(from: photo, inSize: size)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + checkExpectationIsFulfill)
-        {
-            if imageView.image != nil
-            {
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + checkExpectationIsFulfill) {
+            if imageView.image != nil {
                 imageSetExpectation.fulfill()
             }
         }
+
         wait(for: [imageSetExpectation], timeout: expectationTimeout)
     }
-    
-    
-    func testSettingTheImageFromAnInvalidPhoto()
-    {
+
+    func testSettingTheImageFromAnInvalidPhoto() {
         let checkExpectationIsFulfill = 10.0
         let expectationTimeout = checkExpectationIsFulfill + 10.0
-        
+
         let imageSetExpectation = expectation(description: "Image should not be set")
-        
-        let photo = DemoData.getInvalidPhoto()
+
+        let photo = DemoData.invalidPhoto
         let size = UNPhotoImageSize.thumb
-        
+
         let imageView = UIImageView()
-        
+
         XCTAssert(imageView.image == nil)
         imageView.setImage(from: photo, inSize: size)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + checkExpectationIsFulfill)
-        {
-            if imageView.image == nil
-            {
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + checkExpectationIsFulfill) {
+            if imageView.image == nil {
                 imageSetExpectation.fulfill()
             }
         }
+
         wait(for: [imageSetExpectation], timeout: expectationTimeout)
     }
 }

@@ -22,52 +22,45 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
 import Foundation
 
+final class MockURLSessionDataTask: URLSessionDataTask {
 
-class MockURLSessionDataTask: URLSessionDataTask
-{
-    
     // MARK: - Properties
-    
-    private let mockedData     : Data?
-    private let mockedResponse : URLResponse?
-    private let mockedError    : Error?
-    
-    private let completionHandler : (Data?, URLResponse?, Error?) -> Void
-    
+
+    private let mockedData: Data?
+
+    private let mockedResponse: URLResponse?
+
+    private let mockedError: Error?
+
+    private let completionHandler: (Data?, URLResponse?, Error?) -> Void
+
     /// Simulates the queue where the session task is executed
     private let dispatchQueue = DispatchQueue.global(qos: .background)
-    
-    
-    // MARK: - Initializers
-    
+
+    // MARK: - Life Cycle
+
     init(mockedData: Data?,
          mockedResponse: URLResponse?,
          mockedError: Error?,
-         completion: @escaping (Data?, URLResponse?, Error?) -> Void)
-    {
+         completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
         self.mockedData        = mockedData
         self.mockedResponse    = mockedResponse
         self.mockedError       = mockedError
         self.completionHandler = completion
-        
+
         super.init()
     }
-    
-    
+
     // MARK: - Overriden functions
-    
-    override func resume()
-    {
+
+    override func resume() {
         let simulatedNetworkDelayTime = 1.0
-        self.dispatchQueue.asyncAfter(deadline: .now() + simulatedNetworkDelayTime)
-        {
+        dispatchQueue.asyncAfter(deadline: .now() + simulatedNetworkDelayTime) {
             self.completionHandler(self.mockedData,
                                    self.mockedResponse,
                                    self.mockedError)
         }
     }
-    
 }

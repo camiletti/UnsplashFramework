@@ -22,74 +22,63 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
-
-
 /// Holds the API URLs for a user.
-internal struct UNUserAPILocations: Decodable
-{
-    
-    // MARK: - Properties
-    
-    /// User's profile URL. Accessible through the API.
-    internal var apiProfileURL   : URL
-    
-    /// User's photos URL. Accessible only through the API.
-    internal var apiPhotosURL    : URL
-    
-    /// User's likes URL. Accessible only through the API.
-    internal var apiLikesURL     : URL
-    
-    /// User's portfolio URL. Accessible only through the API.
-    internal var apiPortfolioURL : URL
-    
-    /// Other users this user is following. Accessible only through the API.
-    internal var apiFollowingURL : URL?
-    
-    /// Followers of the user. Accessible only through the API.
-    internal var apiFollowersURL : URL?
-    
-    
-    /// User's public profile URL.
-    internal var externalProfileURL : URL
-    
-    
-    /// Codable poperty mapping.
-    internal enum CodingKeys: String, CodingKey
-    {
-        case apiProfileURL      = "self"
-        case apiPhotosURL       = "photos"
-        case apiLikesURL        = "likes"
-        case apiPortfolioURL    = "portfolio"
-        case apiFollowingURL    = "following"
-        case apiFollowersURL    = "followers"
+struct UNUserAPILocations: Decodable {
+
+    // MARK: - Declarations
+
+    enum CodingKeys: String, CodingKey {
+        case apiProfileURL = "self"
+        case apiPhotosURL = "photos"
+        case apiLikesURL = "likes"
+        case apiPortfolioURL = "portfolio"
+        case apiFollowingURL = "following"
+        case apiFollowersURL = "followers"
         case externalProfileURL = "html"
     }
+
+    // MARK: - Properties
+
+    /// User's profile URL. Accessible through the API.
+    var apiProfileURL: URL
+
+    /// User's photos URL. Accessible only through the API.
+    var apiPhotosURL: URL
+
+    /// User's likes URL. Accessible only through the API.
+    var apiLikesURL: URL
+
+    /// User's portfolio URL. Accessible only through the API.
+    var apiPortfolioURL: URL
+
+    /// Other users this user is following. Accessible only through the API.
+    var apiFollowingURL: URL?
+
+    /// Followers of the user. Accessible only through the API.
+    var apiFollowersURL: URL?
+
+    /// User's public profile URL.
+    var externalProfileURL: URL
 }
 
+// MARK: - Equatable
+extension UNUserAPILocations: Equatable {
 
-extension UNUserAPILocations: Equatable
-{
     /// Returns a Boolean value indicating whether the two UNUserAPILocations have the same
     /// value for their variables.
-    internal static func ==(lhs: UNUserAPILocations, rhs: UNUserAPILocations) -> Bool
-    {
-        return  lhs.apiProfileURL      == rhs.apiProfileURL      &&
-                lhs.apiPhotosURL       == rhs.apiPhotosURL       &&
-                lhs.apiLikesURL        == rhs.apiLikesURL        &&
-                lhs.apiPortfolioURL    == rhs.apiPortfolioURL    &&
-                lhs.apiFollowingURL    == rhs.apiFollowingURL    &&
-                lhs.apiFollowersURL    == rhs.apiFollowersURL    &&
-                lhs.externalProfileURL == rhs.externalProfileURL
+    static func == (lhs: UNUserAPILocations, rhs: UNUserAPILocations) -> Bool {
+        lhs.apiProfileURL == rhs.apiProfileURL &&
+            lhs.apiPhotosURL == rhs.apiPhotosURL &&
+            lhs.apiLikesURL == rhs.apiLikesURL &&
+            lhs.apiPortfolioURL == rhs.apiPortfolioURL &&
+            lhs.apiFollowingURL == rhs.apiFollowingURL &&
+            lhs.apiFollowersURL == rhs.apiFollowersURL &&
+            lhs.externalProfileURL == rhs.externalProfileURL
     }
-    
-    
+
     /// Returns a Boolean value indicating whether the two UNUserAPILocations have at least
     /// one value different.
-    internal static func !=(lhs: UNUserAPILocations, rhs: UNUserAPILocations) -> Bool
-    {
-        return !(lhs == rhs)
+    static func != (lhs: UNUserAPILocations, rhs: UNUserAPILocations) -> Bool {
+        !(lhs == rhs)
     }
-    
 }

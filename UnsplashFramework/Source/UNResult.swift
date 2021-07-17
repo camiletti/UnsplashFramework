@@ -22,16 +22,10 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
-
-
 /// Enum representing the result of a given query.
-public enum UNResult <T>
-{
+public enum UNResult<T> {
     /// Successful query result with the obtained information.
     case success(T)
-    
     /// Failed query result with the reason of failure.
     case failure(UNError)
 }

@@ -22,13 +22,9 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
-
-
 /// Protocol that an object must to conform to in order to make some of the requests.
-public protocol UNImageRequester: class
-{
+public protocol UNImageRequester: AnyObject {
+
     /// Function called when the UNClient has finished with the request.
     ///
     /// - Parameters:

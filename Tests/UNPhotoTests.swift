@@ -22,54 +22,45 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class UNPhotoTests: XCTestCase {
 
-class UNPhotoTests: XCTestCase
-{
-    func testInequality()
-    {
-        var photoA = DemoData.getValidSamplePhoto()
+    func testInequality() {
+        var photoA = DemoData.validSamplePhoto
         var photoB = photoA
-        
+
         photoA.id = "A"
         photoB.id = "B"
-        
+
         XCTAssert(photoA != photoB, "Photos with same values but different IDs should not be equal")
     }
-    
-    
-    func testHashForSamePhoto()
-    {
-        let photoA = DemoData.getValidSamplePhoto()
+
+    func testHashForSamePhoto() {
+        let photoA = DemoData.validSamplePhoto
         let photoB = photoA
-        
+
         XCTAssert(photoA.hashValue == photoB.hashValue)
     }
-    
-    
-    func testThatTheHashValueForPhotosWithSameIDIsTheSameEvenIfTheOtherVariablesAreDifferent()
-    {
-        var photoA = DemoData.getValidSamplePhoto()
-        var photoB = DemoData.getInvalidPhoto()
-        
+
+    func testThatTheHashValueForPhotosWithSameIDIsTheSameEvenIfTheOtherVariablesAreDifferent() {
+        var photoA = DemoData.validSamplePhoto
+        var photoB = DemoData.invalidPhoto
+
         photoA.id = "A"
         photoB.id = "B"
-        
+
         XCTAssert(photoA.hashValue != photoB.hashValue)
     }
-    
-    
-    func testHashForDifferentPhotos()
-    {
-        var photoA = DemoData.getValidSamplePhoto()
+
+    func testHashForDifferentPhotos() {
+        var photoA = DemoData.validSamplePhoto
         var photoB = photoA
-        
+
         photoA.id = "A"
         photoB.id = "B"
-        
+
         XCTAssert(photoA.hashValue != photoB.hashValue)
     }
 }

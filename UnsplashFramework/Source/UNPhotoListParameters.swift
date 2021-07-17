@@ -22,45 +22,42 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
-
-
 /// The parameters' names and values that can be passed to Unsplash in a query.
-internal struct UNPhotoListParameters
-{
-    /// The requested page parameter's name.
-    static let pageNumberName = "page"
-    
-    /// Amount of photos per page parameter's name.
-    static let photosPerPageName = "per_page"
-    
-    /// The sort order parameter's name.
-    static let sortOrderName = "order_by"
-    
-    
+struct UNPhotoListParameters {
+
+    // MARK: - Declarations
+
+    enum QueryParameterName {
+        /// The requested page parameter's name.
+        static let pageNumberName = "page"
+        /// Amount of photos per page parameter's name.
+        static let photosPerPageName = "per_page"
+        /// The sort order parameter's name.
+        static let sortOrderName = "order_by"
+    }
+
+    // MARK: - Properties
+
     /// The requested page.
-    let pageNumber    : Int
-    
+    let pageNumber: Int
+
     /// The desired amount of photos per page.
-    let photosPerPage : Int
-    
+    let photosPerPage: Int
+
     /// The desired sort order of the query's result.
-    let sortOrder     : UNSort
+    let sortOrder: UNSort
 }
 
+// MARK: - ParametersURLRepresentable
+extension UNPhotoListParameters: ParametersURLRepresentable {
 
-extension UNPhotoListParameters: ParametersURLRepresentable
-{
-    func asQueryItems() -> [URLQueryItem]
-    {
-        return [
-            URLQueryItem(name: UNPhotoListParameters.pageNumberName,
-                         value: "\(self.pageNumber)"),
-            URLQueryItem(name: UNPhotoListParameters.photosPerPageName,
-                         value: "\(self.photosPerPage)"),
-            URLQueryItem(name: UNPhotoListParameters.sortOrderName,
-                         value: "\(self.sortOrder.rawValue)")
+    func asQueryItems() -> [URLQueryItem] {
+        [URLQueryItem(name: QueryParameterName.pageNumberName,
+                      value: "\(pageNumber)"),
+         URLQueryItem(name: QueryParameterName.photosPerPageName,
+                      value: "\(photosPerPage)"),
+         URLQueryItem(name: QueryParameterName.sortOrderName,
+                      value: "\(sortOrder.rawValue)")
         ]
     }
 }

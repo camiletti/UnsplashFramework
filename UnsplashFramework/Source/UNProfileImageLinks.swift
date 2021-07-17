@@ -22,44 +22,37 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
 import Foundation
 
-
 /// Holds the URLs for the different sizes of the user's profile image
-public struct UNProfileImageLinks: Decodable
-{
-    
+public struct UNProfileImageLinks: Decodable {
+
     // MARK: - Properties
-    
+
     /// 32 by 32 pixels.
-    public var small  : URL?
-    
+    public var small: URL?
+
     /// 64 by 64 pixels.
-    public var medium : URL?
-    
+    public var medium: URL?
+
     /// 128 by 128 pixels.
-    public var big    : URL?
+    public var big: URL?
 }
 
+// MARK: - Equatable
+extension UNProfileImageLinks: Equatable {
 
-extension UNProfileImageLinks: Equatable
-{
     /// Returns a Boolean value indicating whether the two UNProfileImageLinks have the same
     /// value for their variables.
-    public static func ==(lhs: UNProfileImageLinks, rhs: UNProfileImageLinks) -> Bool
-    {
-        return  lhs.small  == rhs.small  &&
-                lhs.medium == rhs.medium &&
-                lhs.big    == rhs.big
+    public static func == (lhs: UNProfileImageLinks, rhs: UNProfileImageLinks) -> Bool {
+        lhs.small == rhs.small  &&
+            lhs.medium == rhs.medium &&
+            lhs.big == rhs.big
     }
-    
-    
+
     /// Returns a Boolean value indicating whether the two UNProfileImageLinks have at least
     /// one value different.
-    public static func !=(lhs: UNProfileImageLinks, rhs: UNProfileImageLinks) -> Bool
-    {
-        return !(lhs == rhs)
+    public static func != (lhs: UNProfileImageLinks, rhs: UNProfileImageLinks) -> Bool {
+        !(lhs == rhs)
     }
-    
 }

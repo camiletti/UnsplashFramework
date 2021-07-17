@@ -22,8 +22,10 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
 import PackageDescription
 
+//swiftlint:disable prefixed_toplevel_constant
 
-let package = Package(name: "UnsplashFramework", dependencies : [], exclude: ["Tests"])
+let package = Package(name: "UnsplashFramework", dependencies: [], exclude: ["Tests"])
+
+//swiftlint:enable prefixed_toplevel_constant

@@ -22,47 +22,21 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
-
-
 /// Holds the API URLs for a category.
-public struct UNCategoryAPILocations: Decodable
-{
-    
-    // MARK: - Properties
-    
-    /// Category's location. Accessible only through the API.
-    public var apiCategoryURL         : URL
-    
-    /// Location for the photos associated to the category. Accessible only through the API.
-    public var apiPhotosInCategoryURL : URL
-    
-    
-    /// Codable poperty mapping.
-    internal enum CodingKeys: String, CodingKey
-    {
-        case apiCategoryURL         = "self"
+public struct UNCategoryAPILocations: Decodable, Equatable {
+
+    // MARK: - Declarations
+
+    enum CodingKeys: String, CodingKey {
+        case apiCategoryURL = "self"
         case apiPhotosInCategoryURL = "photos"
     }
-}
 
+    // MARK: - Properties
 
-extension UNCategoryAPILocations: Equatable
-{
-    /// Returns a Boolean value indicating whether the two UNCategoryAPILocations have the same
-    /// value for their variables.
-    public static func ==(lhs: UNCategoryAPILocations, rhs: UNCategoryAPILocations) -> Bool
-    {
-        return  lhs.apiCategoryURL         == rhs.apiCategoryURL         &&
-                lhs.apiPhotosInCategoryURL == rhs.apiPhotosInCategoryURL
-    }
-    
-    
-    /// Returns a Boolean value indicating whether the two UNCategoryAPILocations have at least
-    /// one value different.
-    public static func !=(lhs: UNCategoryAPILocations, rhs: UNCategoryAPILocations) -> Bool
-    {
-        return !(lhs == rhs)
-    }
+    /// Category's location. Accessible only through the API.
+    public var apiCategoryURL: URL
+
+    /// Location for the photos associated to the category. Accessible only through the API.
+    public var apiPhotosInCategoryURL: URL
 }

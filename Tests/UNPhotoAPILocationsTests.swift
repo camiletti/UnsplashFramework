@@ -22,37 +22,32 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class UNPhotoAPILocationsTests: XCTestCase {
 
-class UNPhotoAPILocationsTests: XCTestCase
-{
-    func testEquality()
-    {
-        var photoAPILocationsA = DemoData.getInvalidPhotoAPILocations()
+    func testEquality() {
+        var photoAPILocationsA = DemoData.invalidPhotoAPILocations
         var photoAPILocationsB = photoAPILocationsA
-        
+
         XCTAssert(photoAPILocationsA == photoAPILocationsB)
-        
+
         photoAPILocationsA.apiDownloadURL = URL(string: "http://api.unsplash.com/1")!
         photoAPILocationsB.apiDownloadURL = URL(string: "http://api.unsplash.com/2")!
-        
+
         XCTAssert((photoAPILocationsA == photoAPILocationsB) == false)
     }
-    
-    
-    func testInequality()
-    {
-        var photoAPILocationsA = DemoData.getInvalidPhotoAPILocations()
+
+    func testInequality() {
+        var photoAPILocationsA = DemoData.invalidPhotoAPILocations
         var photoAPILocationsB = photoAPILocationsA
-        
+
         XCTAssert((photoAPILocationsA != photoAPILocationsB) == false)
-        
+
         photoAPILocationsA.apiDownloadURL = URL(string: "http://api.unsplash.com/1")!
         photoAPILocationsB.apiDownloadURL = URL(string: "http://api.unsplash.com/2")!
-        
+
         XCTAssert(photoAPILocationsA != photoAPILocationsB)
     }
 }

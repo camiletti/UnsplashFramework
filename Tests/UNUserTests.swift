@@ -22,51 +22,44 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class UNUserTests: XCTestCase {
 
-class UNUserTests: XCTestCase
-{
-    func testEquality()
-    {
-        var userA = DemoData.getInvalidUser()
+    func testEquality() {
+        var userA = DemoData.invalidUser
         var userB = userA
-        
+
         XCTAssert(userA == userB)
         XCTAssert(userB == userA)
-        
+
         userA.id = "A"
         userB.id = "B"
-        
+
         XCTAssert((userA == userB) == false)
         XCTAssert((userB == userA) == false)
     }
-    
-    
-    func testInequality()
-    {
-        var userA = DemoData.getInvalidUser()
+
+    func testInequality() {
+        var userA = DemoData.invalidUser
         var userB = userA
-        
+
         XCTAssert((userA != userB) == false)
         XCTAssert((userB != userA) == false)
-        
+
         userA.id = "A"
         userB.id = "B"
-        
+
         XCTAssert(userA != userB)
         XCTAssert(userB != userA)
     }
-    
-    
-    func testProfileImage()
-    {
-        let userAPILocations = DemoData.getInvalidUserAPILocations()
-        var user = DemoData.getInvalidUser()
+
+    func testProfileImage() {
+        let userAPILocations = DemoData.invalidUserAPILocations
+        var user = DemoData.invalidUser
         user.apiLocations = userAPILocations
-        
+
         XCTAssert(user.profileURL == userAPILocations.externalProfileURL)
     }
 }

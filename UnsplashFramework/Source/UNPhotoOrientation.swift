@@ -22,19 +22,12 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
-
-
 /// Available orientations.
-public enum UNPhotoOrientation: String
-{
+public enum UNPhotoOrientation: String {
     /// Landscape orientation
-    case landscape = "landscape"
-    
+    case landscape
     /// Portrait orientation
-    case portrait  = "portrait"
-    
+    case portrait
     /// Squarish orientation
-    case squarish  = "squarish"
+    case squarish
 }

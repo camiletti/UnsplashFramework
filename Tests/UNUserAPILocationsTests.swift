@@ -22,37 +22,32 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class UNUserAPILocationsTests: XCTestCase {
 
-class UNUserAPILocationsTests: XCTestCase
-{
-    func testEquality()
-    {
-        var userLocationA = DemoData.getInvalidUserAPILocations()
+    func testEquality() {
+        var userLocationA = DemoData.invalidUserAPILocations
         var userLocationB = userLocationA
-        
+
         XCTAssert(userLocationA == userLocationB)
-        
+
         userLocationA.apiFollowersURL = URL(string: "http://api.unsplash.com/1")!
         userLocationB.apiFollowersURL = URL(string: "http://api.unsplash.com/2")!
-        
+
         XCTAssert((userLocationA == userLocationB) == false)
     }
-    
-    
-    func testInequality()
-    {
-        var userLocationA = DemoData.getInvalidUserAPILocations()
+
+    func testInequality() {
+        var userLocationA = DemoData.invalidUserAPILocations
         var userLocationB = userLocationA
-        
+
         XCTAssert((userLocationA != userLocationB) == false)
-        
+
         userLocationA.apiFollowersURL = URL(string: "http://api.unsplash.com/1")!
         userLocationB.apiFollowersURL = URL(string: "http://api.unsplash.com/2")!
-        
+
         XCTAssert(userLocationA != userLocationB)
     }
 }

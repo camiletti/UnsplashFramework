@@ -22,88 +22,67 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
 @testable import UnsplashFramework
 
+final class MockURLSession: URLSession {
 
-enum MockedCondition
-{
-    case unexpectedData
-}
+    // MARK: - Declaration
 
+    enum MockedCondition {
+        case unexpectedData
+    }
 
-class MockURLSession: URLSession
-{
-    
     // MARK: - Properties
-    
-    private let mockedCondition : MockedCondition
-    
-    
-    // MARK: Initializers
-    
-    init(mocking mockedCondition: MockedCondition)
-    {
+
+    private let mockedCondition: MockedCondition
+
+    // MARK: Life Cycle
+
+    init(mocking mockedCondition: MockedCondition) {
         self.mockedCondition = mockedCondition
-        
         super.init()
     }
-    
-    
+
     // MARK: - Mocked dataTask functions
-    
+
     override func dataTask(with request: URLRequest,
-                           completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
-    {
-        switch self.mockedCondition
-        {
+                           completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
+        switch mockedCondition {
         case .unexpectedData:
-            let mockedData = self.unexpectedJSONData()
-            let mockedResponse = self.successHTTPResponse(with: request.url!)
+            let mockedData = unexpectedJSONData()
+            let mockedResponse = successHTTPResponse(with: request.url!)
             return MockURLSessionDataTask(mockedData: mockedData,
                                           mockedResponse: mockedResponse,
                                           mockedError: nil,
                                           completion: completionHandler)
         }
     }
-    
-    
+
     // MARK: - Unmocked dataTask functions
-    
-    override func dataTask(with request: URLRequest) -> URLSessionDataTask
-    {
+
+    override func dataTask(with request: URLRequest) -> URLSessionDataTask {
         fatalError("MockURLSession: Function was not mocked yet")
     }
-    
-    
-    override func dataTask(with url: URL) -> URLSessionDataTask
-    {
+
+    override func dataTask(with url: URL) -> URLSessionDataTask {
         fatalError("MockURLSession: Function was not mocked yet")
     }
-    
-    
+
     override func dataTask(with url: URL,
-                           completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
-    {
+                           completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
         fatalError("MockURLSession: Function was not mocked yet")
     }
-    
-    
+
     // MARK: - Helpers
-    
-    private func successHTTPResponse(with url: URL) -> HTTPURLResponse
-    {
-        return HTTPURLResponse(url: url,
-                               statusCode: ResponseStatusCode.success.rawValue,
-                               httpVersion: nil,
-                               headerFields: ["Content-Type" : "application/json"])!
+
+    private func successHTTPResponse(with url: URL) -> HTTPURLResponse {
+        HTTPURLResponse(url: url,
+                        statusCode: ResponseStatusCode.success.rawValue,
+                        httpVersion: nil,
+                        headerFields: ["Content-Type": "application/json"])!
     }
-    
-    
-    private func unexpectedJSONData() -> Data
-    {
-        return "!(#£$^&*^%$£@".data(using: .utf8)!
+
+    private func unexpectedJSONData() -> Data {
+        "!(#£$^&*^%$£@".data(using: .utf8)!
     }
-    
 }

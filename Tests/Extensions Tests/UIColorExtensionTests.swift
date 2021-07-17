@@ -22,70 +22,59 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class UIColorExtensionTests: XCTestCase {
 
-class UIColorExtensionTests: XCTestCase
-{
-    func testInitializationWithValidHexValueOf12Bits() // RGB
-    {
+    func testInitializationWithValidHexValueOf12Bits() { // RGB
         let hexValue = "#0AF"
-        let correctColor = UIColor(red:0.0/255.0, green:170.0/255.0, blue:255.0/255.0, alpha:1.0)
-        
+        let correctColor = UIColor(red: 0.0 / 255.0, green: 170.0 / 255.0, blue: 255.0 / 255.0, alpha: 1.0)
+
         let colorToTest = UIColor(hexString: hexValue)
-        
+
         XCTAssert(colorToTest.isEqual(correctColor))
     }
-    
-    
-    func testInitializationWithValidHexValueOf24Bits() // RGB
-    {
+
+    func testInitializationWithValidHexValueOf24Bits() { // RGB
         let hexValue = "#4286f4"
-        let correctColor = UIColor(red:66.0/255, green:134.0/255.0, blue:244.0/255.0, alpha:1.0)
-        
+        let correctColor = UIColor(red: 66.0 / 255, green: 134.0 / 255.0, blue: 244.0 / 255.0, alpha: 1.0)
+
         let colorToTest = UIColor(hexString: hexValue)
-        
+
         XCTAssert(colorToTest.isEqual(correctColor))
     }
-    
-    
-    func testInitializationWithValidHexValueOf32Bits() // ARGB
-    {
+
+    func testInitializationWithValidHexValueOf32Bits() { // ARGB
         let hexValue = "#324286f4"
-        let correctColor = UIColor(red:66.0/255, green:134.0/255.0, blue:244.0/255.0, alpha:50/255)
-        
+        let correctColor = UIColor(red: 66.0 / 255, green: 134.0 / 255.0, blue: 244.0 / 255.0, alpha: 50 / 255)
+
         let colorToTest = UIColor(hexString: hexValue)
-        
+
         print("\(colorToTest)")
-        
+
         XCTAssert(colorToTest.isEqual(correctColor))
     }
-    
-    
-    func testInitializationWithInvalidHexValue()
-    {
+
+    func testInitializationWithInvalidHexValue() {
         let hexValue = "#ZZZZZZ"
-        let correctColor = UIColor(red:0, green:0, blue:0, alpha:1.0)
-        
+        let correctColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
+
         let colorToTest = UIColor(hexString: hexValue)
-        
+
         print("\(colorToTest)")
-        
+
         XCTAssert(colorToTest.isEqual(correctColor))
     }
-    
-    
-    func testInitializationWithLongInvalidHexValue()
-    {
+
+    func testInitializationWithLongInvalidHexValue() {
         let hexValue = "#324286f48192"
-        let correctColor = UIColor(red:0, green:0, blue:0, alpha:1.0)
-        
+        let correctColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
+
         let colorToTest = UIColor(hexString: hexValue)
-        
+
         print("\(colorToTest)")
-        
+
         XCTAssert(colorToTest.isEqual(correctColor))
     }
 }

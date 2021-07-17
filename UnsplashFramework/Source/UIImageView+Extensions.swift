@@ -22,43 +22,35 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
 #if os(iOS) || os(tvOS)
 
 import UIKit
 
-
-public extension UIImageView
-{
+extension UIImageView {
     /// Sets the image from the given photo in the specified size.
     ///
     /// - Parameters:
     ///   - photo: The photo that represents the image to be set.
     ///   - size: The size of the image.
-    func setImage(from photo: UNPhoto, inSize size: UNPhotoImageSize)
-    {
+    public func setImage(from photo: UNPhoto, inSize size: UNPhotoImageSize) {
         UNClient.shared.fetchDataImageExclusively(from: photo,
                                                   inSize: size,
                                                   for: self)
     }
 }
 
+// MARK: - UNImageRequester
+extension UIImageView: UNImageRequester {
 
-extension UIImageView: UNImageRequester
-{
     public func clientDidCompleteExclusiveImageRequest(for photo: UNPhoto,
                                                        in size: UNPhotoImageSize,
                                                        dataImage: Data?,
-                                                       error: UNError?)
-    {
-        if  error == nil,
-            let dataImage = dataImage,
-            let image = UIImage(data: dataImage)
-        {
+                                                       error: UNError?) {
+        if error == nil,
+           let dataImage = dataImage,
+           let image = UIImage(data: dataImage) {
             self.image = image
-        }
-        else
-        {
+        } else {
             print("UIImageView: Couldn't set the image from the photo \(photo) due to:")
             print(String(describing: error))
         }

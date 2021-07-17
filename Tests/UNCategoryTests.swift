@@ -22,40 +22,35 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class UNCategoryTests: XCTestCase {
 
-class UNCategoryTests: XCTestCase
-{
-    func testEquality()
-    {
-        var categoryA = DemoData.getInvalidCategory()
+    func testEquality() {
+        var categoryA = DemoData.invalidCategory
         var categoryB = categoryA
-        
+
         XCTAssert(categoryA == categoryB)
         XCTAssert(categoryB == categoryA)
-        
+
         categoryA.id = 123
         categoryB.id = 987
-        
+
         XCTAssert((categoryA == categoryB) == false)
         XCTAssert((categoryB == categoryA) == false)
     }
-    
-    
-    func testInequality()
-    {
-        var categoryA = DemoData.getInvalidCategory()
+
+    func testInequality() {
+        var categoryA = DemoData.invalidCategory
         var categoryB = categoryA
-        
+
         XCTAssert((categoryA != categoryB) == false)
         XCTAssert((categoryB != categoryA) == false)
-        
+
         categoryA.id = 123
         categoryB.id = 987
-        
+
         XCTAssert(categoryA != categoryB)
         XCTAssert(categoryB != categoryA)
     }

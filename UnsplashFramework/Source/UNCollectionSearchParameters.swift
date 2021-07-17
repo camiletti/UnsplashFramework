@@ -22,45 +22,40 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
-
-
 /// The parameters' names and values that can be passed to Unsplash in a search.
-internal struct UNCollectionSearchParameters
-{
-    /// The requested query parameter's name.
-    static let queryName = "query"
-    
-    /// The requested page parameter's name.
-    static let pageNumberName = "page"
-    
-    /// Amount of collections per page parameter's name.
-    static let collectionsPerPageName  = "per_page"
-    
-    
+struct UNCollectionSearchParameters {
+
+    // MARK: - Declarations
+
+    private enum QueryParameterName {
+        /// The requested query parameter's name.
+        static let queryName = "query"
+        /// The requested page parameter's name.
+        static let pageNumberName = "page"
+        /// Amount of collections per page parameter's name.
+        static let collectionsPerPageName = "per_page"
+    }
+
     /// Words that describe the collections to be searched.
-    let query         : String
-    
+    let query: String
+
     /// The requested page.
-    let pageNumber    : Int
-    
+    let pageNumber: Int
+
     /// The desired amount of collections per page.
-    let collectionsPerPage : Int
+    let collectionsPerPage: Int
 }
 
+// MARK: - ParametersURLRepresentable
+extension UNCollectionSearchParameters: ParametersURLRepresentable {
 
-extension UNCollectionSearchParameters: ParametersURLRepresentable
-{
-    func asQueryItems() -> [URLQueryItem]
-    {
-        return [
-            URLQueryItem(name: UNCollectionSearchParameters.queryName,
-                         value: "\(self.query)"),
-            URLQueryItem(name: UNCollectionSearchParameters.pageNumberName,
-                         value: "\(self.pageNumber)"),
-            URLQueryItem(name: UNCollectionSearchParameters.collectionsPerPageName,
-                         value: "\(self.collectionsPerPage)")
+    func asQueryItems() -> [URLQueryItem] {
+        [URLQueryItem(name: QueryParameterName.queryName,
+                      value: "\(self.query)"),
+         URLQueryItem(name: QueryParameterName.pageNumberName,
+                      value: "\(self.pageNumber)"),
+         URLQueryItem(name: QueryParameterName.collectionsPerPageName,
+                      value: "\(self.collectionsPerPage)")
         ]
     }
 }
-

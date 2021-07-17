@@ -22,116 +22,99 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
-
-
 /// Accepted sizes of a photo.
-public enum UNPhotoImageSize
-{
+public enum UNPhotoImageSize {
     /// Raw size.
     case raw
-    
     /// Full size.
     case full
-    
     /// Regular size.
     case regular
-    
     /// Small size.
     case small
-    
     /// Thumb size.
     case thumb
 }
 
-
 /// Holds the URLs for the same image in different sizes and quality.
-internal struct UNPhotoImageLinks: Decodable
-{
-    
+struct UNPhotoImageLinks: Decodable {
+
+    // MARK: - Declarations
+
+    enum CodingKeys: String, CodingKey {
+        case rawURL = "raw"
+        case fullURL = "full"
+        case regularURL = "regular"
+        case smallURL = "small"
+        case thumbURL = "thumb"
+    }
+
     // MARK: - Properties
-    
+
     /// Original image without any scaling nor quality reduction.
-    internal var rawURL     : URL
-    
+    var rawURL: URL
+
     /// Original size but quality reduction to 85%.
     /// The retrieved image will be jpg.
-    internal var fullURL    : URL
-    
+    var fullURL: URL
+
     /// 80% quality and width of 1080 pixels. The height will
     /// be the appropriate maintaining the aspect ratio.
     /// The retrieved image will be jpg.
-    internal var regularURL : URL
-    
+    var regularURL: URL
+
     /// 80% quality and width of 400 pixels. The height will
     /// be the appropriate maintaining the aspect ratio.
     /// The retrieved image will be jpg.
-    internal var smallURL   : URL
-    
+    var smallURL: URL
+
     /// 80% quality and width of 200 pixels. The height will
     /// be the appropriate maintaining the aspect ratio.
     /// The retrieved image will be jpg.
-    internal var thumbURL   : URL
-    
-    
-    /// Codable poperty mapping.
-    internal enum CodingKeys: String, CodingKey
-    {
-        case rawURL     = "raw"
-        case fullURL    = "full"
-        case regularURL = "regular"
-        case smallURL   = "small"
-        case thumbURL   = "thumb"
-    }
-    
-    
-    
+    var thumbURL: URL
+
+    // MARK: - Actions
+
     /// Convenient function to get the URL for a given size.
     ///
     /// - Parameter size: The desired size.
     /// - Returns: The URL for the specified size.
-    internal func url(forSize size: UNPhotoImageSize) -> URL
-    {
-        switch size
-        {
+    func url(forSize size: UNPhotoImageSize) -> URL {
+        switch size {
         case .raw:
-            return self.rawURL
-            
+            return rawURL
+
         case .full:
-            return self.fullURL
-            
+            return fullURL
+
         case .regular:
-            return self.regularURL
-            
+            return regularURL
+
         case .small:
-            return self.smallURL
-            
+            return smallURL
+
         case .thumb:
-            return self.thumbURL
+            return thumbURL
         }
     }
 }
 
+// MARK: - Equatable
+extension UNPhotoImageLinks: Equatable {
 
-extension UNPhotoImageLinks: Equatable
-{
     /// Returns a Boolean value indicating whether the two UNPhotoImageLinks have the same
     /// value for their variables.
-    internal static func ==(lhs: UNPhotoImageLinks, rhs: UNPhotoImageLinks) -> Bool
-    {
-        return  lhs.rawURL     == rhs.rawURL     &&
-                lhs.fullURL    == rhs.fullURL    &&
-                lhs.regularURL == rhs.regularURL &&
-                lhs.smallURL   == rhs.smallURL   &&
-                lhs.thumbURL   == rhs.thumbURL
+    static func == (lhs: UNPhotoImageLinks, rhs: UNPhotoImageLinks) -> Bool {
+        lhs.rawURL == rhs.rawURL &&
+            lhs.fullURL == rhs.fullURL &&
+            lhs.regularURL == rhs.regularURL &&
+            lhs.smallURL == rhs.smallURL &&
+            lhs.thumbURL == rhs.thumbURL
     }
-    
-    
+
     /// Returns a Boolean value indicating whether the two UNPhotoImageLinks have at least
     /// one value different.
-    internal static func !=(lhs: UNPhotoImageLinks, rhs: UNPhotoImageLinks) -> Bool
-    {
-        return !(lhs == rhs)
+    static func != (lhs: UNPhotoImageLinks, rhs: UNPhotoImageLinks) -> Bool {
+        !(lhs == rhs)
     }
 }

@@ -22,19 +22,12 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
-
-
 /// Available sorting options for a query.
-public enum UNSort: String
-{
+public enum UNSort: String {
     /// Ordered by date from the latest to the oldest.
-    case latest  = "latest"
-    
+    case latest
     /// Ordered by date from the oldest to the latest.
-    case oldest  = "oldest"
-    
+    case oldest
     /// Ordered by popularity
-    case popular = "popular"
+    case popular
 }

@@ -22,52 +22,25 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
-
-
 /// Holds the API URLs for a collection.
-internal struct UNCollectionAPILocations: Decodable
-{
-    
-    // MARK: - Properties
-    
-    /// Collection's location. Accessible only through the API.
-    internal var apiCollectionURL         : URL
-    
-    /// Location for the photos contained in the collection. Accessible only through the API.
-    internal var apiPhotosInCollectionURL : URL
-    
-    /// Collection's public url.
-    internal var externalCollectionURL    : URL
-    
-    
-    /// Codable poperty mapping.
-    internal enum CodingKeys: String, CodingKey
-    {
-        case apiCollectionURL         = "self"
+struct UNCollectionAPILocations: Decodable, Equatable {
+
+    // MARK: - Declarations
+
+    enum CodingKeys: String, CodingKey {
+        case apiCollectionURL = "self"
         case apiPhotosInCollectionURL = "photos"
-        case externalCollectionURL    = "html"
+        case externalCollectionURL = "html"
     }
-}
 
+    // MARK: - Properties
 
-extension UNCollectionAPILocations: Equatable
-{
-    /// Returns a Boolean value indicating whether the two UNCollectionAPILocations have the same
-    /// value for their variables.
-    internal static func ==(lhs: UNCollectionAPILocations, rhs: UNCollectionAPILocations) -> Bool
-    {
-        return  lhs.apiCollectionURL     == rhs.apiCollectionURL         &&
-            lhs.apiPhotosInCollectionURL == rhs.apiPhotosInCollectionURL &&
-            lhs.externalCollectionURL    == rhs.externalCollectionURL
-    }
-    
-    
-    /// Returns a Boolean value indicating whether the two UNCollectionAPILocations have at least
-    /// one value different.
-    internal static func !=(lhs: UNCollectionAPILocations, rhs: UNCollectionAPILocations) -> Bool
-    {
-        return !(lhs == rhs)
-    }
+    /// Collection's location. Accessible only through the API.
+    var apiCollectionURL: URL
+
+    /// Location for the photos contained in the collection. Accessible only through the API.
+    var apiPhotosInCollectionURL: URL
+
+    /// Collection's public url.
+    var externalCollectionURL: URL
 }

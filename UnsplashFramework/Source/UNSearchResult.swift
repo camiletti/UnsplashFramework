@@ -20,31 +20,25 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
-
-
 /// Holds the result returned from Unsplash for a given search.
-public struct UNSearchResult<Element: Decodable>: Decodable
-{
-    
-    // MARK: - Properties
-    
-    /// The total amount of elements found for the given search.
-    public let totalElements : Int
-    
-    /// The total number of pages of elements found for the given search.
-    public let totalPages    : Int
-    
-    /// The elements contained in the requested page.
-    public let elements      : [Element]
-    
-    
-    /// Codable poperty mapping.
-    internal enum CodingKeys: String, CodingKey
-    {
+public struct UNSearchResult<Element: Decodable>: Decodable {
+
+    // MARK: - Declarations
+
+    enum CodingKeys: String, CodingKey {
         case totalElements = "total"
-        case totalPages    = "total_pages"
-        case elements      = "results"
+        case totalPages = "total_pages"
+        case elements = "results"
     }
+
+    // MARK: - Properties
+
+    /// The total amount of elements found for the given search.
+    public let totalElements: Int
+
+    /// The total number of pages of elements found for the given search.
+    public let totalPages: Int
+
+    /// The elements contained in the requested page.
+    public let elements: [Element]
 }

@@ -22,19 +22,16 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
 import Foundation
 
+extension URLComponents {
 
-extension URLComponents
-{
     /// Convenient way to initialize an URLComponents for an Unsplash request.
-    init(unsplashQuery queryItems: [URLQueryItem]?, withPath path: String)
-    {
+    init(unsplashQuery queryItems: [URLQueryItem]?, withPath path: String) {
         self.init()
-        
-        self.scheme = APIScheme
-        self.host = APILocation
+
+        self.scheme = APIComponent.scheme
+        self.host = APIComponent.location
         self.queryItems = queryItems
         self.path = path
     }

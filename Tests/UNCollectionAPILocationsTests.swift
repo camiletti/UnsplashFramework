@@ -22,37 +22,32 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class UNCollectionAPILocationsTests: XCTestCase {
 
-class UNCollectionAPILocationsTests: XCTestCase
-{
-    func testEquality()
-    {
-        var collectionLocationA = DemoData.getInvalidCollectionAPILocations()
+    func testEquality() {
+        var collectionLocationA = DemoData.invalidCollectionAPILocations
         var collectionLocationB = collectionLocationA
-        
+
         XCTAssert(collectionLocationA == collectionLocationB)
-        
+
         collectionLocationA.apiCollectionURL = URL(string: "http://api.unsplash.com/1")!
         collectionLocationB.apiCollectionURL = URL(string: "http://api.unsplash.com/2")!
-        
+
         XCTAssert((collectionLocationA == collectionLocationB) == false)
     }
-    
-    
-    func testInequality()
-    {
-        var collectionLocationA = DemoData.getInvalidCollectionAPILocations()
+
+    func testInequality() {
+        var collectionLocationA = DemoData.invalidCollectionAPILocations
         var collectionLocationB = collectionLocationA
-        
+
         XCTAssert((collectionLocationA != collectionLocationB) == false)
-        
+
         collectionLocationA.apiCollectionURL = URL(string: "http://api.unsplash.com/1")!
         collectionLocationB.apiCollectionURL = URL(string: "http://api.unsplash.com/2")!
-        
+
         XCTAssert(collectionLocationA != collectionLocationB)
     }
 }

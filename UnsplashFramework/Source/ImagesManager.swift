@@ -22,52 +22,42 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
-
-
 /// Fetches the image of a photo.
 ///
 /// Discussion: This class is specially here in case in the future
 /// a caching system is implemented. That way the cache would be
 /// consulted before creating a network request.
-internal class ImagesManager
-{
-    
+class ImagesManager {
+
     // MARK: - Properties
-    
+
     private let imageDownloadManager: ImageDownloadManager
-    
-    
-    // MARK: - Initializers
-    
+
+    // MARK: - Life Cycle
+
     /// Creates a new manager with the specified credentials.
     ///
     /// - Parameter credentials: The Unsplash client credentials.
-    init(withCredentials credentials: UNCredentials)
-    {
-        self.imageDownloadManager = ImageDownloadManager(withCredentials: credentials)
+    init(withCredentials credentials: UNCredentials) {
+        imageDownloadManager = ImageDownloadManager(withCredentials: credentials)
     }
-    
-    
+
     // MARK: - Retrieving images
-    
+
     /// Fetches the image corresponding to the photo on the specified size.
     ///
     /// - Parameters:
     ///   - photo: The photo to download the image from.
     ///   - size: One of the available sizes for the image to be downloaded.
     ///   - completion: The completion closure to handle the result. The image will be passed as a Data.
-    internal func dataImage(from photo: UNPhoto,
-                            inSize size: UNPhotoImageSize,
-                            completion: @escaping UNFetchDataImageClosure)
-    {
-        self.imageDownloadManager.fetchDataImage(for: photo,
-                                                 inSize: size,
-                                                 completion: completion)
+    func dataImage(from photo: UNPhoto,
+                   inSize size: UNPhotoImageSize,
+                   completion: @escaping UNFetchDataImageClosure) {
+        imageDownloadManager.fetchDataImage(for: photo,
+                                            inSize: size,
+                                            completion: completion)
     }
-    
-    
+
     /// Fetches the image in the specified size that corresponds to the passed photo. The requester will
     /// be called when the image is ready. This function is exclusive since the requester will only have
     /// one active request at a time. Any new request by the same object will cancel the previous one.
@@ -76,12 +66,11 @@ internal class ImagesManager
     ///   - photo: The photo that corresponds to the desired image.
     ///   - size: The size of the image to be downloaded.
     ///   - requester: The object that is interested in the image and the one who will be called back.
-    internal func dataImageExclusivelyRequest(from photo: UNPhoto,
-                                              inSize size: UNPhotoImageSize,
-                                              for requester: UNImageRequester)
-    {
-        self.imageDownloadManager.fetchDataImageExclusively(from: photo,
-                                                            inSize: size,
-                                                            for: requester)
+    func dataImageExclusivelyRequest(from photo: UNPhoto,
+                                     inSize size: UNPhotoImageSize,
+                                     for requester: UNImageRequester) {
+        imageDownloadManager.fetchDataImageExclusively(from: photo,
+                                                       inSize: size,
+                                                       for: requester)
     }
 }

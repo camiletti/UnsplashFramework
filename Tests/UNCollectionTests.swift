@@ -22,40 +22,35 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class UNCollectionTests: XCTestCase {
 
-class UNCollectionTests: XCTestCase
-{
-    func testEquality()
-    {
-        var collectionA = DemoData.getInvalidCollection()
+    func testEquality() {
+        var collectionA = DemoData.invalidCollection
         var collectionB = collectionA
-        
+
         XCTAssert(collectionA == collectionB)
         XCTAssert(collectionB == collectionA)
-        
+
         collectionA.id = 123
         collectionB.id = 987
-        
+
         XCTAssert((collectionA == collectionB) == false)
         XCTAssert((collectionB == collectionA) == false)
     }
-    
-    
-    func testInequality()
-    {
-        var collectionA = DemoData.getInvalidCollection()
+
+    func testInequality() {
+        var collectionA = DemoData.invalidCollection
         var collectionB = collectionA
-        
+
         XCTAssert((collectionA != collectionB) == false)
         XCTAssert((collectionB != collectionA) == false)
-        
+
         collectionA.id = 123
         collectionB.id = 987
-        
+
         XCTAssert(collectionA != collectionB)
         XCTAssert(collectionB != collectionA)
     }

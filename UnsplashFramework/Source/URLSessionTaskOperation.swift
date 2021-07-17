@@ -22,167 +22,152 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import Foundation
-
-
-/// Representation of the states the operation can be at.
-private enum OperationState
-{
-    /// The operation is ready to start.
-    case ready
-    
-    /// The operation is being executed.
-    case executing
-    
-    /// The operation has finished.
-    case finished
-    
-    /// The operation has been cancelled.
-    case cancelled
-}
-
-
 /// An operation that is charge of handling a URLSessionTask.
-class URLSessionTaskOperation: Operation
-{
-    
+final class URLSessionTaskOperation: Operation {
+
+    // MARK: - Declarations
+
+    /// Representation of the states the operation can be at.
+    private enum OperationState {
+        /// The operation is ready to start.
+        case ready
+        /// The operation is being executed.
+        case executing
+        /// The operation has finished.
+        case finished
+        /// The operation has been cancelled.
+        case cancelled
+    }
+
     // MARK: - Properties
-    
+
     /// The task to be executed.
     let task: URLSessionTask
-    
+
     /// A Boolean value indicating whether the operation executes its task asynchronously.
-    override var isAsynchronous : Bool { return true }
-    
+    override var isAsynchronous: Bool {
+        true
+    }
+
     /// Current state of the operation. This computed variable should be access when reading
     /// and writing the state value since it's thread safe.
-    private var state : OperationState
-    {
-        get
-        {
-            return self.state🔐.runCriticalScope
-            {
-                return self._state
+    private var state: OperationState {
+        get {
+            stateLock.runCriticalScope {
+                self._state
             }
         }
-        
-        set
-        {
-            self.state🔐.runCriticalScope
-            {
-                if self._state != .finished
-                {
-                    self._state = newValue
+
+        set {
+            stateLock.runCriticalScope {
+                if _state != .finished {
+                    _state = newValue
                 }
             }
         }
     }
+
     /// Lock to prevent race conditions when reading and writing the state.
-    private let state🔐 = NSRecursiveLock()
-    
+    private let stateLock = NSRecursiveLock()
+
     /// Current state of the operation.
-    private var _state : OperationState = .ready
-    {
-        willSet
-        {
-            if let keyPath = self.keyPath(forState: self._state) { willChangeValue(forKey: keyPath) }
-            if let keyPath = self.keyPath(forState: newValue)    { willChangeValue(forKey: keyPath) }
+    private var _state: OperationState = .ready {
+        willSet {
+            if let keyPath = keyPath(forState: _state) {
+                willChangeValue(forKey: keyPath)
+            }
+
+            if let keyPath = keyPath(forState: newValue) {
+                willChangeValue(forKey: keyPath)
+            }
         }
-        
-        didSet
-        {
-            if let keyPath = self.keyPath(forState: oldValue)    { didChangeValue(forKey: keyPath) }
-            if let keyPath = self.keyPath(forState: self._state) { didChangeValue(forKey: keyPath) }
+
+        didSet {
+            if let keyPath = keyPath(forState: oldValue) {
+                didChangeValue(forKey: keyPath)
+            }
+
+            if let keyPath = keyPath(forState: _state) {
+                didChangeValue(forKey: keyPath)
+            }
         }
     }
-    
+
     /// A Boolean value indicating whether the operation is currently executing.
-    override var isExecuting : Bool { return self.state == .executing }
-    
+    override var isExecuting: Bool {
+        state == .executing
+    }
+
     /// A Boolean value indicating whether the operation has finished executing its task.
-    override var isFinished  : Bool { return self.state == .finished  }
-    
+    override var isFinished: Bool {
+        state == .finished
+    }
+
     // isReady: For this case we don't need to override it as we are not doing any internal preparation.
-    override var isCancelled : Bool { return self.state == .cancelled }
-    
+    override var isCancelled: Bool {
+        state == .cancelled
+    }
+
     /// Observation for the state changes of the task.
-    private var taskStateObservation : NSKeyValueObservation?
-    
-    
-    // MARK: - Initializers
-    
+    private var taskStateObservation: NSKeyValueObservation?
+
+    // MARK: - Life Cycle
+
     /// Creates an operation that will run the specified task.
-    init(with task: URLSessionTask)
-    {
+    init(with task: URLSessionTask) {
         self.task = task
         super.init()
     }
-    
-    
-    // MARK: - Life cycle
-    
+
     /// Begins the execution of the operation.
-    override func start()
-    {
-        guard self.isCancelled == false else
-        {
+    override func start() {
+        guard !isCancelled else {
             return
         }
-        
-        assert(self.task.state == .suspended, "🚫 URLSessionTaskOperation: The task was externally resumed")
-        
-        self.state = .executing
-        
-        self.taskStateObservation = task.observe(\.state)
-        { (task, change) in
-            
-            if task.state == .completed
-            {
+
+        assert(task.state == .suspended, "🚫 URLSessionTaskOperation: The task was externally resumed")
+
+        state = .executing
+
+        taskStateObservation = task.observe(\.state) { (task: URLSessionTask, _: NSKeyValueObservedChange<URLSessionTask.State>) in
+            if task.state == .completed {
                 self.finish()
             }
         }
-        
+
         task.resume()
     }
-    
-    
+
     /// Called at the end of the operation's execution.
-    func finish()
-    {
+    func finish() {
         self.state = .finished
     }
-    
-    
+
     /// Advises the operation object that it should stop executing its task.
-    override func cancel()
-    {
-        self.taskStateObservation?.invalidate()
-        self.task.cancel()
-        self.state = .cancelled
+    override func cancel() {
+        taskStateObservation?.invalidate()
+        task.cancel()
+        state = .cancelled
     }
-    
-    
+
     // MARK: - Helpers
-    
-    /// Returns the keyPath that corresponds to the state if it has been overriden.
-    private func keyPath(forState state: OperationState) -> String?
-    {
+
+    /// Returns the keyPath that corresponds to the state if it has been overridden.
+    private func keyPath(forState state: OperationState) -> String? {
         // Not using Swift 4's KeyPath notation as currently
         // has issues. Update in the future when is working fine.
         // Link: https://forums.developer.apple.com/thread/79683
-        
-        switch state
-        {
+
+        switch state {
         case .ready:
             return nil // We are not overriding isReady
-            
+
         case .executing:
             return #keyPath(isExecuting)
-            
+
         case .finished:
             return #keyPath(isFinished)
-            
+
         case .cancelled:
             return #keyPath(isCancelled)
         }

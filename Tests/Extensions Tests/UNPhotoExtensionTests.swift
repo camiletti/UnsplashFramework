@@ -22,35 +22,30 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
-import XCTest
 @testable import UnsplashFramework
+import XCTest
 
+final class UNPhotoExtensionTests: XCTestCase {
 
-class UNPhotoExtensionTests: XCTestCase
-{
-    func testColor()
-    {
+    func testColor() {
         let hexColorToTest  = "#0033FF"
-        let equivalentColor = UIColor(red:0.0, green:0.2, blue:1.0, alpha:1.0)
-        
-        var validPhoto = DemoData.getValidSamplePhoto()
+        let equivalentColor = UIColor(red: 0.0, green: 0.2, blue: 1.0, alpha: 1.0)
+
+        var validPhoto = DemoData.validSamplePhoto
         validPhoto.hexColor = hexColorToTest
-        
+
         XCTAssert(validPhoto.color == equivalentColor)
     }
-    
-    
-    func testSize()
-    {
+
+    func testSize() {
         let width  = 200
         let height = 300
         let sizeToCompare = CGSize(width: CGFloat(width), height: CGFloat(height))
-        
-        var validPhoto = DemoData.getValidSamplePhoto()
+
+        var validPhoto = DemoData.validSamplePhoto
         validPhoto.width  = width
         validPhoto.height = height
-        
+
         XCTAssert(validPhoto.size == sizeToCompare)
     }
 }

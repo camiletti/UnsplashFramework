@@ -22,78 +22,70 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
-
-
 /// The parameters' names and values that can be passed to Unsplash in a search.
-internal struct UNPhotoSearchParameters
-{
-    /// The requested query parameter's name.
-    static let queryName = "query"
-    
-    /// The requested page parameter's name.
-    static let pageNumberName = "page"
-    
-    /// Amount of photos per page parameter's name.
-    static let photosPerPageName  = "per_page"
-    
-    /// Collections to narrow search parameter's name.
-    static let collectionsName = "collections"
-    
-    /// Orientation of the desired photo parameter's name.
-    static let orientationName = "orientation"
-    
-    
+struct UNPhotoSearchParameters {
+
+    // MARK: - Declarations
+
+    enum QueryParameterName {
+        /// The requested query parameter's name.
+        static let queryName = "query"
+        /// The requested page parameter's name.
+        static let pageNumberName = "page"
+        /// Amount of photos per page parameter's name.
+        static let photosPerPageName = "per_page"
+        /// Collections to narrow search parameter's name.
+        static let collectionsName = "collections"
+        /// Orientation of the desired photo parameter's name.
+        static let orientationName = "orientation"
+    }
+
+    // MARK: - Life Cycle
+
     /// Words that describe the photos to be searched.
-    let query         : String
-    
+    let query: String
+
     /// The requested page.
-    let pageNumber    : Int
-    
+    let pageNumber: Int
+
     /// The desired amount of photos per page.
-    let photosPerPage : Int
-    
+    let photosPerPage: Int
+
     /// Collections to narrow search.
-    let collections   : [UNCollection]?
-    
+    let collections: [UNCollection]?
+
     /// Orientation of the desired photo.
-    let orientation   : UNPhotoOrientation?
+    let orientation: UNPhotoOrientation?
 }
 
+// MARK: - ParametersURLRepresentable
+extension UNPhotoSearchParameters: ParametersURLRepresentable {
 
-extension UNPhotoSearchParameters: ParametersURLRepresentable
-{
-    func asQueryItems() -> [URLQueryItem]
-    {
-        var items =
-            [
-                URLQueryItem(name: UNPhotoSearchParameters.queryName,
-                             value: "\(self.query)"),
-                URLQueryItem(name: UNPhotoSearchParameters.pageNumberName,
-                             value: "\(self.pageNumber)"),
-                URLQueryItem(name: UNPhotoSearchParameters.photosPerPageName,
-                             value: "\(self.photosPerPage)")
+    func asQueryItems() -> [URLQueryItem] {
+        var items = [URLQueryItem(name: QueryParameterName.queryName,
+                                  value: "\(self.query)"),
+                     URLQueryItem(name: QueryParameterName.pageNumberName,
+                                  value: "\(self.pageNumber)"),
+                     URLQueryItem(name: QueryParameterName.photosPerPageName,
+                                  value: "\(self.photosPerPage)")
         ]
-        
+
         // In case specific collections were specified
-        if  let collections = collections,
-            collections.isEmpty == false
-        {
-            var commaSeparatedIDs = collections.reduce("") { text, collection in text + ",\(collection.id)" }
-            commaSeparatedIDs.removeFirst() // Removes the first comma
-            let collectionsItem = URLQueryItem(name: UNPhotoSearchParameters.collectionsName,
+        if let collections = collections,
+           !collections.isEmpty {
+            let commaSeparatedIDs = collections.map({ "\($0.id)" }).joined(separator: ",")
+            let collectionsItem = URLQueryItem(name: QueryParameterName.collectionsName,
                                                value: commaSeparatedIDs)
             items.append(collectionsItem)
         }
-        
+
         // In case a particular orientation was specified
-        if let orientation = self.orientation
-        {
-            let orientationItem = URLQueryItem(name: UNPhotoSearchParameters.orientationName,
+        if let orientation = self.orientation {
+            let orientationItem = URLQueryItem(name: QueryParameterName.orientationName,
                                                value: orientation.rawValue)
             items.append(orientationItem)
         }
-        
+
         return items
     }
 }

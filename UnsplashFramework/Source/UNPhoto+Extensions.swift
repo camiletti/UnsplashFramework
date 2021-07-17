@@ -22,36 +22,29 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-
 #if os(iOS) || os(tvOS) || os(watchOS)
 
 import UIKit
 
+extension UNPhoto {
 
-extension UNPhoto
-{
     /// The UIColor object that represents the hex value received from Unsplash.
-    public var color : UIColor
-    {
-        return UIColor(hexString: self.hexColor)
+    public var color: UIColor {
+        UIColor(hexString: self.hexColor)
     }
 }
 
 #endif
 
-
-
 #if os(iOS) || os(tvOS) || os(watchOS) || os(OSX)
 
 import CoreGraphics
 
+extension UNPhoto {
 
-extension UNPhoto
-{
     /// Size of the raw photo.
-    public var size : CGSize
-    {
-        return CGSize(width: self.width, height: self.height)
+    public var size: CGSize {
+        CGSize(width: self.width, height: self.height)
     }
 }
 
