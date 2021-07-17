@@ -40,7 +40,7 @@ final class MockURLSession: URLSession {
 
     init(mocking mockedCondition: MockedCondition) {
         self.mockedCondition = mockedCondition
-        super.init()
+        super.init(configuration: .default)
     }
 
     // MARK: - Mocked dataTask functions

@@ -48,7 +48,6 @@
 		6E87EE151FBF032F00DA5A0B /* UNPhotoImageLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E87EE141FBF032F00DA5A0B /* UNPhotoImageLinks.swift */; };
 		6E8D079B1FD47791006EF44A /* UNImageRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8D079A1FD47791006EF44A /* UNImageRequester.swift */; };
 		6EA4E5201FD299FA00664951 /* UNPhotoExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA4E51F1FD299FA00664951 /* UNPhotoExtensionTests.swift */; };
-		6EA4E53B1FD29E6900664951 /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED5BA991FD16C2D006F229B /* Data+Extensions.swift */; };
 		6EA4E53F1FD2DA6E00664951 /* UNCollectionAPILocationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA4E53E1FD2DA6E00664951 /* UNCollectionAPILocationsTests.swift */; };
 		6EA6C654269B70F200F3F094 /* JSONDecoder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA6C653269B70F200F3F094 /* JSONDecoder+Extensions.swift */; };
 		6EAD902C200126550053C45C /* MockURLSessionDataTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD902B200126550053C45C /* MockURLSessionDataTask.swift */; };
@@ -173,7 +172,6 @@
 		6ECFE2CE1FBDAED4009BD9B6 /* UNError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNError.swift; sourceTree = "<group>"; };
 		6ECFE2D01FBDAFE5009BD9B6 /* ResponseStatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseStatusCode.swift; sourceTree = "<group>"; };
 		6ED40F5C1FCEFBEC009380EE /* PhotoDownloadRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDownloadRequest.swift; sourceTree = "<group>"; };
-		6ED5BA991FD16C2D006F229B /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
 		6EDD8B8820066F1C006C3E1B /* UNImageFetchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNImageFetchResult.swift; sourceTree = "<group>"; };
 		F2EEA745AFFC3DFDA902A254 /* Pods_UnsplashFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnsplashFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -229,7 +227,6 @@
 		6E021BF21FD416AC00A5135C /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				6ED5BA991FD16C2D006F229B /* Data+Extensions.swift */,
 				6EBCDBF91FBDE74500BF3189 /* DemoData.swift */,
 			);
 			path = Helpers;
@@ -530,16 +527,17 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0910;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = "Pablo Camiletti";
 				TargetAttributes = {
 					6E7D08421FBCA9E20048423E = {
 						CreatedOnToolsVersion = 9.1;
-						LastSwiftMigration = 0910;
+						LastSwiftMigration = 1250;
 						ProvisioningStyle = Automatic;
 					};
 					6E7D084B1FBCA9E30048423E = {
 						CreatedOnToolsVersion = 9.1;
+						LastSwiftMigration = 1250;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -696,7 +694,6 @@
 				6EC24CE41FD302830098D159 /* PhotoDownloadRequestTests.swift in Sources */,
 				6E36AA6C1FCB0F22007095F1 /* ImageDownloadManagerTests.swift in Sources */,
 				6EC24CE71FD306890098D159 /* UNPhotoImageLinksTests.swift in Sources */,
-				6EA4E53B1FD29E6900664951 /* Data+Extensions.swift in Sources */,
 				6E82CE051FCB03DE00398FEB /* URLRequestExtensionsTests.swift in Sources */,
 				6E2B29041FD1FCBE000BB4CA /* UNCategoryTests.swift in Sources */,
 				6E36AA6A1FCB0AE3007095F1 /* QueryManagerTests.swift in Sources */,
@@ -732,6 +729,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -739,8 +737,10 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -792,6 +792,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -799,8 +800,10 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -836,7 +839,7 @@
 			baseConfigurationReference = 14AEB7445EEB4AC1563B2230 /* Pods-UnsplashFramework.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -855,7 +858,7 @@
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -865,7 +868,7 @@
 			baseConfigurationReference = 32D4E775C2E1CADAC0D43D04 /* Pods-UnsplashFramework.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -882,7 +885,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -898,7 +901,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.camiletti.UnsplashFrameworkTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -914,7 +917,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.camiletti.UnsplashFrameworkTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

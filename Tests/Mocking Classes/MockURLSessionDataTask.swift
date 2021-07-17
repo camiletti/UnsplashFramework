@@ -41,16 +41,11 @@ final class MockURLSessionDataTask: URLSessionDataTask {
 
     // MARK: - Life Cycle
 
-    init(mockedData: Data?,
-         mockedResponse: URLResponse?,
-         mockedError: Error?,
-         completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
+    init(mockedData: Data?, mockedResponse: URLResponse?, mockedError: Error?, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
         self.mockedData        = mockedData
         self.mockedResponse    = mockedResponse
         self.mockedError       = mockedError
         self.completionHandler = completion
-
-        super.init()
     }
 
     // MARK: - Overriden functions

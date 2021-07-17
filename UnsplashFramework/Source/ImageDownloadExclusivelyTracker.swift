@@ -130,7 +130,7 @@ final class ImageDownloadExclusivelyTracker {
     private func removeRequester(_ requester: UNImageRequester,
                                  fromNotificationListForRequest photoRequest: PhotoDownloadRequest) {
         if var requesters = notificationListForRequests[photoRequest],
-           let index = requesters.index(where: { $0 === requester }) {
+           let index = requesters.firstIndex(where: { $0 === requester }) {
             requesters.remove(at: index)
             notificationListForRequests[photoRequest] = requesters
         }

@@ -281,7 +281,7 @@ final class UNClientTests: XCTestCase {
                photoSize == requestedSize,
                error == nil,
                let dataImage = dataImage,
-               dataImage.isImageData {
+               UIImage(data: dataImage) != nil {
                 imageDataExpectation.fulfill()
             }
         }
