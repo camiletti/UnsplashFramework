@@ -2,7 +2,7 @@
 //  DemoData.swift
 //  UnsplashFrameworkTests
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -40,15 +40,29 @@ enum DemoData {
         dataFromJSONFile(named: "StandardPhotoList")
     }
 
-    /// Returns a list of photos and they have an associated collections.
-    ///
-    /// - Returns: JSON Data of the list of photos.
-    static var photoListOfPhotosBelongingToCollections: Data {
-        dataFromJSONFile(named: "PhotoList_PhotoBelongsToACollection")
-    }
-
     static var validMultiplePhotosArray: [UNPhoto] {
         try! JSONDecoder().decode([UNPhoto].self, from: standardPhotoListResponse)
+    }
+
+    /// Returns a sample search of photos.
+    ///
+    /// - Returns: JSON Data of the search
+    static var standardPhotoSearchResponse: Data {
+        dataFromJSONFile(named: "StandardSearchPhotoResult")
+    }
+
+    /// Returns a sample search of collections.
+    ///
+    /// - Returns: JSON Data of the search
+    static var standardCollectionSearchResponse: Data {
+        dataFromJSONFile(named: "StandardSearchCollectionResult")
+    }
+
+    /// Returns a sample search of users.
+    ///
+    /// - Returns: JSON Data of the search
+    static var standardUserSearchResponse: Data {
+        dataFromJSONFile(named: "StandardSearchUserResult")
     }
 
     // MARK: - Valid data
@@ -129,7 +143,7 @@ enum DemoData {
     }
 
     static var validCollection: UNCollection {
-        UNCollection(id: 334800,
+        UNCollection(id: "334800",
                      title: "Reflections",
                      publishedDate: nil,
                      updatedDate: nil,
@@ -215,7 +229,7 @@ enum DemoData {
 
     /// Creates an invalid collection
     static var invalidCollection: UNCollection {
-        UNCollection(id: 1234567,
+        UNCollection(id: "1234567",
                      title: "Fake collection",
                      publishedDate: Date(),
                      updatedDate: Date(),

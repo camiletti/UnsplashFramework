@@ -2,7 +2,7 @@
 //  URLRequest+Extensions.swift
 //  UnsplashFramework
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -32,24 +32,22 @@ extension URLRequest {
     ///   - parameters: The parameters for the request.
     ///   - credentials: Unsplash client credentials.
     /// - Returns: A new URLRequest containing the passed information.
-    static func publicRequest(_ method: HTTPMethod,
+    static func publicRequest(_ method: UNAPI.HTTPMethod,
                               forEndpoint endpoint: Endpoint,
-                              parameters: ParametersURLRepresentable,
-                              credentials: UNCredentials) -> URLRequest {
+                              parameters: ParametersURLRepresentable?,
+                              headers: [UNAPI.Header]) -> URLRequest {
         // Create new request
-        let url = URLComponents(unsplashQuery: parameters.asQueryItems(),
+        let url = URLComponents(unsplashQuery: parameters?.asQueryItems(),
                                 withPath: endpoint.string()).url!
         var request = URLRequest(url: url)
 
         // Set method
         request.httpMethod = method.rawValue
 
-        // Add authorization header
-        request.addValue(APIAuthorizationHeader.value(withAppID: credentials.appID),
-                         forHTTPHeaderField: APIAuthorizationHeader.field)
-
-        // Add API version header
-        request.addValue(APIVersionHeader.value, forHTTPHeaderField: APIVersionHeader.field)
+        // Add headers
+        headers.forEach { header in
+            request.addValue(header.fieldValue, forHTTPHeaderField: header.fieldName)
+        }
 
         return request
     }

@@ -2,7 +2,7 @@
 //  URLComponents+Extensions.swift
 //  UnsplashFramework
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -30,8 +30,8 @@ extension URLComponents {
     init(unsplashQuery queryItems: [URLQueryItem]?, withPath path: String) {
         self.init()
 
-        self.scheme = APIComponent.scheme
-        self.host = APIComponent.location
+        self.scheme = UNAPI.scheme
+        self.host = UNAPI.location
         self.queryItems = queryItems
         self.path = path
     }

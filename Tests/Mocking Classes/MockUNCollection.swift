@@ -1,8 +1,8 @@
 //
-//  UNImageRequesterSpy.swift
-//  UnsplashFramework
+//  MockUNCollection.swift
+//  MockUNCollection
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -23,28 +23,24 @@
 //
 
 @testable import UnsplashFramework
-import XCTest
 
-typealias UNImageRequesterSpyClosure = (_ photo: UNPhoto, _ size: UNPhotoImageSize, _ dataImage: Data?, _ error: UnsplashFramework.UNError?) -> Void
+extension UNCollection {
 
-final class UNImageRequesterSpy {
-
-    private let closure: UNImageRequesterSpyClosure
-
-    // MARK: - Life Cycle
-
-    init(with closure: @escaping UNImageRequesterSpyClosure) {
-        self.closure = closure
-    }
-}
-
-// MARK: - UNImageRequester
-extension UNImageRequesterSpy: UNImageRequester {
-
-    func clientDidCompleteExclusiveImageRequest(for photo: UNPhoto,
-                                                in size: UNPhotoImageSize,
-                                                dataImage: Data?,
-                                                error: UnsplashFramework.UNError?) {
-        closure(photo, size, dataImage, error)
+    static func mock(id: String = "1",
+                     title: String? = "A Collection",
+                     publishedDate: Date = Date(timeIntervalSince1970: 10000),
+                     updatedDate: Date? = Date(timeIntervalSince1970: 11000),
+                     isCurated: Bool = false,
+                     coverPhoto: UNPhoto? = .mock(),
+                     user: UNUser = .mock(),
+                     apiLocations: UNCollectionAPILocations = .mock()) -> UNCollection {
+        UNCollection(id: id,
+                     title: title,
+                     publishedDate: publishedDate,
+                     updatedDate: updatedDate,
+                     isCurated: isCurated,
+                     coverPhoto: coverPhoto,
+                     user: user,
+                     apiLocations: apiLocations)
     }
 }

@@ -2,7 +2,7 @@
 //  JSONParsingTests.swift
 //  UnsplashFrameworkTests
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -40,21 +40,5 @@ final class JSONParsingTests: XCTestCase {
 
         XCTAssertNotNil(photosArray)
         XCTAssert(photosArray!.count == 10)
-    }
-
-    func testJSONPhotoListWithCollectionAndCategoryParsing() {
-        let decoder = JSONDecoder.unsplashDecoder
-        let data = DemoData.photoListOfPhotosBelongingToCollections
-        var photosArray: [UNPhoto]?
-
-        do {
-            photosArray = try decoder.decode([UNPhoto].self, from: data)
-        } catch {
-            print(error)
-        }
-
-        XCTAssertNotNil(photosArray)
-        XCTAssertNotNil(photosArray?.first?.collections)
-        XCTAssertNotNil(photosArray?.first?.collections.first?.coverPhoto?.categories)
     }
 }

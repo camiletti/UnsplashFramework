@@ -20,16 +20,15 @@ The idea behind this project is to make an easy-to-use, well tested and well doc
 - [x] List photos
 - [x] Search photos
 - [x] Search collections
-- [x] Fetching images
+- [x] Search user
 - [ ] List collections
-- [ ] Search user
 - [ ] Users
 
 
 ## Requirement
 
-- iOS 10.3+
-- XCode 9.1+
+- iOS 14.5+
+- XCode 13.0+
 
 
 ## ⬇️ Installation
@@ -58,10 +57,11 @@ import UnsplashFramework
 
 ### Credentials
 
-Before doing any request, Unsplash client credentials should be set. If you haven't registed yet, you can do so [here](https://unsplash.com/developers).
+Before doing any request, the Unsplash client credentials should be set. If you haven't registered yet, you can do so [here](https://unsplash.com/developers).
 
 ```swift
-UNClient.shared.setAppID("Your_AppID", secret: "Your_Secret")
+let credentials = UNCredentials(appID: "Your_AppID", secret: "Your_Secret"
+let client = UNClient(with: credentials)
 ```
 
 
@@ -69,11 +69,10 @@ UNClient.shared.setAppID("Your_AppID", secret: "Your_Secret")
 
 
 ```swift
-UNClient.shared.listPhotos(page: 1,
-                           photosPerPage: 10,
-                           sortingBy: .popular)
-    { (result) in
-
+client.listPhotos(page: 1,
+                  photosPerPage: 10,
+                  sortingBy: .popular)
+    { result in
         switch result {
         case .success(let photos):
             photos.forEach({ (photo) in
@@ -90,56 +89,22 @@ UNClient.shared.listPhotos(page: 1,
 ### Searching photos
 
 ```swift
-UNClient.shared.searchPhotos(query: "Forest",
-                             page: 1,
-                             photosPerPage: 10,
-                             collections: nil,
-                             orientation: .landscape)
-    { (result) in
-        
+client.searchPhotos(query: "Forest",
+                    page: 1,
+                    photosPerPage: 10,
+                    collections: nil,
+                    orientation: .landscape)
+    { result in
         switch result {
         case .success(let searchResult):
-        searchResult.photos.forEach({ (photo) in
+        searchResult.photos.forEach { (photo) in
             print("Photo with ID: \(photo.id) from user: \(photo.user.username) main color: \(photo.hexColor)")
-        })
+        }
         
         case .failure(let error):
             print("Error: \(error.reason)")
         }
     }
-```
-
-
-### Fetching the image of a photo and setting it to an UIImageView
-
-For better performance and network utilization, a UNPhoto holds all the information of a photo except the image. The image of the photo can be requested independently in 5 size (raw, full, regular, small and thumb). Using the following UIImageView function will take care of the network request and setting the image as soon as it is downloaded. The main color of the photo can be set as the background while the request is in progress.
-
-```swift
-let imageView = UIImageView()
-imageView.backgroundColor = photo.color
-
-imageView.setImage(from: photo, inSize: .small)
-```
-
-
-### Fetching the image of a photo
-
-```swift
-let imageView = UIImageView()
-
-UNClient.shared.fetchImage(from: photo,
-                           inSize: .full)
-    { (result) in
-    
-    switch result
-    {
-    case .success(let imageResult):
-        imageView.image = imageResult.image
-        
-    case .failure(let error):
-        print("Error: \(error.reason)")
-    }
-}
 ```
 
 ## 📖 Documentation
@@ -157,7 +122,7 @@ UNClient.shared.fetchImage(from: photo,
 UnsplashFramework is under MIT license.
 
 ```
-Copyright 2017 Pablo Camiletti
+Copyright 2021 Pablo Camiletti
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

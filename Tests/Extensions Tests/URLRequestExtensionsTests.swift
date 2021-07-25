@@ -2,7 +2,7 @@
 //  URLRequestExtensionsTests.swift
 //  UnsplashFrameworkTests
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,9 @@ final class URLSessionExtensionsTests: XCTestCase {
     func testCreatingAPublicRequestForEveryEndpoint() {
         // Parameters
         let id = "abc"
-        let authHeaderValue = "Client-ID " + UnsplashKeys.appID
+        let credentials = UNCredentials(appID: "123", secret: "789")
+        let headers: [UNAPI.Header] = [UNAPI.Header.acceptVersion,
+                                       UNAPI.Header.authorization(appID: credentials.appID)]
         let parameters = UNPhotoListParameters(pageNumber: 1,
                                                photosPerPage: 10,
                                                sortOrder: .popular)
@@ -51,23 +53,24 @@ final class URLSessionExtensionsTests: XCTestCase {
             let expectedURL = self.expectedURL(withEndpoint: endpoint, parameters: parameters)
 
             // Function to test
-            let request = URLRequest.publicRequest(HTTPMethod.get,
+            let request = URLRequest.publicRequest(.get,
                                                    forEndpoint: endpoint,
                                                    parameters: parameters,
-                                                   credentials: UNCredentials(appID: UnsplashKeys.appID, secret: UnsplashKeys.secret))
+                                                   headers: headers)
 
             // Assertions
-            XCTAssert(request.httpMethod == HTTPMethod.get.rawValue)
+            XCTAssert(request.httpMethod == UNAPI.HTTPMethod.get.rawValue)
             XCTAssert(request.url == expectedURL)
-            XCTAssert(request.value(forHTTPHeaderField: APIAuthorizationHeader.field) == authHeaderValue)
-            XCTAssert(request.value(forHTTPHeaderField: APIVersionHeader.field) == APIVersionHeader.value)
+            headers.forEach { header in
+                XCTAssert(request.value(forHTTPHeaderField: header.fieldName) == header.fieldValue)
+            }
         }
     }
 
     // MARK: - Helpers
 
     func expectedURL(withEndpoint endpoint: Endpoint, parameters: UNPhotoListParameters) -> URL? {
-        URL(string: APIComponent.scheme + "://" + APIComponent.location + endpoint.string() + "?" +
+        URL(string: UNAPI.scheme + "://" + UNAPI.location + endpoint.string() + "?" +
                 UNPhotoListParameters.QueryParameterName.pageNumberName + "=\(parameters.pageNumber)&" +
                 UNPhotoListParameters.QueryParameterName.photosPerPageName + "=\(parameters.photosPerPage)&" +
                 UNPhotoListParameters.QueryParameterName.sortOrderName + "=\(parameters.sortOrder)")

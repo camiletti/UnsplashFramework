@@ -1,8 +1,8 @@
 //
-//  PhotoDownloadRequest.swift
-//  UnsplashFramework
+//  MockQueryManager.swift
+//  MockQueryManager
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,14 +22,20 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-/// Use to track a request related to a photo in a specific size.
-struct PhotoDownloadRequest: Hashable, Equatable {
+@testable import UnsplashFramework
 
-    // MARK: - Properties
+extension QueryManager {
 
-    /// The requested photo.
-    var photo: UNPhoto
-
-    /// The requested size of the photo.
-    var size: UNPhotoImageSize
+    static func mock(data: Data?,
+                     response: HTTPURLResponse?,
+                     error: Error?,
+                     credentials: UNCredentials,
+                     deadline: TimeInterval) -> QueryManager {
+        let urlSession = MockURLSession.mocking(data: data,
+                                                response: response,
+                                                error: error,
+                                                deadline: deadline)
+        let api = UNAPI(credentials: credentials, urlSession: urlSession)
+        return QueryManager(api: api)
+    }
 }

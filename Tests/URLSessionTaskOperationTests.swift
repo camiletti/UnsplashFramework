@@ -2,7 +2,7 @@
 //  URLSessionTaskOperationTests.swift
 //  UnsplashFramework
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ final class URLSessionTaskOperationTests: XCTestCase {
     // MARK: - Declarations
 
     enum Constant {
-        static let ExpectationTimeout = 60.0
+        static let expectationTimeout = 10.0
     }
 
     // MARK: - Properties
@@ -39,19 +39,21 @@ final class URLSessionTaskOperationTests: XCTestCase {
 
     private var operationQueue: OperationQueue!
 
-    override func setUp() {
-        super.setUp()
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+
         session = URLSession(configuration: .default)
         operationQueue = OperationQueue()
     }
 
-    override func tearDown() {
+    override func tearDownWithError() throws {
         session.invalidateAndCancel()
         session = nil
 
         operationQueue.cancelAllOperations()
         operationQueue = nil
-        super.tearDown()
+
+        try super.tearDownWithError()
     }
 
     func testTheOperationIsAsynchronous() {
@@ -97,6 +99,6 @@ final class URLSessionTaskOperationTests: XCTestCase {
 
         XCTAssertTrue(taskOperation.isCancelled)
 
-        wait(for: [exp], timeout: Constant.ExpectationTimeout)
+        wait(for: [exp], timeout: Constant.expectationTimeout)
     }
 }

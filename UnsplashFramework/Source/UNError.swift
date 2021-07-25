@@ -2,7 +2,7 @@
 //  UNError.swift
 //  UnsplashFramework
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ public struct UNError: Error {
         /// The response from the server could not be parsed.
         case unknownServerResponse
         /// No data, no response and no error was received.
-        case unknownError
+        case noDataReceived
         /// AppID and Secret were not previously set.
         case credentialsNotSet
     }
@@ -64,7 +64,7 @@ public struct UNError: Error {
         self.reasonDescriptions = reasonDescriptions
     }
 
-    // MARK: - Actions
+    // MARK: - Helpers
 
     /// Checks if the server response is an error or creates one with the passed error
     /// if it's different than nil.
@@ -74,19 +74,17 @@ public struct UNError: Error {
     ///   - error: Connection error if there was one.
     /// - Returns: Creates and returns an error if the parameter passes define one.
     static func checkIfItIsAnError(_ serverResponse: URLResponse?, and error: Error?) -> UNError? {
-        if let requestErrorUnwrapped = error {
+        if let error = error,
+           let response = serverResponse as? HTTPURLResponse,
+           ResponseStatusCode.isError(code: response.statusCode) {
+                return UNError(reason: .serverError(ResponseStatusCode(rawValue: response.statusCode)),
+                               reasonDescriptions: [error.localizedDescription])
+        } else if let error = error {
             return UNError(reason: .serverNotReached,
-                           reasonDescriptions: [requestErrorUnwrapped.localizedDescription])
-        } else if let response = serverResponse {
-            if let response = response as? HTTPURLResponse {
-                if response.statusCode != ResponseStatusCode.success.rawValue {
-                    return UNError(reason: .serverError(ResponseStatusCode(rawValue: response.statusCode)))
-                }
-            } else {
-                return UNError(reason: .unknownServerResponse)
-            }
-        } else {
-            return UNError(reason: .unknownError)
+                           reasonDescriptions: [error.localizedDescription])
+        } else if let response = serverResponse as? HTTPURLResponse,
+                  ResponseStatusCode.isError(code: response.statusCode) {
+            return UNError(reason: .serverError(ResponseStatusCode(rawValue: response.statusCode)))
         }
 
         // No errors
@@ -103,7 +101,7 @@ extension UNError.Reason: Equatable {
         case (.serverNotReached, .serverNotReached),
              (.unableToParseDataCorrectly, .unableToParseDataCorrectly),
              (.unknownServerResponse, .unknownServerResponse),
-             (.unknownError, .unknownError),
+             (.noDataReceived, .noDataReceived),
              (.credentialsNotSet, .credentialsNotSet):
             return true
 

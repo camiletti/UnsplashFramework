@@ -2,7 +2,7 @@
 //  MockURLSession.swift
 //  Unsplash Framework iOS Tests
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -26,63 +26,19 @@
 
 final class MockURLSession: URLSession {
 
-    // MARK: - Declaration
-
-    enum MockedCondition {
-        case unexpectedData
-    }
-
-    // MARK: - Properties
-
-    private let mockedCondition: MockedCondition
-
     // MARK: Life Cycle
 
-    init(mocking mockedCondition: MockedCondition) {
-        self.mockedCondition = mockedCondition
-        super.init(configuration: .default)
-    }
+    static func mocking(data: Data?,
+                        response: HTTPURLResponse?,
+                        error: Error?,
+                        deadline: TimeInterval) -> URLSession {
+        MockURLProtocol.setup(mockedData: data,
+                              mockedResponse: response,
+                              mockedError: error,
+                              deadline: deadline)
 
-    // MARK: - Mocked dataTask functions
-
-    override func dataTask(with request: URLRequest,
-                           completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
-        switch mockedCondition {
-        case .unexpectedData:
-            let mockedData = unexpectedJSONData()
-            let mockedResponse = successHTTPResponse(with: request.url!)
-            return MockURLSessionDataTask(mockedData: mockedData,
-                                          mockedResponse: mockedResponse,
-                                          mockedError: nil,
-                                          completion: completionHandler)
-        }
-    }
-
-    // MARK: - Unmocked dataTask functions
-
-    override func dataTask(with request: URLRequest) -> URLSessionDataTask {
-        fatalError("MockURLSession: Function was not mocked yet")
-    }
-
-    override func dataTask(with url: URL) -> URLSessionDataTask {
-        fatalError("MockURLSession: Function was not mocked yet")
-    }
-
-    override func dataTask(with url: URL,
-                           completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
-        fatalError("MockURLSession: Function was not mocked yet")
-    }
-
-    // MARK: - Helpers
-
-    private func successHTTPResponse(with url: URL) -> HTTPURLResponse {
-        HTTPURLResponse(url: url,
-                        statusCode: ResponseStatusCode.success.rawValue,
-                        httpVersion: nil,
-                        headerFields: ["Content-Type": "application/json"])!
-    }
-
-    private func unexpectedJSONData() -> Data {
-        "!(#£$^&*^%$£@".data(using: .utf8)!
+        let configuration = URLSessionConfiguration.default
+        configuration.protocolClasses = [MockURLProtocol.self]
+        return URLSession(configuration: configuration)
     }
 }

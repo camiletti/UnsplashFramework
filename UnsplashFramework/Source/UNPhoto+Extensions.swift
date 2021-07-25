@@ -2,7 +2,7 @@
 //  UNPhoto+UIKit.swift
 //  UnsplashFramework
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -21,20 +21,6 @@
 //  CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
-#if os(iOS) || os(tvOS) || os(watchOS)
-
-import UIKit
-
-extension UNPhoto {
-
-    /// The UIColor object that represents the hex value received from Unsplash.
-    public var color: UIColor {
-        UIColor(hexString: self.hexColor)
-    }
-}
-
-#endif
 
 #if os(iOS) || os(tvOS) || os(watchOS) || os(OSX)
 

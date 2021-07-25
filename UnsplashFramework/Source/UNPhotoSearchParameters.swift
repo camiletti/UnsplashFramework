@@ -2,7 +2,7 @@
 //  UNPhotoSearchParameters.swift
 //  UnsplashFramework
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,7 @@ struct UNPhotoSearchParameters {
         /// Amount of photos per page parameter's name.
         static let photosPerPageName = "per_page"
         /// Collections to narrow search parameter's name.
-        static let collectionsName = "collections"
+        static let collectionIDsName = "collections"
         /// Orientation of the desired photo parameter's name.
         static let orientationName = "orientation"
     }
@@ -74,7 +74,7 @@ extension UNPhotoSearchParameters: ParametersURLRepresentable {
         if let collections = collections,
            !collections.isEmpty {
             let commaSeparatedIDs = collections.map({ "\($0.id)" }).joined(separator: ",")
-            let collectionsItem = URLQueryItem(name: QueryParameterName.collectionsName,
+            let collectionsItem = URLQueryItem(name: QueryParameterName.collectionIDsName,
                                                value: commaSeparatedIDs)
             items.append(collectionsItem)
         }

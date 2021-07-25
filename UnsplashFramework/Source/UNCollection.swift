@@ -2,7 +2,7 @@
 //  UNCollection.swift
 //  UnsplashFramework
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,7 @@ public struct UNCollection: Decodable {
     // MARK: - Properties
 
     /// The unique identifier of the collection.
-    public var id: Int
+    public var id: String
 
     /// The title of the collection.
     public var title: String?
@@ -59,14 +59,14 @@ public struct UNCollection: Decodable {
     public var coverPhoto: UNPhoto?
 
     /// User that owns the collection.
-    public var user: UNUser
+    public var user: UNUser?
 
     /// API locations.
     var apiLocations: UNCollectionAPILocations
 
     // MARK: - Life Cycle
 
-    init(id: Int, title: String?, publishedDate: Date?, updatedDate: Date?, isCurated: Bool, coverPhoto: UNPhoto?, user: UNUser, apiLocations: UNCollectionAPILocations) {
+    init(id: String, title: String?, publishedDate: Date?, updatedDate: Date?, isCurated: Bool, coverPhoto: UNPhoto?, user: UNUser?, apiLocations: UNCollectionAPILocations) {
         self.id = id
         self.title = title
         self.publishedDate = publishedDate
@@ -83,13 +83,13 @@ public struct UNCollection: Decodable {
     /// - Throws: If a value that is non-optional is missing the function will throw.
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(Int.self, forKey: .id)
+        id = try values.decode(String.self, forKey: .id)
         title = try? values.decode(String.self, forKey: .title)
         publishedDate = try? values.decode(Date.self, forKey: .publishedDate)
         updatedDate = try? values.decode(Date.self, forKey: .updatedDate)
         isCurated = try values.decode(Bool.self, forKey: .isCurated)
         coverPhoto = try? values.decode(UNPhoto.self, forKey: .coverPhoto)
-        user = try values.decode(UNUser.self, forKey: .user)
+        user = try? values.decode(UNUser.self, forKey: .user)
         apiLocations = try values.decode(UNCollectionAPILocations.self, forKey: .apiLocations)
     }
 }

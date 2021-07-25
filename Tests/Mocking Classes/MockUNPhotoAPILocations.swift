@@ -1,8 +1,8 @@
 //
-//  UnsplashKeys.swift
-//  UnsplashFrameworkTests
+//  MockUNPhotoAPILocations.swift
+//  MockUNPhotoAPILocations
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,32 +22,17 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
+@testable import UnsplashFramework
 
-/// Provides Unsplash API client keys.
-///
-/// Discussion: In order to run the tests the following environment variables must be
-/// set on the Test Scheme with your personal ApplicationID and Secret from Unsplash.
-/// For more info on how to get them please check https://unsplash.com/developers
-enum UnsplashKeys {
+extension UNPhotoAPILocations {
 
-    // MARK: - Valid credentials
-
-    static var appID: String {
-        ProcessInfo.processInfo.environment["UNSPLASH_APP_ID"]!
-    }
-
-    static var secret: String {
-        ProcessInfo.processInfo.environment["UNSPLASH_SECRET"]!
-    }
-
-    // MARK: - Invalid credentials
-
-    static var invalidAppID: String {
-        ""
-    }
-
-    static var invalidSecret: String {
-        ""
+    static func mock(apiPhotoURL: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
+                     apiDownloadURL: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
+                     externalPhotoURL: URL = URL(string: "https://unsplash.com/image.jpg")!,
+                     externalDownloadURL: URL = URL(string: "https://unsplash.com/image.jpg")!) -> UNPhotoAPILocations {
+        UNPhotoAPILocations(apiPhotoURL: apiPhotoURL,
+                            apiDownloadURL: apiDownloadURL,
+                            externalPhotoURL: externalPhotoURL,
+                            externalDownloadURL: externalDownloadURL)
     }
 }

@@ -2,7 +2,7 @@
 //  QueryManager.swift
 //  UnsplashFramework
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -26,11 +26,8 @@ class QueryManager {
 
     // MARK: - Properties
 
-    /// Unsplash client credentials.
-    private let credentials: UNCredentials
-
     /// Session used for querying Unsplash.
-    private let session: URLSession
+    private let api: UNAPI
 
     // MARK: - Life Cycle
 
@@ -38,9 +35,8 @@ class QueryManager {
     ///
     /// - Parameters:
     ///   - credentials: The Unsplash client credentials.
-    init(with credentials: UNCredentials, session: URLSession = URLSession(configuration: .default)) {
-        self.credentials = credentials
-        self.session = session
+    init(api: UNAPI) {
+        self.api = api
     }
 
     /// Get a single page from the list of all photos.
@@ -50,19 +46,10 @@ class QueryManager {
     ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
     func listPhotos(with parameters: UNPhotoListParameters,
                     completion: @escaping UNPhotoListClosure) {
-        let request = URLRequest.publicRequest(.get,
-                                               forEndpoint: .photos,
-                                               parameters: parameters,
-                                               credentials: self.credentials)
-        let task = session.dataTask(with: request) { (data, response, requestError) in
-            self.processResponse(data: data,
-                                 response: response,
-                                 requestError: requestError,
-                                 decodableProtocol: [UNPhoto].self,
-                                 completion: completion)
-        }
-
-        task.resume()
+        api.request(.get,
+                    endpoint: .photos,
+                    parameters: parameters,
+                    completion: completion)
     }
 
     /// Makes a query to Unsplash.
@@ -73,47 +60,10 @@ class QueryManager {
     ///   - completion: The completion handler that will be called with the results (executed on the main thread).
     func search<T>(_ searchType: SearchType,
                    with parameters: ParametersURLRepresentable,
-                   completion: @escaping (UNResult<UNSearchResult<T>>) -> Void) {
-        let request = URLRequest.publicRequest(.get,
-                                               forEndpoint: searchType.endpoint,
-                                               parameters: parameters,
-                                               credentials: self.credentials)
-
-        let task = self.session.dataTask(with: request) { (data, response, requestError) in
-            self.processResponse(data: data,
-                                 response: response,
-                                 requestError: requestError,
-                                 decodableProtocol: UNSearchResult.self,
-                                 completion: completion)
-        }
-
-        task.resume()
-    }
-
-    /// Parses the server's response.
-    ///
-    /// - Parameters:
-    ///   - data: data received from the server.
-    ///   - response: response received from the server.
-    ///   - requestError: connection error if there was one.
-    ///   - completion: closure called with the data parsed or error if there was one  (executed on the main thread).
-    func processResponse<T: Decodable>(data: Data?,
-                                       response: URLResponse?,
-                                       requestError: Error?,
-                                       decodableProtocol: T.Type,
-                                       completion: @escaping (UNResult<T>) -> Void) {
-        var result: UNResult<T>
-        let decoder = JSONDecoder.unsplashDecoder
-
-        if let unError = UNError.checkIfItIsAnError(response, and: requestError) {
-            result = .failure(unError)
-        } else if let data = data,
-                  let decodedData = try? decoder.decode(decodableProtocol, from: data) {
-            result = .success(decodedData)
-        } else {
-            result = .failure(UNError(reason: .unableToParseDataCorrectly))
-        }
-
-        DispatchQueue.main.async { completion(result) }
+                   completion: @escaping (Result<UNSearchResult<T>, UNError>) -> Void) {
+        api.request(.get,
+                    endpoint: searchType.endpoint,
+                    parameters: parameters,
+                    completion: completion)
     }
 }

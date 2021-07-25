@@ -2,7 +2,7 @@
 //  UNCollectionTests.swift
 //  Unsplash Framework Tests
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -34,8 +34,8 @@ final class UNCollectionTests: XCTestCase {
         XCTAssert(collectionA == collectionB)
         XCTAssert(collectionB == collectionA)
 
-        collectionA.id = 123
-        collectionB.id = 987
+        collectionA.id = "123"
+        collectionB.id = "987"
 
         XCTAssert((collectionA == collectionB) == false)
         XCTAssert((collectionB == collectionA) == false)
@@ -48,8 +48,8 @@ final class UNCollectionTests: XCTestCase {
         XCTAssert((collectionA != collectionB) == false)
         XCTAssert((collectionB != collectionA) == false)
 
-        collectionA.id = 123
-        collectionB.id = 987
+        collectionA.id = "123"
+        collectionB.id = "987"
 
         XCTAssert(collectionA != collectionB)
         XCTAssert(collectionB != collectionA)

@@ -2,7 +2,7 @@
 //  ResponseStatusCode.swift
 //  UnsplashFramework
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -120,4 +120,14 @@ public enum ResponseStatusCode: Int {
     case notExtended = 509
     /// The client needs to authenticate to gain network access.
     case networkAuthenticationRequired = 511
+
+    // MARK: - Helpers
+
+    static func isSuccess(code: Int) -> Bool {
+        code >= 200 && code < 300
+    }
+
+    static func isError(code: Int) -> Bool {
+        code >= 400
+    }
 }

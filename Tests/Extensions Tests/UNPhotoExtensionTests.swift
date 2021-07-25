@@ -2,7 +2,7 @@
 //  UNPhotoExtensionTests.swift
 //  Unsplash Framework Tests
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright 2021 Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -26,16 +26,6 @@
 import XCTest
 
 final class UNPhotoExtensionTests: XCTestCase {
-
-    func testColor() {
-        let hexColorToTest  = "#0033FF"
-        let equivalentColor = UIColor(red: 0.0, green: 0.2, blue: 1.0, alpha: 1.0)
-
-        var validPhoto = DemoData.validSamplePhoto
-        validPhoto.hexColor = hexColorToTest
-
-        XCTAssert(validPhoto.color == equivalentColor)
-    }
 
     func testSize() {
         let width  = 200
