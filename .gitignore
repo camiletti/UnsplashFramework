@@ -3,6 +3,7 @@ build/
 DerivedData/
 
 ## Various settings
+.DS_Store
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -12,6 +13,9 @@ DerivedData/
 *.perspectivev3
 !default.perspectivev3
 xcuserdata/
+test-reports
+coverage.xml
+integration-test-reports
 
 ## Other
 *.moved-aside
