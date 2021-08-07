@@ -65,30 +65,33 @@ final class MockURLProtocol: URLProtocol {
     }
 
     override func startLoading() {
+        Thread.sleep(forTimeInterval: MockURLProtocol.deadline)
+
         // Set mocked data
         if let mockedData = MockURLProtocol.mockedData {
             client?.urlProtocol(self, didLoad: mockedData)
+            MockURLProtocol.mockedData = nil
         }
 
         // Set mocked response
         if let mockedResponse = MockURLProtocol.mockedResponse {
             client?.urlProtocol(self, didReceive: mockedResponse, cacheStoragePolicy: .notAllowed)
+            MockURLProtocol.mockedResponse = nil
         }
 
         // Set mocked error
         if let mockedError = MockURLProtocol.mockedError {
-            MockURLProtocol.dispatchQueue.asyncAfter(deadline: .now() + MockURLProtocol.deadline) {
-                self.client?.urlProtocol(self, didFailWithError: mockedError)
-            }
+            self.client?.urlProtocol(self, didFailWithError: mockedError)
+            MockURLProtocol.mockedError = nil
         } else {
             // Report loading has finished after the simulated amount of time
-            MockURLProtocol.dispatchQueue.asyncAfter(deadline: .now() + MockURLProtocol.deadline) {
-                self.client?.urlProtocolDidFinishLoading(self)
-            }
+            self.client?.urlProtocolDidFinishLoading(self)
         }
     }
 
     override func stopLoading() {
-        // Required but we don't want to do anything here
+        MockURLProtocol.mockedData = nil
+        MockURLProtocol.mockedResponse = nil
+        MockURLProtocol.mockedError = nil
     }
 }

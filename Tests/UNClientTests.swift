@@ -31,14 +31,12 @@ final class UNClientTests: XCTestCase {
 
     private enum Constant {
         static let requestDeadline = 0.2
-        static let expectationTimeout = 10.0
         static let credentials = UNCredentials(appID: "123", secret: "789")
     }
 
     // MARK: - Tests
 
-    func testListingPhotos() {
-        let resultExpectation = expectation(description: "An array of photos should be returned")
+    func testListingPhotos() async throws {
         // The only important parameter for this test is the data that will be returned
         let queryManager = QueryManager.mock(data: DemoData.standardPhotoListResponse,
                                              response: .mockingSuccess(endpoint: .photos,
@@ -46,26 +44,16 @@ final class UNClientTests: XCTestCase {
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline)
-
         let client = UNClient(queryManager: queryManager)
-        // None of the parameters are relevant for this test
-        client.listPhotos(page: 1,
-                          photosPerPage: 1,
-                          sortingBy: .popular,
-                          completion: { (result: Result<[UNPhoto], UnsplashFramework.UNError>) in
-            guard case .success(let photos) = result,
-                  !photos.isEmpty else {
-                      XCTFail()
-                      return
-                  }
-            resultExpectation.fulfill()
-        })
 
-        wait(for: [resultExpectation], timeout: Constant.expectationTimeout)
+        // None of the parameters are relevant for this test
+        let photos = try await client.listPhotos(page: 1,
+                                                 photosPerPage: 1,
+                                                 sortingBy: .popular)
+        XCTAssertFalse(photos.isEmpty)
     }
 
-    func testSearchPhotos() {
-        let resultExpectation = expectation(description: "A search result with photos should be returned")
+    func testSearchPhotos() async throws {
         // The only important parameter for this test is the data that will be returned
         let queryManager = QueryManager.mock(data: DemoData.standardPhotoSearchResponse,
                                              response: .mockingSuccess(endpoint: SearchType.photo.endpoint,
@@ -73,28 +61,18 @@ final class UNClientTests: XCTestCase {
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline)
-
         let client = UNClient(queryManager: queryManager)
-        // None of the parameters are relevant for this test
-        client.searchPhotos(query: "",
-                            page: 1,
-                            photosPerPage: 10,
-                            collections: [],
-                            orientation: nil,
-                            completion: { (result: Result<UNSearchResult<UNPhoto>, UnsplashFramework.UNError>) in
-            guard case .success(let searchResult) = result,
-                  !searchResult.elements.isEmpty else {
-                      XCTFail()
-                      return
-                  }
-            resultExpectation.fulfill()
-        })
 
-        wait(for: [resultExpectation], timeout: Constant.expectationTimeout)
+        // None of the parameters are relevant for this test
+        let photosSearchResult = try await client.searchPhotos(query: "",
+                                                               page: 1,
+                                                               photosPerPage: 10,
+                                                               collections: [],
+                                                               orientation: nil)
+        XCTAssertFalse(photosSearchResult.elements.isEmpty)
     }
 
-    func testSearchCollection() {
-        let resultExpectation = expectation(description: "A search result with collections should be returned")
+    func testSearchCollection() async throws {
         // The only important parameter for this test is the data that will be returned
         let queryManager = QueryManager.mock(data: DemoData.standardCollectionSearchResponse,
                                              response: .mockingSuccess(endpoint: SearchType.collection.endpoint,
@@ -102,26 +80,17 @@ final class UNClientTests: XCTestCase {
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline)
-
         let client = UNClient(queryManager: queryManager)
-        // None of the parameters are relevant for this test
-        client.searchCollections(query: "",
-                                 page: 1,
-                                 collectionsPerPage: 10,
-                                 completion: { (result: Result<UNSearchResult<UNCollection>, UnsplashFramework.UNError>) in
-            guard case .success(let searchResult) = result,
-                  !searchResult.elements.isEmpty else {
-                      XCTFail()
-                      return
-                  }
-            resultExpectation.fulfill()
-        })
 
-        wait(for: [resultExpectation], timeout: Constant.expectationTimeout)
+        // None of the parameters are relevant for this test
+        let collectionsSearchResult = try await client.searchCollections(query: "",
+                                                                         page: 1,
+                                                                         collectionsPerPage: 10)
+
+        XCTAssertFalse(collectionsSearchResult.elements.isEmpty)
     }
 
-    func testSearchUsers() {
-        let resultExpectation = expectation(description: "A search result with users should be returned")
+    func testSearchUsers() async throws {
         // The only important parameter for this test is the data that will be returned
         let queryManager = QueryManager.mock(data: DemoData.standardUserSearchResponse,
                                              response: .mockingSuccess(endpoint: SearchType.user.endpoint,
@@ -129,21 +98,13 @@ final class UNClientTests: XCTestCase {
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline)
-
         let client = UNClient(queryManager: queryManager)
-        // None of the parameters are relevant for this test
-        client.searchUsers(query: "",
-                           page: 1,
-                           usersPerPage: 10,
-                           completion: { (result: Result<UNSearchResult<UNUser>, UnsplashFramework.UNError>) in
-            guard case .success(let searchResult) = result,
-                  !searchResult.elements.isEmpty else {
-                      XCTFail()
-                      return
-                  }
-            resultExpectation.fulfill()
-        })
 
-        wait(for: [resultExpectation], timeout: Constant.expectationTimeout)
+        // None of the parameters are relevant for this test
+        let usersSearchResult = try await client.searchUsers(query: "",
+                                                             page: 1,
+                                                             usersPerPage: 10)
+
+        XCTAssertFalse(usersSearchResult.elements.isEmpty)
     }
 }

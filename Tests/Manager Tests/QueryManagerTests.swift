@@ -31,15 +31,12 @@ final class QueryManagerTests: XCTestCase {
 
     private enum Constant {
         static let requestDeadline = 0.2
-        static let expectationTimeout = 10.0
         static let credentials = UNCredentials(appID: "123", secret: "789")
     }
 
     // MARK: - Test listing photos
 
-    func testListingPhotosReturnsExpectedResponse() {
-        let dataExpectation = expectation(description: "The response should be parsed correctly")
-
+    func testListingPhotosReturnsExpectedResponse() async throws {
         let endpoint = Endpoint.photos
         let expectedData = DemoData.standardPhotoListResponse
         let expectedPhotosCount = 10
@@ -53,26 +50,14 @@ final class QueryManagerTests: XCTestCase {
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline)
 
-        let completion: UNPhotoListClosure = { (result: Result<[UNPhoto], UnsplashFramework.UNError>) in
-            print(result)
-            if case .success(let photos) = result,
-                photos.count == expectedPhotosCount {
-                dataExpectation.fulfill()
-            } else {
-                XCTFail("\(result)")
-            }
-        }
+        let photos = try await queryManager.listPhotos(with: parameters)
 
-        queryManager.listPhotos(with: parameters, completion: completion)
-
-        wait(for: [dataExpectation], timeout: Constant.expectationTimeout)
+        XCTAssertEqual(photos.count, expectedPhotosCount)
     }
 
     // MARK: - Test searching photos
 
-    func testSearchingReturnsExpectedResponse() {
-        let dataExpectation = expectation(description: "The response should be parsed correctly")
-
+    func testSearchingReturnsExpectedResponse() async throws {
         let searchType = SearchType.photo
         let expectedData = DemoData.standardPhotoSearchResponse
         let expectedTotalElements = 10000
@@ -90,25 +75,14 @@ final class QueryManagerTests: XCTestCase {
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline)
 
-        let completion: UNPhotoSearchClosure = { (result: Result<UNSearchResult<UNPhoto>, UnsplashFramework.UNError>) in
-            if case .success(let searchResult) = result,
-               searchResult.totalElements == expectedTotalElements,
-               searchResult.totalPages == expectedTotalPages,
-               searchResult.elements.count == expectedElementsCount {
-                dataExpectation.fulfill()
-            } else {
-                XCTFail()
-            }
-        }
+        let photosSearchResult: UNSearchResult<UNPhoto> = try await queryManager.search(searchType, with: parameters)
 
-        queryManager.search(searchType, with: parameters, completion: completion)
-
-        wait(for: [dataExpectation], timeout: Constant.expectationTimeout)
+        XCTAssertEqual(photosSearchResult.totalElements, expectedTotalElements)
+        XCTAssertEqual(photosSearchResult.totalPages, expectedTotalPages)
+        XCTAssertEqual(photosSearchResult.elements.count, expectedElementsCount)
     }
 
-    func testSearchingReturnsSuccessButWithUnexpectedDataResponse() {
-        let dataExpectation = expectation(description: "The data received doesn't match the expected JSON format")
-
+    func testSearchingReturnsSuccessButWithUnexpectedDataResponse() async throws {
         let searchType = SearchType.photo
         let unexpectedData = "{}!@£$".data(using: .utf8)!
         let parameters = UNPhotoSearchParameters(query: "Forest",
@@ -123,17 +97,13 @@ final class QueryManagerTests: XCTestCase {
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline)
 
-        let completion: UNPhotoSearchClosure = { (result: Result<UNSearchResult<UNPhoto>, UnsplashFramework.UNError>) in
-            if case .failure(let error) = result,
-                error.reason == UNError.Reason.unableToParseDataCorrectly {
-                dataExpectation.fulfill()
-            } else {
-                XCTFail()
-            }
+        do {
+            let _: UNSearchResult<UNPhoto> = try await queryManager.search(searchType, with: parameters)
+            XCTFail("Success is not expected here")
+        } catch _ as DecodingError {
+            // Expected error
+        } catch {
+            XCTFail("\(error) is not the expected error")
         }
-
-        queryManager.search(searchType, with: parameters, completion: completion)
-
-        wait(for: [dataExpectation], timeout: Constant.expectationTimeout)
     }
 }

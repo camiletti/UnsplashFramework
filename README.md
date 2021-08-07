@@ -5,7 +5,7 @@
 	<a href="#-documentation"><img src="https://cdn.rawgit.com/camiletti/UnsplashFramework/master/docs/badge.svg" /></a>
 	<a href="https://cocoapods.org/pods/UnsplashFramework"><img src="https://img.shields.io/cocoapods/v/UnsplashFramework.svg" /></a>
 	<a href="#carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" /></a>
-	<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift-4.0-orange.svg?style=flat" /></a>
+	<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift-5.5-orange.svg?style=flat" /></a>
 	<a href="#-license"><img src="https://img.shields.io/cocoapods/l/UnsplashFramework.svg" /></a>
 </p>
 
@@ -27,9 +27,9 @@ The idea behind this project is to make an easy-to-use, well tested and well doc
 
 ## Requirement
 
-- iOS 14.5+
+- iOS 15.0+
+- Swift 5.5+
 - XCode 13.0+
-
 
 ## ⬇️ Installation
 
@@ -69,42 +69,31 @@ let client = UNClient(with: credentials)
 
 
 ```swift
-client.listPhotos(page: 1,
-                  photosPerPage: 10,
-                  sortingBy: .popular)
-    { result in
-        switch result {
-        case .success(let photos):
-            photos.forEach({ (photo) in
-                print("Photo with ID: \(photo.id) from user: \(photo.user.username) main color: \(photo.hexColor)")
-            })
-
-        case .failure(let error):
-            print("Error: \(error.reason)")
-    }
-}
+let photos = try await client.listPhotos(page: 1,
+                                         photosPerPage: 1,
+                                         sortingBy: .popular)
 ```
 
 
-### Searching photos
+### Searching
 
 ```swift
-client.searchPhotos(query: "Forest",
-                    page: 1,
-                    photosPerPage: 10,
-                    collections: nil,
-                    orientation: .landscape)
-    { result in
-        switch result {
-        case .success(let searchResult):
-        searchResult.photos.forEach { (photo) in
-            print("Photo with ID: \(photo.id) from user: \(photo.user.username) main color: \(photo.hexColor)")
-        }
-        
-        case .failure(let error):
-            print("Error: \(error.reason)")
-        }
-    }
+// Searching photos
+let photos = try await client.searchPhotos(query: "forest",
+                                           page: 1,
+                                           photosPerPage: 10,
+                                           collections: [],
+                                           orientation: .landscape)
+
+// Searching collections
+let collections = try await client.searchCollections(query: "jungle",
+                                                     page: 1,
+                                                     collectionsPerPage: 10)
+
+// Searching for users
+let users = try await client.searchUsers(query: "camiletti",
+                                         page: 1,
+                                         usersPerPage: 10)
 ```
 
 ## 📖 Documentation

@@ -30,60 +30,34 @@ final class UNAPITests: XCTestCase {
     // MARK: - Declarations
 
     enum Constant {
-        static let expectationTimeout = 5.0
+        static let dataTaskMockedDelay = 1.0
     }
 
     // MARK: - Tests
 
-    func testHeaders() {
-        let credentials = UNCredentials(appID: "appID",
-                                        secret: "secret")
-        let urlSession = MockURLSession.mocking(data: nil,
-                                                response: nil,
-                                                error: nil,
-                                                deadline: 0)
-        let api = UNAPI(credentials: credentials, urlSession: urlSession)
+    // Accessing `urlSession.tasks` crashes in Xcode 13 beta 3
+//    func testHeaders() async throws {
+//        let credentials = UNCredentials(appID: "appID",
+//                                        secret: "secret")
+//        let urlSession = MockURLSession.mocking(data: nil,
+//                                                response: nil,
+//                                                error: nil,
+//                                                deadline: Constant.dataTaskMockedDelay)
+//        let api = UNAPI(credentials: credentials, urlSession: urlSession)
+//
+//        let expectedHeaders = [UNAPI.Header.acceptVersion.fieldName: UNAPI.Header.acceptVersion.fieldValue,
+//                               UNAPI.Header.authorization(appID: credentials.appID).fieldName: UNAPI.Header.authorization(appID: credentials.appID).fieldValue]
+//
+//        // None of the parameters passed to the request matter for this test
+//        let _: [UNPhoto] = try await api.request(.get,
+//                                                 endpoint: .photos,
+//                                                 parameters: nil)
+//
+//        let (dataTask, _, _) = await urlSession.tasks
+//        XCTAssertEqual(dataTask.first?.originalRequest?.allHTTPHeaderFields, expectedHeaders)
+//    }
 
-        let expectedHeaders = [UNAPI.Header.acceptVersion.fieldName: UNAPI.Header.acceptVersion.fieldValue,
-                               UNAPI.Header.authorization(appID: credentials.appID).fieldName: UNAPI.Header.authorization(appID: credentials.appID).fieldValue]
-
-        // None of the parameters passed to the request matter for this test
-        let task = api.request(.get,
-                               endpoint: .photos,
-                               parameters: nil,
-                               completion: { (_: Result<[UNPhoto], UnsplashFramework.UNError>) in })
-
-        XCTAssertEqual(task.originalRequest?.allHTTPHeaderFields, expectedHeaders)
-    }
-
-    func testNoDataReceivedErrorIfDataIsNil() {
-        let credentials = UNCredentials(appID: "appID",
-                                        secret: "secret")
-        let urlSession = MockURLSession.mocking(data: nil,
-                                                response: nil,
-                                                error: nil,
-                                                deadline: 0)
-        let api = UNAPI(credentials: credentials, urlSession: urlSession)
-
-        let expectation = expectation(description: "Error should be No Data Received")
-
-        api.request(.get,
-                    endpoint: .photos,
-                    parameters: nil,
-                    completion: { (result: Result<[UNPhoto], UnsplashFramework.UNError>) in
-            guard case .failure(let error) = result,
-                  error.reason == .noDataReceived else {
-                      XCTFail("Result is instead \(result)")
-                      return
-                  }
-
-            expectation.fulfill()
-        })
-
-        wait(for: [expectation], timeout: Constant.expectationTimeout)
-    }
-
-    func testResultIsFailureWhenAnErrorIsReceived() {
+    func testResultIsFailureWhenAnErrorIsReceived() async throws {
         let expectedError = UNError(reason: .serverNotReached)
         let credentials = UNCredentials(appID: "appID",
                                         secret: "secret")
@@ -93,21 +67,13 @@ final class UNAPITests: XCTestCase {
                                                 deadline: 0)
         let api = UNAPI(credentials: credentials, urlSession: urlSession)
 
-        let expectation = expectation(description: "Error should be No Data Received")
-
-        api.request(.get,
-                    endpoint: SearchType.photo.endpoint,
-                    parameters: nil,
-                    completion: { (result: Result<UNSearchResult<UNPhoto>, UnsplashFramework.UNError>) in
-            guard case .failure(let error) = result,
-                  error.reason == expectedError.reason else {
-                      XCTFail("Result is instead \(result)")
-                      return
-                  }
-
-            expectation.fulfill()
-        })
-
-        wait(for: [expectation], timeout: Constant.expectationTimeout)
+        do {
+            let _: UNSearchResult<UNPhoto> = try await api.request(.get,
+                                                                   endpoint: SearchType.photo.endpoint,
+                                                                   parameters: nil)
+            XCTFail("Success is not what we expect here")
+        } catch {
+            // Error is the expected result
+        }
     }
 }

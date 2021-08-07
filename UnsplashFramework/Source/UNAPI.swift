@@ -97,43 +97,23 @@ open class UNAPI {
     @discardableResult
     func request<T: Decodable>(_ method: HTTPMethod,
                                endpoint: Endpoint,
-                               parameters: ParametersURLRepresentable?,
-                               completion: @escaping (Result<T, UNError>) -> Void) -> URLSessionTask {
-        let decoder = JSONDecoder.unsplashDecoder
+                               parameters: ParametersURLRepresentable?) async throws -> T {
 
         // Add additional headers if needed
         let headers: [Header] = [.acceptVersion, .authorization(appID: credentials.appID)]
-
-        let mainThreadCompletion: (Result<T, UNError>) -> Void = { result in
-            DispatchQueue.main.async {
-                completion(result)
-            }
-        }
-
         let request = URLRequest.publicRequest(method, forEndpoint: endpoint, parameters: parameters, headers: headers)
-        let task = urlSession.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
-            if let unError = UNError.checkIfItIsAnError(response, and: error) {
-                mainThreadCompletion(.failure(unError))
-                return
-            }
 
-            guard let data = data,
-                  !data.isEmpty else {
-                mainThreadCompletion(.failure(UNError(reason: .noDataReceived)))
-                return
-            }
+        let (data, response) = try await urlSession.data(for: request)
 
-            do {
-                let decodedData = try decoder.decode(T.self, from: data)
-                mainThreadCompletion(.success(decodedData))
-                return
-            } catch {
-                mainThreadCompletion(.failure(UNError(reason: .unableToParseDataCorrectly)))
-                return
-            }
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw UNError(reason: .unknownServerResponse)
         }
 
-        task.resume()
-        return task
+        guard !ResponseStatusCode.isError(code: httpResponse.statusCode) else {
+            throw UNError(reason: .serverError(ResponseStatusCode(rawValue: httpResponse.statusCode)))
+        }
+
+        let decoder = JSONDecoder.unsplashDecoder
+        return try decoder.decode(T.self, from: data)
     }
 }

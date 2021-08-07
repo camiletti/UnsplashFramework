@@ -15,11 +15,11 @@ Pod::Spec.new do |s|
   s.authors = { 'Pablo Camiletti' => 'contact@sweetskiesgame.com' }
 
   # Platforms
-  s.platform     = :ios, "10.0" # Remove when other platforms are supported.
-  #s.ios.deployment_target = '10.3'
-  # s.osx.deployment_target = '10.12'
-  # s.tvos.deployment_target = '10.0'
-  # s.watchos.deployment_target = '3.0'
+  s.platform     = :ios, "15.0" # Remove when other platforms are supported.
+  #s.ios.deployment_target = '15.0'
+  # s.osx.deployment_target = '12.0'
+  # s.tvos.deployment_target = '15.0'
+  # s.watchos.deployment_target = '8.0'
 
   # Source
   s.source = { :git => 'https://github.com/camiletti/UnsplashFramework.git', :tag => s.version }

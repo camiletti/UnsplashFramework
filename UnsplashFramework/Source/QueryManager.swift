@@ -43,13 +43,10 @@ class QueryManager {
     ///
     /// - Parameters:
     ///   - parameters: The parameters.
-    ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
-    func listPhotos(with parameters: UNPhotoListParameters,
-                    completion: @escaping UNPhotoListClosure) {
-        api.request(.get,
-                    endpoint: .photos,
-                    parameters: parameters,
-                    completion: completion)
+    func listPhotos(with parameters: UNPhotoListParameters) async throws -> [UNPhoto] {
+        try await api.request(.get,
+                              endpoint: .photos,
+                              parameters: parameters)
     }
 
     /// Makes a query to Unsplash.
@@ -57,13 +54,10 @@ class QueryManager {
     /// - Parameters:
     ///   - searchType: The type of search to perform.
     ///   - parameters: Parameters to narrow the search.
-    ///   - completion: The completion handler that will be called with the results (executed on the main thread).
     func search<T>(_ searchType: SearchType,
-                   with parameters: ParametersURLRepresentable,
-                   completion: @escaping (Result<UNSearchResult<T>, UNError>) -> Void) {
-        api.request(.get,
-                    endpoint: searchType.endpoint,
-                    parameters: parameters,
-                    completion: completion)
+                   with parameters: ParametersURLRepresentable)  async throws -> UNSearchResult<T> {
+        try await api.request(.get,
+                              endpoint: searchType.endpoint,
+                              parameters: parameters)
     }
 }

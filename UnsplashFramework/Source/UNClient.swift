@@ -22,17 +22,8 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS) || os(watchOS)
-import UIKit
-#endif
-
-public typealias UNPhotoListClosure = (_ result: Result<[UNPhoto], UNError>) -> Void
-public typealias UNPhotoSearchClosure = (_ result: Result<UNSearchResult<UNPhoto>, UNError>) -> Void
-public typealias UNCollectionSearchClosure = (_ result: Result<UNSearchResult<UNCollection>, UNError>) -> Void
-public typealias UNUserSearchClosure = (_ result: Result<UNSearchResult<UNUser>, UNError>) -> Void
-
 /// The UNClient is the point of access to every Unsplash request.
-public class UNClient {
+public final class UNClient {
 
     // MARK: - Properties
 
@@ -57,17 +48,14 @@ public class UNClient {
     ///   - page: Page number to retrieve.
     ///   - photosPerPage: Number of items per page.
     ///   - sort: How to sort the photos.
-    ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
     public func listPhotos(page: Int,
                            photosPerPage: Int = 10,
-                           sortingBy sort: UNSort,
-                           completion: @escaping UNPhotoListClosure) {
+                           sortingBy sort: UNSort) async throws -> [UNPhoto] {
         let parameters = UNPhotoListParameters(pageNumber: page,
                                                photosPerPage: photosPerPage,
                                                sortOrder: sort)
 
-        queryManager.listPhotos(with: parameters,
-                                completion: completion)
+        return try await queryManager.listPhotos(with: parameters)
     }
 
     // MARK: - Search
@@ -80,22 +68,19 @@ public class UNClient {
     ///   - photosPerPage: Number of items per page.
     ///   - collections: Collection ID(‘s) to narrow search.
     ///   - orientation: Filter search results by photo orientation.
-    ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
     public func searchPhotos(query: String,
                              page: Int,
                              photosPerPage: Int,
                              collections: [UNCollection]? = nil,
-                             orientation: UNPhotoOrientation? = nil,
-                             completion: @escaping UNPhotoSearchClosure) {
+                             orientation: UNPhotoOrientation? = nil) async throws -> UNSearchResult<UNPhoto> {
         let parameters = UNPhotoSearchParameters(query: query,
                                                  pageNumber: page,
                                                  photosPerPage: photosPerPage,
                                                  collections: collections,
                                                  orientation: orientation)
 
-        search(.photo,
-               with: parameters,
-               completion: completion)
+        return try await search(.photo,
+                                with: parameters)
     }
 
     /// Get a single page of collections results for a query.
@@ -104,17 +89,14 @@ public class UNClient {
     ///   - query: Search terms.
     ///   - page: Page number to retrieve.
     ///   - collectionsPerPage: Number of items per page.
-    ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
     public func searchCollections(query: String,
                                   page: Int,
-                                  collectionsPerPage: Int,
-                                  completion: @escaping UNCollectionSearchClosure) {
+                                  collectionsPerPage: Int) async throws-> UNSearchResult<UNCollection> {
         let parameters = UNCollectionSearchParameters(query: query,
                                                       pageNumber: page,
                                                       collectionsPerPage: collectionsPerPage)
-        search(.collection,
-               with: parameters,
-               completion: completion)
+        return try await search(.collection,
+                                with: parameters)
     }
 
     /// Get a single page of users results for a query.
@@ -126,15 +108,13 @@ public class UNClient {
     ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
     public func searchUsers(query: String,
                             page: Int,
-                            usersPerPage: Int,
-                            completion: @escaping UNUserSearchClosure) {
+                            usersPerPage: Int) async throws -> UNSearchResult<UNUser> {
         let parameters = UNUserSearchParameters(query: query,
                                                 pageNumber: page,
                                                 usersPerPage: usersPerPage)
 
-        search(.user,
-               with: parameters,
-               completion: completion)
+        return try await search(.user,
+                                with: parameters)
     }
 
     /// Makes a search according to the specified parameters.
@@ -144,17 +124,8 @@ public class UNClient {
     ///   - parameters: Parameters to filter the search.
     ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
     func search<T>(_ searchType: SearchType,
-                   with parameters: ParametersURLRepresentable,
-                   completion: @escaping (Result<UNSearchResult<T>, UNError>) -> Void) {
-        queryManager.search(searchType,
-                            with: parameters,
-                            completion: completion)
-    }
-
-    // MARK: - Helpers
-
-    /// Console warning reminding that the credentials were not yet set.
-    private func printMissingCredentialsWarning() {
-        print("✋ UNClient: AppID and Secret are not set. Please do this before calling any else.")
+                   with parameters: ParametersURLRepresentable) async throws -> UNSearchResult<T> {
+        try await queryManager.search(searchType,
+                                      with: parameters)
     }
 }

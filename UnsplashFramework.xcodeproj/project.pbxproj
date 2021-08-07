@@ -10,7 +10,6 @@
 		6885D805B38FD93E3040BAB1 /* Pods_UnsplashFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2EEA745AFFC3DFDA902A254 /* Pods_UnsplashFramework.framework */; };
 		6E021BEB1FD32DDD00A5135C /* UNErrorReasonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E021BEA1FD32DDD00A5135C /* UNErrorReasonTests.swift */; };
 		6E021BF51FD4175E00A5135C /* UNPhotoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E021BF41FD4175E00A5135C /* UNPhotoTests.swift */; };
-		6E021BF81FD4552300A5135C /* URLSessionTaskOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E021BF71FD4552300A5135C /* URLSessionTaskOperationTests.swift */; };
 		6E20082C1FBF5065005D6E30 /* UNSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E20082B1FBF5065005D6E30 /* UNSort.swift */; };
 		6E2B29021FD1EB0E000BB4CA /* NSRecursiveLock+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B29011FD1EB0E000BB4CA /* NSRecursiveLock+Extensions.swift */; };
 		6E2B29041FD1FCBE000BB4CA /* UNCategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B29031FD1FCBE000BB4CA /* UNCategoryTests.swift */; };
@@ -34,7 +33,6 @@
 		6E54F48D26ADDC5C001FE413 /* MockQueryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E54F48C26ADDC5C001FE413 /* MockQueryManager.swift */; };
 		6E54F48F26ADE2C9001FE413 /* StandardSearchCollectionResult.json in Resources */ = {isa = PBXBuildFile; fileRef = 6E54F48E26ADE2C9001FE413 /* StandardSearchCollectionResult.json */; };
 		6E54F49126ADE803001FE413 /* StandardSearchUserResult.json in Resources */ = {isa = PBXBuildFile; fileRef = 6E54F49026ADE803001FE413 /* StandardSearchUserResult.json */; };
-		6E6358EE1FC8784A004D56DB /* URLSessionTaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6358ED1FC8784A004D56DB /* URLSessionTaskOperation.swift */; };
 		6E6864AD26A357AB008669FB /* UNAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6864AC26A357AB008669FB /* UNAPI.swift */; };
 		6E753F5A1FD2F6D600852512 /* UNCategoryAPILocationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E753F591FD2F6D600852512 /* UNCategoryAPILocationsTests.swift */; };
 		6E753F5D1FD2F95B00852512 /* UNProfileImageLinksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E753F5C1FD2F95B00852512 /* UNProfileImageLinksTests.swift */; };
@@ -85,7 +83,6 @@
 		6ECFE2C91FBD9789009BD9B6 /* URLComponents+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECFE2C81FBD9789009BD9B6 /* URLComponents+Extensions.swift */; };
 		6ECFE2CF1FBDAED4009BD9B6 /* UNError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECFE2CE1FBDAED4009BD9B6 /* UNError.swift */; };
 		6ECFE2D11FBDAFE5009BD9B6 /* ResponseStatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECFE2D01FBDAFE5009BD9B6 /* ResponseStatusCode.swift */; };
-		6EDD8B8920066F1C006C3E1B /* UNImageFetchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDD8B8820066F1C006C3E1B /* UNImageFetchResult.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,7 +100,6 @@
 		32D4E775C2E1CADAC0D43D04 /* Pods-UnsplashFramework.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsplashFramework.release.xcconfig"; path = "Target Support Files/Pods-UnsplashFramework/Pods-UnsplashFramework.release.xcconfig"; sourceTree = "<group>"; };
 		6E021BEA1FD32DDD00A5135C /* UNErrorReasonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNErrorReasonTests.swift; sourceTree = "<group>"; };
 		6E021BF41FD4175E00A5135C /* UNPhotoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNPhotoTests.swift; sourceTree = "<group>"; };
-		6E021BF71FD4552300A5135C /* URLSessionTaskOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionTaskOperationTests.swift; sourceTree = "<group>"; };
 		6E20082B1FBF5065005D6E30 /* UNSort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNSort.swift; sourceTree = "<group>"; };
 		6E2B29011FD1EB0E000BB4CA /* NSRecursiveLock+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRecursiveLock+Extensions.swift"; sourceTree = "<group>"; };
 		6E2B29031FD1FCBE000BB4CA /* UNCategoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNCategoryTests.swift; sourceTree = "<group>"; };
@@ -127,7 +123,6 @@
 		6E54F48C26ADDC5C001FE413 /* MockQueryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockQueryManager.swift; sourceTree = "<group>"; };
 		6E54F48E26ADE2C9001FE413 /* StandardSearchCollectionResult.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = StandardSearchCollectionResult.json; sourceTree = "<group>"; };
 		6E54F49026ADE803001FE413 /* StandardSearchUserResult.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = StandardSearchUserResult.json; sourceTree = "<group>"; };
-		6E6358ED1FC8784A004D56DB /* URLSessionTaskOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionTaskOperation.swift; sourceTree = "<group>"; };
 		6E6864AC26A357AB008669FB /* UNAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNAPI.swift; sourceTree = "<group>"; };
 		6E753F591FD2F6D600852512 /* UNCategoryAPILocationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNCategoryAPILocationsTests.swift; sourceTree = "<group>"; };
 		6E753F5C1FD2F95B00852512 /* UNProfileImageLinksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNProfileImageLinksTests.swift; sourceTree = "<group>"; };
@@ -186,7 +181,6 @@
 		6ECFE2C81FBD9789009BD9B6 /* URLComponents+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLComponents+Extensions.swift"; sourceTree = "<group>"; };
 		6ECFE2CE1FBDAED4009BD9B6 /* UNError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNError.swift; sourceTree = "<group>"; };
 		6ECFE2D01FBDAFE5009BD9B6 /* ResponseStatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseStatusCode.swift; sourceTree = "<group>"; };
-		6EDD8B8820066F1C006C3E1B /* UNImageFetchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNImageFetchResult.swift; sourceTree = "<group>"; };
 		F2EEA745AFFC3DFDA902A254 /* Pods_UnsplashFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnsplashFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -252,7 +246,6 @@
 				6E7D086E1FBCD8F70048423E /* Endpoint.swift */,
 				6E4B18942014FA2100FB674E /* SearchType.swift */,
 				6ECFE2D01FBDAFE5009BD9B6 /* ResponseStatusCode.swift */,
-				6E6358ED1FC8784A004D56DB /* URLSessionTaskOperation.swift */,
 				6E82CDFF1FCAEC0200398FEB /* Managers */,
 			);
 			name = Core;
@@ -363,7 +356,6 @@
 				6EC24CE61FD306890098D159 /* UNPhotoImageLinksTests.swift */,
 				6E955FC226A4611500561956 /* UNAPITests.swift */,
 				6E311B6B26AD9D3C00BF96AE /* Parameters */,
-				6E021BF71FD4552300A5135C /* URLSessionTaskOperationTests.swift */,
 				6E021BEA1FD32DDD00A5135C /* UNErrorReasonTests.swift */,
 				6EBCDBF71FBDE53B00BF3189 /* JSONParsingTests.swift */,
 				6E021BF01FD4164200A5135C /* Manager Tests */,
@@ -433,7 +425,6 @@
 			children = (
 				6EBF56351FFE7E6D00E76556 /* UNResult.swift */,
 				6EADC19A2007CC4C0090058A /* UNSearchResult.swift */,
-				6EDD8B8820066F1C006C3E1B /* UNImageFetchResult.swift */,
 			);
 			name = Results;
 			sourceTree = "<group>";
@@ -658,14 +649,12 @@
 				6E87EE0D1FBEEDD800DA5A0B /* UNCollectionAPILocations.swift in Sources */,
 				6E87EE131FBF004300DA5A0B /* UNCategoryAPILocations.swift in Sources */,
 				6E7D08691FBCBE830048423E /* UIColor+Extensions.swift in Sources */,
-				6EDD8B8920066F1C006C3E1B /* UNImageFetchResult.swift in Sources */,
 				6EADC1A32007D3190090058A /* UNCollectionSearchParameters.swift in Sources */,
 				6E6864AD26A357AB008669FB /* UNAPI.swift in Sources */,
 				6EA6C654269B70F200F3F094 /* JSONDecoder+Extensions.swift in Sources */,
 				6E4B18972014FE4F00FB674E /* UNUserSearchParameters.swift in Sources */,
 				6EBCDC031FBE25D500BF3189 /* UNUserAPILocations.swift in Sources */,
 				6EBCDBFF1FBE12A700BF3189 /* UNUser.swift in Sources */,
-				6E6358EE1FC8784A004D56DB /* URLSessionTaskOperation.swift in Sources */,
 				6E7D08651FBCBA470048423E /* UNPhoto.swift in Sources */,
 				6E82CDF91FCAC4A900398FEB /* QueryManager.swift in Sources */,
 				6ECFE2C91FBD9789009BD9B6 /* URLComponents+Extensions.swift in Sources */,
@@ -694,7 +683,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E311B8326ADA8FA00BF96AE /* UNPhotoImageSizeTests.swift in Sources */,
-				6E021BF81FD4552300A5135C /* URLSessionTaskOperationTests.swift in Sources */,
 				6E311B7526ADA24B00BF96AE /* MockUNPhotoImageLinks.swift in Sources */,
 				6E7D08521FBCA9E30048423E /* UNClientTests.swift in Sources */,
 				6EBCDBFA1FBDE74500BF3189 /* DemoData.swift in Sources */,
@@ -795,7 +783,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -852,7 +840,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -878,7 +866,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = UnsplashFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.camiletti.UnsplashFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -906,7 +894,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = UnsplashFramework/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.camiletti.UnsplashFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
