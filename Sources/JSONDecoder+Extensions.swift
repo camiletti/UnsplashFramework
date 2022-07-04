@@ -1,5 +1,5 @@
 //
-//  UNUserSearchParameters.swift
+//  JSONDecoder+Extensions.swift
 //  UnsplashFramework
 //
 //  Copyright 2021 Pablo Camiletti
@@ -22,43 +22,14 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-struct UNUserSearchParameters {
+import Foundation
 
-    // MARK: - Declarations
+extension JSONDecoder {
 
-    enum QueryParameterName {
-        /// The requested query parameter's name.
-        static let queryName = "query"
+    static var unsplashDecoder: JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
 
-        /// The requested page parameter's name.
-        static let pageNumberName = "page"
-
-        /// Amount of users per page parameter's name.
-        static let usersPerPageName = "per_page"
-    }
-
-    // MARK: - Properties
-
-    /// Words that describe the users to be searched.
-    let query: String
-
-    /// The requested page.
-    let pageNumber: Int
-
-    /// The desired amount of users per page.
-    let usersPerPage: Int
-}
-
-// MARK: - ParametersURLRepresentable
-extension UNUserSearchParameters: ParametersURLRepresentable {
-
-    func asQueryItems() -> [URLQueryItem] {
-        [URLQueryItem(name: QueryParameterName.queryName,
-                      value: "\(query)"),
-         URLQueryItem(name: QueryParameterName.pageNumberName,
-                      value: "\(pageNumber)"),
-         URLQueryItem(name: QueryParameterName.usersPerPageName,
-                      value: "\(usersPerPage)")
-        ]
+        return decoder
     }
 }

@@ -1,5 +1,5 @@
 //
-//  UNCategoryAPILocations.swift
+//  UNPhotoListParameters.swift
 //  UnsplashFramework
 //
 //  Copyright 2021 Pablo Camiletti
@@ -22,21 +22,44 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-/// Holds the API URLs for a category.
-public struct UNCategoryAPILocations: Decodable, Equatable {
+import Foundation
+
+/// The parameters' names and values that can be passed to Unsplash in a query.
+struct UNPhotoListParameters {
 
     // MARK: - Declarations
 
-    enum CodingKeys: String, CodingKey {
-        case apiCategoryURL = "self"
-        case apiPhotosInCategoryURL = "photos"
+    enum QueryParameterName {
+        /// The requested page parameter's name.
+        static let pageNumberName = "page"
+        /// Amount of photos per page parameter's name.
+        static let photosPerPageName = "per_page"
+        /// The sort order parameter's name.
+        static let sortOrderName = "order_by"
     }
 
     // MARK: - Properties
 
-    /// Category's location. Accessible only through the API.
-    public var apiCategoryURL: URL
+    /// The requested page.
+    let pageNumber: Int
 
-    /// Location for the photos associated to the category. Accessible only through the API.
-    public var apiPhotosInCategoryURL: URL
+    /// The desired amount of photos per page.
+    let photosPerPage: Int
+
+    /// The desired sort order of the query's result.
+    let sortOrder: UNSort
+}
+
+// MARK: - ParametersURLRepresentable
+extension UNPhotoListParameters: ParametersURLRepresentable {
+
+    func asQueryItems() -> [URLQueryItem] {
+        [URLQueryItem(name: QueryParameterName.pageNumberName,
+                      value: "\(pageNumber)"),
+         URLQueryItem(name: QueryParameterName.photosPerPageName,
+                      value: "\(photosPerPage)"),
+         URLQueryItem(name: QueryParameterName.sortOrderName,
+                      value: "\(sortOrder.rawValue)")
+        ]
+    }
 }

@@ -22,6 +22,8 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+import Foundation
+
 /// Struct to represent Unsplash errors to a given query.
 public struct UNError: Error {
 

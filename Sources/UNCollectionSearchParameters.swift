@@ -22,6 +22,8 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+import Foundation
+
 /// The parameters' names and values that can be passed to Unsplash in a search.
 struct UNCollectionSearchParameters {
 

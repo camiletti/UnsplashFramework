@@ -1,5 +1,5 @@
 //
-//  UNPhotoListParameters.swift
+//  UNCollectionAPILocations.swift
 //  UnsplashFramework
 //
 //  Copyright 2021 Pablo Camiletti
@@ -22,42 +22,27 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-/// The parameters' names and values that can be passed to Unsplash in a query.
-struct UNPhotoListParameters {
+import Foundation
+
+/// Holds the API URLs for a collection.
+struct UNCollectionAPILocations: Decodable, Equatable {
 
     // MARK: - Declarations
 
-    enum QueryParameterName {
-        /// The requested page parameter's name.
-        static let pageNumberName = "page"
-        /// Amount of photos per page parameter's name.
-        static let photosPerPageName = "per_page"
-        /// The sort order parameter's name.
-        static let sortOrderName = "order_by"
+    enum CodingKeys: String, CodingKey {
+        case apiCollectionURL = "self"
+        case apiPhotosInCollectionURL = "photos"
+        case externalCollectionURL = "html"
     }
 
     // MARK: - Properties
 
-    /// The requested page.
-    let pageNumber: Int
+    /// Collection's location. Accessible only through the API.
+    var apiCollectionURL: URL
 
-    /// The desired amount of photos per page.
-    let photosPerPage: Int
+    /// Location for the photos contained in the collection. Accessible only through the API.
+    var apiPhotosInCollectionURL: URL
 
-    /// The desired sort order of the query's result.
-    let sortOrder: UNSort
-}
-
-// MARK: - ParametersURLRepresentable
-extension UNPhotoListParameters: ParametersURLRepresentable {
-
-    func asQueryItems() -> [URLQueryItem] {
-        [URLQueryItem(name: QueryParameterName.pageNumberName,
-                      value: "\(pageNumber)"),
-         URLQueryItem(name: QueryParameterName.photosPerPageName,
-                      value: "\(photosPerPage)"),
-         URLQueryItem(name: QueryParameterName.sortOrderName,
-                      value: "\(sortOrder.rawValue)")
-        ]
-    }
+    /// Collection's public url.
+    var externalCollectionURL: URL
 }

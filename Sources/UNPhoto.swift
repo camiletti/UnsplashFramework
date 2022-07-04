@@ -22,6 +22,8 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+import Foundation
+
 /// Holds all the information about a photo.
 public struct UNPhoto: Decodable {
 

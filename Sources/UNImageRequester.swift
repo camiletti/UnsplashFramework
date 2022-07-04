@@ -1,5 +1,5 @@
 //
-//  URLRequest+Extensions.swift
+//  UNImageRequester.swift
 //  UnsplashFramework
 //
 //  Copyright 2021 Pablo Camiletti
@@ -22,33 +22,20 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-extension URLRequest {
+import Foundation
 
-    /// Creates and returns a URLRequest with the necessary headers for a public action.
+/// Protocol that an object must to conform to in order to make some of the requests.
+public protocol UNImageRequester: AnyObject {
+
+    /// Function called when the UNClient has finished with the request.
     ///
     /// - Parameters:
-    ///   - method: The HTTP method.
-    ///   - endpoint: The endpoint for the desired query.
-    ///   - parameters: The parameters for the request.
-    ///   - credentials: Unsplash client credentials.
-    /// - Returns: A new URLRequest containing the passed information.
-    static func publicRequest(_ method: UNAPI.HTTPMethod,
-                              forEndpoint endpoint: Endpoint,
-                              parameters: ParametersURLRepresentable?,
-                              headers: [UNAPI.Header]) -> URLRequest {
-        // Create new request
-        let url = URLComponents(unsplashQuery: parameters?.asQueryItems(),
-                                withPath: endpoint.string()).url!
-        var request = URLRequest(url: url)
-
-        // Set method
-        request.httpMethod = method.rawValue
-
-        // Add headers
-        headers.forEach { header in
-            request.addValue(header.fieldValue, forHTTPHeaderField: header.fieldName)
-        }
-
-        return request
-    }
+    ///   - photo: The photo that was requested.
+    ///   - size: The size of the requested photo.
+    ///   - dataImage: The image received from Unsplash if the request was successful.
+    ///   - error: If the request failed, the error represents the reason why it failed.
+    func clientDidCompleteExclusiveImageRequest(for photo: UNPhoto,
+                                                in size: UNPhotoImageSize,
+                                                dataImage: Data?,
+                                                error: UNError?)
 }

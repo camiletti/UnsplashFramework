@@ -1,5 +1,5 @@
 //
-//  UNImageRequester.swift
+//  UNPhotoAPILocations.swift
 //  UnsplashFramework
 //
 //  Copyright 2021 Pablo Camiletti
@@ -22,18 +22,31 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-/// Protocol that an object must to conform to in order to make some of the requests.
-public protocol UNImageRequester: AnyObject {
+import Foundation
 
-    /// Function called when the UNClient has finished with the request.
-    ///
-    /// - Parameters:
-    ///   - photo: The photo that was requested.
-    ///   - size: The size of the requested photo.
-    ///   - dataImage: The image received from Unsplash if the request was successful.
-    ///   - error: If the request failed, the error represents the reason why it failed.
-    func clientDidCompleteExclusiveImageRequest(for photo: UNPhoto,
-                                                in size: UNPhotoImageSize,
-                                                dataImage: Data?,
-                                                error: UNError?)
+/// Holds the API URLs for a photo.
+struct UNPhotoAPILocations: Decodable, Equatable {
+
+    // MARK: - Declarations
+
+    enum CodingKeys: String, CodingKey {
+        case apiPhotoURL = "self"
+        case apiDownloadURL = "download_location"
+        case externalPhotoURL = "html"
+        case externalDownloadURL = "download"
+    }
+
+    // MARK: - Properties
+
+    /// Photo URL. Accessible only through the API.
+    var apiPhotoURL: URL
+
+    /// Download photo URL. Accessible only through the API.
+    var apiDownloadURL: URL
+
+    /// Public link to the photo.
+    var externalPhotoURL: URL
+
+    /// Public download link to the photo.
+    var externalDownloadURL: URL
 }

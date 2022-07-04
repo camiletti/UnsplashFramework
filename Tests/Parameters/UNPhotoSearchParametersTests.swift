@@ -6,6 +6,7 @@
 //  Copyright © 2021 Pablo Camiletti. All rights reserved.
 //
 
+import Foundation
 @testable import UnsplashFramework
 import XCTest
 

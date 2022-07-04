@@ -1,5 +1,5 @@
 //
-//  UNPhotoAPILocations.swift
+//  UNCategoryAPILocations.swift
 //  UnsplashFramework
 //
 //  Copyright 2021 Pablo Camiletti
@@ -22,29 +22,23 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-/// Holds the API URLs for a photo.
-struct UNPhotoAPILocations: Decodable, Equatable {
+import Foundation
+
+/// Holds the API URLs for a category.
+public struct UNCategoryAPILocations: Decodable, Equatable {
 
     // MARK: - Declarations
 
     enum CodingKeys: String, CodingKey {
-        case apiPhotoURL = "self"
-        case apiDownloadURL = "download_location"
-        case externalPhotoURL = "html"
-        case externalDownloadURL = "download"
+        case apiCategoryURL = "self"
+        case apiPhotosInCategoryURL = "photos"
     }
 
     // MARK: - Properties
 
-    /// Photo URL. Accessible only through the API.
-    var apiPhotoURL: URL
+    /// Category's location. Accessible only through the API.
+    public var apiCategoryURL: URL
 
-    /// Download photo URL. Accessible only through the API.
-    var apiDownloadURL: URL
-
-    /// Public link to the photo.
-    var externalPhotoURL: URL
-
-    /// Public download link to the photo.
-    var externalDownloadURL: URL
+    /// Location for the photos associated to the category. Accessible only through the API.
+    public var apiPhotosInCategoryURL: URL
 }

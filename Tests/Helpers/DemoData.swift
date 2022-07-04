@@ -22,6 +22,7 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+import Foundation
 @testable import UnsplashFramework
 
 /// Class aimed to simplify getting sample JSON data
@@ -294,8 +295,7 @@ enum DemoData {
     /// - Parameter named: Name of the JSON File.
     /// - Returns: JSON Data contained on the specified file.
     private static func dataFromJSONFile(named: String) -> Data {
-        let bundle = Bundle(identifier: "com.camiletti.UnsplashFrameworkTests")!
-        let jsonFilePath = bundle.path(forResource: named, ofType: ".json")!
+        let jsonFilePath = Bundle.module.path(forResource: named, ofType: ".json")!
         let url = URL(fileURLWithPath: jsonFilePath)
         return try! Data(contentsOf: url)
     }

@@ -22,6 +22,7 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+import Foundation
 @testable import UnsplashFramework
 
 final class MockURLSession: URLSession {

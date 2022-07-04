@@ -22,6 +22,8 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+import Foundation
+
 /// Accepted sizes of a photo.
 public enum UNPhotoImageSize {
     /// Raw size.

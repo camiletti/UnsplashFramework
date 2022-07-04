@@ -1,3 +1,6 @@
+// swift-tools-version:5.6
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
 //
 //  Package.swift
 //  UnsplashFramework
@@ -22,10 +25,24 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import PackageDescription
-
 //swiftlint:disable prefixed_toplevel_constant
 
-let package = Package(name: "UnsplashFramework", dependencies: [], exclude: ["Tests"])
+import PackageDescription
+
+let package = Package(name: "UnsplashFramework",
+
+                      platforms: [.iOS(.v15), .macOS(.v12)],
+
+                      products: [.library(name: "UnsplashFramework",
+                                          targets: ["UnsplashFramework"])],
+
+                      targets: [.target(name: "UnsplashFramework",
+                                        dependencies: [],
+                                        path: "Sources"),
+
+                                .testTarget(name: "Tests",
+                                            dependencies: ["UnsplashFramework"],
+                                            path: "Tests",
+                                            resources: [.process("JSON Mock responses")])])
 
 //swiftlint:enable prefixed_toplevel_constant

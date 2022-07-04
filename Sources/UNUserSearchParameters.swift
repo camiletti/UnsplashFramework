@@ -1,5 +1,5 @@
 //
-//  UNCollectionAPILocations.swift
+//  UNUserSearchParameters.swift
 //  UnsplashFramework
 //
 //  Copyright 2021 Pablo Camiletti
@@ -22,25 +22,45 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-/// Holds the API URLs for a collection.
-struct UNCollectionAPILocations: Decodable, Equatable {
+import Foundation
+
+struct UNUserSearchParameters {
 
     // MARK: - Declarations
 
-    enum CodingKeys: String, CodingKey {
-        case apiCollectionURL = "self"
-        case apiPhotosInCollectionURL = "photos"
-        case externalCollectionURL = "html"
+    enum QueryParameterName {
+        /// The requested query parameter's name.
+        static let queryName = "query"
+
+        /// The requested page parameter's name.
+        static let pageNumberName = "page"
+
+        /// Amount of users per page parameter's name.
+        static let usersPerPageName = "per_page"
     }
 
     // MARK: - Properties
 
-    /// Collection's location. Accessible only through the API.
-    var apiCollectionURL: URL
+    /// Words that describe the users to be searched.
+    let query: String
 
-    /// Location for the photos contained in the collection. Accessible only through the API.
-    var apiPhotosInCollectionURL: URL
+    /// The requested page.
+    let pageNumber: Int
 
-    /// Collection's public url.
-    var externalCollectionURL: URL
+    /// The desired amount of users per page.
+    let usersPerPage: Int
+}
+
+// MARK: - ParametersURLRepresentable
+extension UNUserSearchParameters: ParametersURLRepresentable {
+
+    func asQueryItems() -> [URLQueryItem] {
+        [URLQueryItem(name: QueryParameterName.queryName,
+                      value: "\(query)"),
+         URLQueryItem(name: QueryParameterName.pageNumberName,
+                      value: "\(pageNumber)"),
+         URLQueryItem(name: QueryParameterName.usersPerPageName,
+                      value: "\(usersPerPage)")
+        ]
+    }
 }
