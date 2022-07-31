@@ -60,7 +60,7 @@ final class UNAPITests: XCTestCase {
 
     func testResultIsFailureWhenAnErrorIsReceived() async throws {
         let expectedError = UNError(reason: .serverNotReached)
-        let credentials = UNCredentials(appID: "appID",
+        let credentials = UNCredentials(accessKey: "accessKey",
                                         secret: "secret")
         let urlSession = MockURLSession.mocking(data: DemoData.standardPhotoSearchResponse,
                                                 response: nil,

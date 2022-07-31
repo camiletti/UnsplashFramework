@@ -43,7 +43,7 @@ open class UNAPI {
     /// Accepted headers as described at https://unsplash.com/documentation
     enum Header {
         case acceptVersion
-        case authorization(appID: String)
+        case authorization(accessKey: String)
 
         var fieldName: String {
             switch self {
@@ -60,8 +60,8 @@ open class UNAPI {
             case .acceptVersion:
                 return "v1"
 
-            case .authorization(let appID):
-                return "Client-ID \(appID)"
+            case .authorization(let accessKey):
+                return "Client-ID \(accessKey)"
             }
         }
     }
@@ -100,7 +100,7 @@ open class UNAPI {
                                parameters: ParametersURLRepresentable?) async throws -> T {
 
         // Add additional headers if needed
-        let headers: [Header] = [.acceptVersion, .authorization(appID: credentials.appID)]
+        let headers: [Header] = [.acceptVersion, .authorization(accessKey: credentials.accessKey)]
         let request = URLRequest.publicRequest(method, forEndpoint: endpoint, parameters: parameters, headers: headers)
 
         let (data, response) = try await urlSession.data(for: request)

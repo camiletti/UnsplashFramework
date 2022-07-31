@@ -32,9 +32,9 @@ final class URLSessionExtensionsTests: XCTestCase {
     func testCreatingAPublicRequestForEveryEndpoint() {
         // Parameters
         let id = "abc"
-        let credentials = UNCredentials(appID: "123", secret: "789")
+        let credentials = UNCredentials(accessKey: "123", secret: "789")
         let headers: [UNAPI.Header] = [UNAPI.Header.acceptVersion,
-                                       UNAPI.Header.authorization(appID: credentials.appID)]
+                                       UNAPI.Header.authorization(accessKey: credentials.accessKey)]
         let parameters = UNPhotoListParameters(pageNumber: 1,
                                                photosPerPage: 10,
                                                sortOrder: .popular)

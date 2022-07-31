@@ -27,9 +27,18 @@ import Foundation
 /// Client credentials necessary to query Unsplash.
 public struct UNCredentials {
 
-    /// Unsplash Application ID.
-    public let appID: String
+    // MARK: - Properties
+
+    /// Unsplash Access Key.
+    public let accessKey: String
 
     /// Unsplash Secret.
     public let secret: String
+
+    // MARK: - Life Cycle
+
+    public init(accessKey: String, secret: String) {
+        self.accessKey = accessKey
+        self.secret = secret
+    }
 }

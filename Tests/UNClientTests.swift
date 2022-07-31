@@ -32,7 +32,7 @@ final class UNClientTests: XCTestCase {
 
     private enum Constant {
         static let requestDeadline = 0.2
-        static let credentials = UNCredentials(appID: "123", secret: "789")
+        static let credentials = UNCredentials(accessKey: "123", secret: "789")
     }
 
     // MARK: - Tests
