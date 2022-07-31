@@ -3,8 +3,8 @@
 <p align="center">
 	<a href="https://travis-ci.org/camiletti/UnsplashFramework"><img src="https://travis-ci.org/camiletti/UnsplashFramework.svg?branch=master" /></a>
 	<a href="#-documentation"><img src="https://cdn.rawgit.com/camiletti/UnsplashFramework/master/docs/badge.svg" /></a>
-	<a href="https://cocoapods.org/pods/UnsplashFramework"><img src="https://img.shields.io/cocoapods/v/UnsplashFramework.svg" /></a>
-	<a href="#carthage"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" /></a>
+    <a href="#SPM"><img src="https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat" /></a>
+    <a href="https://cocoapods.org/pods/UnsplashFramework"><img src="https://img.shields.io/cocoapods/v/UnsplashFramework.svg" /></a>
 	<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift-5.5-orange.svg?style=flat" /></a>
 	<a href="#-license"><img src="https://img.shields.io/cocoapods/l/UnsplashFramework.svg" /></a>
 </p>
@@ -28,10 +28,20 @@ The idea behind this project is to make an easy-to-use, well tested and well doc
 ## Requirement
 
 - iOS 15.0+
-- Swift 5.5+
+- Swift 5.6+
 - XCode 13.0+
 
 ## ⬇️ Installation
+
+### SPM
+
+Add the following to your `Package` file:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/camiletti/UnsplashFramework.git", .branch("master"))
+]
+```
 
 ### CocoaPods
 
@@ -40,15 +50,6 @@ Add the following to your `Podfile`:
 ```ruby
 pod 'UnsplashFramework', '~> 0.1'
 ```
-
-### Carthage
-
-Add the following to your `Cartfile`:
-
-```ogdl
-github "camiletti/UnsplashFramework" ~> 0.1
-```
-
 
 ## 🎛 Use
 ```swift
