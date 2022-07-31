@@ -25,7 +25,7 @@
 import Foundation
 
 /// Holds all the information about a photo.
-public struct UNPhoto: Decodable {
+public struct UNPhoto: Decodable, Identifiable {
 
     // MARK: - Declarations
 

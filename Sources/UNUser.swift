@@ -25,7 +25,7 @@
 import Foundation
 
 /// Holds all the information about a user.
-public struct UNUser: Decodable {
+public struct UNUser: Decodable, Identifiable {
 
     // MARK: - Declarations
 

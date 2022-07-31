@@ -25,7 +25,7 @@
 import Foundation
 
 /// Holds all the information about a collection.
-public struct UNCollection: Decodable {
+public struct UNCollection: Decodable, Identifiable {
 
     // MARK: - Declarations
 
