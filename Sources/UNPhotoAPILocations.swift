@@ -25,7 +25,7 @@
 import Foundation
 
 /// Holds the API URLs for a photo.
-struct UNPhotoAPILocations: Decodable, Equatable {
+public struct UNPhotoAPILocations: Decodable, Equatable {
 
     // MARK: - Declarations
 
@@ -39,14 +39,14 @@ struct UNPhotoAPILocations: Decodable, Equatable {
     // MARK: - Properties
 
     /// Photo URL. Accessible only through the API.
-    var apiPhotoURL: URL
+    public var apiPhotoURL: URL
 
     /// Download photo URL. Accessible only through the API.
-    var apiDownloadURL: URL
+    public var apiDownloadURL: URL
 
     /// Public link to the photo.
-    var externalPhotoURL: URL
+    public var externalPhotoURL: URL
 
     /// Public download link to the photo.
-    var externalDownloadURL: URL
+    public var externalDownloadURL: URL
 }

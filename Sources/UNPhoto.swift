@@ -88,7 +88,7 @@ public struct UNPhoto: Decodable, Identifiable {
     internal var imageLinks: UNPhotoImageLinks
 
     /// The locations related to the photo.
-    internal var apiLocations: UNPhotoAPILocations
+    public var apiLocations: UNPhotoAPILocations
 
     // MARK: - Life Cycle
 
