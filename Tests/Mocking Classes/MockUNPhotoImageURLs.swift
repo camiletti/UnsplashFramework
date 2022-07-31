@@ -1,6 +1,6 @@
 //
-//  MockUNPhotoImageLinks.swift
-//  MockUNPhotoImageLinks
+//  MockUNPhotoImageURLs.swift
+//  MockUNPhotoImageURLs
 //
 //  Copyright 2021 Pablo Camiletti
 //
@@ -25,17 +25,17 @@
 import Foundation
 @testable import UnsplashFramework
 
-extension UNPhotoImageLinks {
+extension UNPhotoImageURLs {
 
     static func mock(rawURL: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
                      fullURL: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
                      regularURL: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
                      smallURL: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
-                     thumbURL: URL = URL(string: "https://api.unsplash.com/image.jpg")!) -> UNPhotoImageLinks {
-        UNPhotoImageLinks(rawURL: rawURL,
-                          fullURL: fullURL,
-                          regularURL: regularURL,
-                          smallURL: smallURL,
-                          thumbURL: thumbURL)
+                     thumbURL: URL = URL(string: "https://api.unsplash.com/image.jpg")!) -> UNPhotoImageURLs {
+        UNPhotoImageURLs(rawURL: rawURL,
+                         fullURL: fullURL,
+                         regularURL: regularURL,
+                         smallURL: smallURL,
+                         thumbURL: thumbURL)
     }
 }

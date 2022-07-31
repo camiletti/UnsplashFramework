@@ -85,14 +85,14 @@ public struct UNPhoto: Decodable, Identifiable {
     public var categories: [UNCategory]
 
     /// Links to the different size of the photo.
-    internal var imageLinks: UNPhotoImageLinks
+    public var imageURLs: UNPhotoImageURLs
 
     /// The locations related to the photo.
     public var apiLocations: UNPhotoAPILocations
 
     // MARK: - Life Cycle
 
-    init(id: String, creationDate: Date?, updateDate: Date?, width: Int, height: Int, hexColor: String, numberOfLikes: Int, isLikedByUser: Bool, description: String?, user: UNUser, collections: [UNCollection], categories: [UNCategory], imageLinks: UNPhotoImageLinks, apiLocations: UNPhotoAPILocations) {
+    init(id: String, creationDate: Date?, updateDate: Date?, width: Int, height: Int, hexColor: String, numberOfLikes: Int, isLikedByUser: Bool, description: String?, user: UNUser, collections: [UNCollection], categories: [UNCategory], imageURLs: UNPhotoImageURLs, apiLocations: UNPhotoAPILocations) {
         self.id = id
         self.creationDate = creationDate
         self.updateDate = updateDate
@@ -105,7 +105,7 @@ public struct UNPhoto: Decodable, Identifiable {
         self.user = user
         self.collections = collections
         self.categories = categories
-        self.imageLinks = imageLinks
+        self.imageURLs = imageURLs
         self.apiLocations = apiLocations
     }
 
@@ -128,7 +128,7 @@ public struct UNPhoto: Decodable, Identifiable {
         user = try values.decode(UNUser.self, forKey: .user)
         collections = (try? values.decode([UNCollection].self, forKey: .collections)) ?? [UNCollection]()
         categories = (try? values.decode([UNCategory].self, forKey: .categories)) ?? [UNCategory]()
-        imageLinks = try values.decode(UNPhotoImageLinks.self, forKey: .imageLinks)
+        imageURLs = try values.decode(UNPhotoImageURLs.self, forKey: .imageLinks)
         apiLocations = try values.decode(UNPhotoAPILocations.self, forKey: .apiLocations)
     }
 }
@@ -143,11 +143,6 @@ extension UNPhoto: Equatable {
     /// the other variables are different.
     public static func == (lhs: UNPhoto, rhs: UNPhoto) -> Bool {
         lhs.id == rhs.id
-    }
-
-    /// Returns a Boolean value indicating whether the two photos don't represent the same photo.
-    public static func != (lhs: UNPhoto, rhs: UNPhoto) -> Bool {
-        !(lhs == rhs)
     }
 }
 

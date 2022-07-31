@@ -39,7 +39,7 @@ extension UNPhoto {
                      user: UNUser = .mock(),
                      collections: [UNCollection] = [],
                      categories: [UNCategory] = [],
-                     imageLinks: UNPhotoImageLinks = .mock(),
+                     imageURLs: UNPhotoImageURLs = .mock(),
                      apiLocations: UNPhotoAPILocations = .mock()) -> UNPhoto {
         UNPhoto(id: id,
                 creationDate: creationDate,
@@ -53,7 +53,7 @@ extension UNPhoto {
                 user: user,
                 collections: collections,
                 categories: categories,
-                imageLinks: imageLinks,
+                imageURLs: imageURLs,
                 apiLocations: apiLocations)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  UNPhotoImageLinks.swift
+//  UNPhotoImageURLs.swift
 //  UnsplashFramework
 //
 //  Copyright 2021 Pablo Camiletti
@@ -39,7 +39,7 @@ public enum UNPhotoImageSize {
 }
 
 /// Holds the URLs for the same image in different sizes and quality.
-struct UNPhotoImageLinks: Decodable {
+public struct UNPhotoImageURLs: Decodable {
 
     // MARK: - Declarations
 
@@ -54,26 +54,26 @@ struct UNPhotoImageLinks: Decodable {
     // MARK: - Properties
 
     /// Original image without any scaling nor quality reduction.
-    var rawURL: URL
+    public var rawURL: URL
 
     /// Original size but quality reduction to 85%.
     /// The retrieved image will be jpg.
-    var fullURL: URL
+    public var fullURL: URL
 
     /// 80% quality and width of 1080 pixels. The height will
     /// be the appropriate maintaining the aspect ratio.
     /// The retrieved image will be jpg.
-    var regularURL: URL
+    public var regularURL: URL
 
     /// 80% quality and width of 400 pixels. The height will
     /// be the appropriate maintaining the aspect ratio.
     /// The retrieved image will be jpg.
-    var smallURL: URL
+    public var smallURL: URL
 
     /// 80% quality and width of 200 pixels. The height will
     /// be the appropriate maintaining the aspect ratio.
     /// The retrieved image will be jpg.
-    var thumbURL: URL
+    public var thumbURL: URL
 
     // MARK: - Actions
 
@@ -102,21 +102,15 @@ struct UNPhotoImageLinks: Decodable {
 }
 
 // MARK: - Equatable
-extension UNPhotoImageLinks: Equatable {
+extension UNPhotoImageURLs: Equatable {
 
-    /// Returns a Boolean value indicating whether the two UNPhotoImageLinks have the same
+    /// Returns a Boolean value indicating whether the two UNPhotoImageURLs have the same
     /// value for their variables.
-    static func == (lhs: UNPhotoImageLinks, rhs: UNPhotoImageLinks) -> Bool {
+    public static func == (lhs: UNPhotoImageURLs, rhs: UNPhotoImageURLs) -> Bool {
         lhs.rawURL == rhs.rawURL &&
             lhs.fullURL == rhs.fullURL &&
             lhs.regularURL == rhs.regularURL &&
             lhs.smallURL == rhs.smallURL &&
             lhs.thumbURL == rhs.thumbURL
-    }
-
-    /// Returns a Boolean value indicating whether the two UNPhotoImageLinks have at least
-    /// one value different.
-    static func != (lhs: UNPhotoImageLinks, rhs: UNPhotoImageLinks) -> Bool {
-        !(lhs == rhs)
     }
 }

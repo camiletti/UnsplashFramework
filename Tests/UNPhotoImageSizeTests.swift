@@ -34,11 +34,11 @@ final class UNPhotoImageSizeTests: XCTestCase {
         let smallURL = URL(string: "https://api.unsplash.com/smallURL")!
         let thumbURL = URL(string: "https://api.unsplash.com/thumbURL")!
 
-        let photoImageLinks = UNPhotoImageLinks(rawURL: rawURL,
-                                                fullURL: fullURL,
-                                                regularURL: regularURL,
-                                                smallURL: smallURL,
-                                                thumbURL: thumbURL)
+        let photoImageLinks = UNPhotoImageURLs(rawURL: rawURL,
+                                               fullURL: fullURL,
+                                               regularURL: regularURL,
+                                               smallURL: smallURL,
+                                               thumbURL: thumbURL)
 
         XCTAssertEqual(photoImageLinks.url(forSize: .raw), rawURL)
         XCTAssertEqual(photoImageLinks.url(forSize: .full), fullURL)

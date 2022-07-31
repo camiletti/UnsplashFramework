@@ -99,11 +99,11 @@ enum DemoData {
                           profileImageLinks: profileLinks,
                           apiLocations: userAPILocations)
 
-        let imageLinks = UNPhotoImageLinks(rawURL: URL(string: "https://images.unsplash.com/photo-1432821596592-e2c18b78144f")!,
-                                           fullURL: URL(string: "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixlib=rb-0.3.5&q=85&fm=jpg&crop=entropy&cs=srgb&s=2d58953ffeb732135002a465be8230d3")!,
-                                           regularURL: URL(string: "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&s=d9bcb3e9a0c29aaebce247d1c84a2625")!,
-                                           smallURL: URL(string: "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&s=a2cb0662ff4cf8f41d2f0e8bb69eb628")!,
-                                           thumbURL: URL(string: "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=985faed62252e0339501f9f83cdaa743")!)
+        let imageURLs = UNPhotoImageURLs(rawURL: URL(string: "https://images.unsplash.com/photo-1432821596592-e2c18b78144f")!,
+                                         fullURL: URL(string: "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixlib=rb-0.3.5&q=85&fm=jpg&crop=entropy&cs=srgb&s=2d58953ffeb732135002a465be8230d3")!,
+                                         regularURL: URL(string: "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&s=d9bcb3e9a0c29aaebce247d1c84a2625")!,
+                                         smallURL: URL(string: "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&s=a2cb0662ff4cf8f41d2f0e8bb69eb628")!,
+                                         thumbURL: URL(string: "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=985faed62252e0339501f9f83cdaa743")!)
 
         let apiLocations = UNPhotoAPILocations(apiPhotoURL: URL(string: "https://api.unsplash.com/photos/jLwVAUtLOAQ")!,
                                                apiDownloadURL: URL(string: "https://api.unsplash.com/photos/jLwVAUtLOAQ/download")!,
@@ -122,7 +122,7 @@ enum DemoData {
                        user: user,
                        collections: [UNCollection](),
                        categories: [UNCategory](),
-                       imageLinks: imageLinks,
+                       imageURLs: imageURLs,
                        apiLocations: apiLocations)
     }
 
@@ -196,7 +196,7 @@ enum DemoData {
                        user: invalidUser,
                        collections: [UNCollection](),
                        categories: [UNCategory](),
-                       imageLinks: invalidPhotoImageLinks,
+                       imageURLs: invalidPhotoImageLinks,
                        apiLocations: invalidPhotoAPILocations)
     }
 
@@ -280,12 +280,12 @@ enum DemoData {
     }
 
     /// Creates an invalid user API locations
-    static var invalidPhotoImageLinks: UNPhotoImageLinks {
-        UNPhotoImageLinks(rawURL: Constant.invalidURL,
-                          fullURL: Constant.invalidURL,
-                          regularURL: Constant.invalidURL,
-                          smallURL: Constant.invalidURL,
-                          thumbURL: Constant.invalidURL)
+    static var invalidPhotoImageLinks: UNPhotoImageURLs {
+        UNPhotoImageURLs(rawURL: Constant.invalidURL,
+                         fullURL: Constant.invalidURL,
+                         regularURL: Constant.invalidURL,
+                         smallURL: Constant.invalidURL,
+                         thumbURL: Constant.invalidURL)
     }
 
     // MARK: - Helpers
