@@ -1,8 +1,4 @@
-//
-//  MockUNProfileImageLinks.swift
-//  MockUNProfileImageLinks
-//
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,16 +18,17 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
 @testable import UnsplashFramework
+import XCTest
 
-extension UNProfileImageLinks {
+final class UNUserInterestsTests: XCTestCase {
 
-    static func mock(small: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
-                     medium: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
-                     large: URL = URL(string: "https://api.unsplash.com/image.jpg")!) -> UNProfileImageLinks {
-        UNProfileImageLinks(small: small,
-                            medium: medium,
-                            large: large)
+    func testDecoding() throws {
+        let jsonData = DemoData.dataFromJSONFile(named: "UserInterests")
+        let decoder = JSONDecoder.unsplashDecoder
+        let userInterests = try decoder.decode(UNUserInterests.self, from: jsonData)
+
+        XCTAssertEqual(userInterests.manuallySpecifiedTopicTitles.count, 5)
+        XCTAssertEqual(userInterests.inferredTopicTitles.count, 30)
     }
 }

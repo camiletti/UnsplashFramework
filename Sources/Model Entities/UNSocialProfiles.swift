@@ -1,8 +1,4 @@
-//
-//  MockUNProfileImageLinks.swift
-//  MockUNProfileImageLinks
-//
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +19,29 @@
 //
 
 import Foundation
-@testable import UnsplashFramework
 
-extension UNProfileImageLinks {
+// MARK: - Social
+public struct UNSocialProfiles: Codable, Equatable {
 
-    static func mock(small: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
-                     medium: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
-                     large: URL = URL(string: "https://api.unsplash.com/image.jpg")!) -> UNProfileImageLinks {
-        UNProfileImageLinks(small: small,
-                            medium: medium,
-                            large: large)
+    // MARK: - Declarations
+
+    enum CodingKeys: String, CodingKey {
+        case instagramUsername = "instagram_username"
+        case twitterUsername = "twitter_username"
+        case portfolioURL = "portfolio_url"
+        case paypalEmailOrUsername = "paypal_email"
     }
+
+    // MARK: - Properties
+
+    /// The Instagram username of the user if it has one set.
+    public let instagramUsername: String?
+
+    /// The twitter username of the user if it has one set.
+    public let twitterUsername: String?
+
+    /// The url to the user's portfolio if it has one set.
+    public let portfolioURL: URL?
+
+    public let paypalEmailOrUsername: String?
 }

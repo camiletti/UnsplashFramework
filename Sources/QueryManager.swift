@@ -39,6 +39,14 @@ class QueryManager {
         self.api = api
     }
 
+    // MARK: - Users
+
+    func publicProfile(with parameters: UNUserPublicProfileParameters) async throws -> UNUserPublicProfile {
+        try await api.request(.get,
+                              endpoint: .userPublicProfile(username: parameters.username),
+                              parameters: parameters)
+    }
+
     /// Get a single page from the Editorial feed.
     ///
     /// - Parameters:

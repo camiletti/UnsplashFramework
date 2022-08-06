@@ -1,0 +1,9 @@
+{
+   "self":"https://api.unsplash.com/users/camiletti",
+   "html":"https://unsplash.com/@camiletti",
+   "photos":"https://api.unsplash.com/users/camiletti/photos",
+   "likes":"https://api.unsplash.com/users/camiletti/likes",
+   "portfolio":"https://api.unsplash.com/users/camiletti/portfolio",
+   "following":"https://api.unsplash.com/users/camiletti/following",
+   "followers":"https://api.unsplash.com/users/camiletti/followers"
+}

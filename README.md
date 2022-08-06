@@ -11,17 +11,56 @@
 
 ## 📷 Introduction
 The idea behind this project is to make an easy-to-use, well tested and well documented client framework for Unsplash.
+Please read Unsplash's [Guidelines & Credition](https://unsplash.com/documentation#guidelines--crediting) before using it.
 
 > Currently in early development stage 🍼
 
 
-## 🛠 Plan
+## 🛠 Features
+The plan is to achieve feature parity with Unsplash REST API
+
+### Users
+- [x] Get a user’s public profile
+- [ ] Get a user’s portfolio link
+- [ ] List a user’s photos
+- [ ] List a user’s liked photos
+- [ ] List a user’s collections
+- [ ] Get a user’s statistics
+
+### Photos
 - [x] List photos
+- [ ] Get a photo
+- [ ] Get a random photo
+- [ ] Get a photo’s statistics
+- [ ] Track a photo download
+- [ ] Update a photo
+- [ ] Like a photo
+- [ ] Unlike a photo
+
+### Search
 - [x] Search photos
 - [x] Search collections
 - [x] Search user
+
+### Collections
 - [ ] List collections
-- [ ] Users
+- [ ] Get a collection
+- [ ] Get a collection’s photos
+- [ ] List a collection’s related collections
+- [ ] Create a new collection
+- [ ] Update an existing collection
+- [ ] Delete a collection
+- [ ] Add a photo to a collection
+- [ ] Remove a photo from a collection
+
+### Topics
+- [ ] List topics
+- [ ] Get a topic
+- [ ] Get a topic’s photos
+
+### Stats
+- [ ] Totals
+- [ ] Month
 
 
 ## Requirement

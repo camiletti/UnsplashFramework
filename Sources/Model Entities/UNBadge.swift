@@ -1,8 +1,4 @@
-//
-//  UNProfileImageLinks.swift
-//  UnsplashFramework
-//
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,35 +20,27 @@
 
 import Foundation
 
-/// Holds the URLs for the different sizes of the user's profile image
-public struct UNProfileImageLinks: Decodable {
+public struct UNBadge: Codable, Equatable {
+    // MARK: - Declarations
+
+    enum CodingKeys: String, CodingKey {
+        case title
+        case isPrimary = "primary"
+        case slug
+        case link
+    }
 
     // MARK: - Properties
 
-    /// 32 by 32 pixels.
-    public var small: URL?
+    /// The title of the badge.
+    public let title: String
 
-    /// 64 by 64 pixels.
-    public var medium: URL?
+    /// Whether the badge is the user's primary badge
+    public let isPrimary: Bool
 
-    /// 128 by 128 pixels.
-    public var big: URL?
-}
+    /// The slug name of the badge
+    public let slug: String
 
-// MARK: - Equatable
-extension UNProfileImageLinks: Equatable {
-
-    /// Returns a Boolean value indicating whether the two UNProfileImageLinks have the same
-    /// value for their variables.
-    public static func == (lhs: UNProfileImageLinks, rhs: UNProfileImageLinks) -> Bool {
-        lhs.small == rhs.small  &&
-            lhs.medium == rhs.medium &&
-            lhs.big == rhs.big
-    }
-
-    /// Returns a Boolean value indicating whether the two UNProfileImageLinks have at least
-    /// one value different.
-    public static func != (lhs: UNProfileImageLinks, rhs: UNProfileImageLinks) -> Bool {
-        !(lhs == rhs)
-    }
+    /// The main page URL for what the badge represents.
+    public let link: URL
 }

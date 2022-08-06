@@ -1,8 +1,4 @@
-//
-//  UNProfileImageLinksTests.swift
-//  UnsplashFramework
-//
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -27,27 +23,13 @@ import XCTest
 
 final class UNProfileImageLinksTests: XCTestCase {
 
-    func testEquality() {
-        var profileImageLinksA = DemoData.invalidProfileImageLinks
-        var profileImageLinksB = profileImageLinksA
+    func testDecoding() throws {
+        let jsonData = DemoData.dataFromJSONFile(named: "ProfileImageLinks")
+        let decoder = JSONDecoder.unsplashDecoder
+        let profileLinks = try decoder.decode(UNProfileImageLinks.self, from: jsonData)
 
-        XCTAssert(profileImageLinksA == profileImageLinksB)
-
-        profileImageLinksA.small = URL(string: "http://api.unsplash.com/1")!
-        profileImageLinksB.small = URL(string: "http://api.unsplash.com/2")!
-
-        XCTAssert((profileImageLinksA == profileImageLinksB) == false)
-    }
-
-    func testInequality() {
-        var profileImageLinksA = DemoData.invalidProfileImageLinks
-        var profileImageLinksB = profileImageLinksA
-
-        XCTAssert((profileImageLinksA != profileImageLinksB) == false)
-
-        profileImageLinksA.small = URL(string: "http://api.unsplash.com/1")!
-        profileImageLinksB.small = URL(string: "http://api.unsplash.com/2")!
-
-        XCTAssert(profileImageLinksA != profileImageLinksB)
+        XCTAssertEqual(profileLinks.small, URL(string: "https://images.unsplash.com/profile-1659789472924-bc84b8c16170image?ixlib=rb-1.2.1&crop=faces&fit=crop&w=32&h=32")!)
+        XCTAssertEqual(profileLinks.medium, URL(string: "https://images.unsplash.com/profile-1659789472924-bc84b8c16170image?ixlib=rb-1.2.1&crop=faces&fit=crop&w=64&h=64")!)
+        XCTAssertEqual(profileLinks.large, URL(string: "https://images.unsplash.com/profile-1659789472924-bc84b8c16170image?ixlib=rb-1.2.1&crop=faces&fit=crop&w=128&h=128")!)
     }
 }

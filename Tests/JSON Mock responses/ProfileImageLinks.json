@@ -1,0 +1,5 @@
+{
+  "small": "https://images.unsplash.com/profile-1659789472924-bc84b8c16170image?ixlib=rb-1.2.1&crop=faces&fit=crop&w=32&h=32",
+  "medium": "https://images.unsplash.com/profile-1659789472924-bc84b8c16170image?ixlib=rb-1.2.1&crop=faces&fit=crop&w=64&h=64",
+  "large": "https://images.unsplash.com/profile-1659789472924-bc84b8c16170image?ixlib=rb-1.2.1&crop=faces&fit=crop&w=128&h=128"
+}

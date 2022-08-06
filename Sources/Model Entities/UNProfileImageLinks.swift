@@ -1,8 +1,4 @@
-//
-//  MockUNProfileImageLinks.swift
-//  MockUNProfileImageLinks
-//
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +19,18 @@
 //
 
 import Foundation
-@testable import UnsplashFramework
 
-extension UNProfileImageLinks {
+/// Holds the URLs for the different sizes of the user's profile image
+public struct UNProfileImageLinks: Codable, Equatable {
 
-    static func mock(small: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
-                     medium: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
-                     large: URL = URL(string: "https://api.unsplash.com/image.jpg")!) -> UNProfileImageLinks {
-        UNProfileImageLinks(small: small,
-                            medium: medium,
-                            large: large)
-    }
+    // MARK: - Properties
+
+    /// 32 by 32 pixels.
+    public var small: URL
+
+    /// 64 by 64 pixels.
+    public var medium: URL
+
+    /// 128 by 128 pixels.
+    public var large: URL
 }

@@ -35,7 +35,24 @@ final class UNClientTests: XCTestCase {
         static let credentials = UNCredentials(accessKey: "123", secret: "789")
     }
 
-    // MARK: - Tests
+    // MARK: - Users
+
+    func testPublicUserProfile() async throws {
+        // The only important parameter for this test is the data that will be returned
+        let username = "camiletti"
+        let queryManager = QueryManager.mock(data: DemoData.standardUserPublicProfileResponse,
+                                             response: .mockingSuccess(endpoint: .userPublicProfile(username: username),
+                                                                       parameters: nil),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline)
+        let client = UNClient(queryManager: queryManager)
+
+        // None of the parameters are relevant for this test
+        let _ = try await client.publicProfile(for: username)
+    }
+
+    // MARK: - Photos
 
     func testListingPhotos() async throws {
         // The only important parameter for this test is the data that will be returned
@@ -53,6 +70,8 @@ final class UNClientTests: XCTestCase {
                                                           sortingBy: .popular)
         XCTAssertFalse(photos.isEmpty)
     }
+
+    // MARK: - Search
 
     func testSearchPhotos() async throws {
         // The only important parameter for this test is the data that will be returned

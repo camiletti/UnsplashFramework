@@ -1,8 +1,4 @@
-//
-//  MockUNProfileImageLinks.swift
-//  MockUNProfileImageLinks
-//
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,16 +18,30 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
 @testable import UnsplashFramework
+import XCTest
 
-extension UNProfileImageLinks {
+final class UNSocialProfilesTests: XCTestCase {
 
-    static func mock(small: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
-                     medium: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
-                     large: URL = URL(string: "https://api.unsplash.com/image.jpg")!) -> UNProfileImageLinks {
-        UNProfileImageLinks(small: small,
-                            medium: medium,
-                            large: large)
+    func testDecoding() throws {
+        let jsonData = DemoData.dataFromJSONFile(named: "Social")
+        let decoder = JSONDecoder.unsplashDecoder
+        let socialProfiles = try decoder.decode(UNSocialProfiles.self, from: jsonData)
+
+        XCTAssertEqual(socialProfiles.instagramUsername, "instagram")
+        XCTAssertEqual(socialProfiles.twitterUsername, "camiletti_p")
+        XCTAssertEqual(socialProfiles.portfolioURL, URL(string: "https://www.behance.net/camiletti")!)
+        XCTAssertEqual(socialProfiles.paypalEmailOrUsername, "paypal")
+    }
+
+    func testDecodingOptionalProperties() throws {
+        let jsonData = DemoData.dataFromJSONFile(named: "SocialWithNulls")
+        let decoder = JSONDecoder.unsplashDecoder
+        let socialProfiles = try decoder.decode(UNSocialProfiles.self, from: jsonData)
+
+        XCTAssertNil(socialProfiles.instagramUsername)
+        XCTAssertNil(socialProfiles.twitterUsername)
+        XCTAssertNil(socialProfiles.portfolioURL)
+        XCTAssertNil(socialProfiles.paypalEmailOrUsername)
     }
 }

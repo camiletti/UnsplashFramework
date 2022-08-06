@@ -1,8 +1,4 @@
-//
-//  MockUNProfileImageLinks.swift
-//  MockUNProfileImageLinks
-//
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +19,41 @@
 //
 
 import Foundation
-@testable import UnsplashFramework
 
-extension UNProfileImageLinks {
+public struct UNUserProfileLinks: Codable, Equatable {
 
-    static func mock(small: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
-                     medium: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
-                     large: URL = URL(string: "https://api.unsplash.com/image.jpg")!) -> UNProfileImageLinks {
-        UNProfileImageLinks(small: small,
-                            medium: medium,
-                            large: large)
+    // MARK: - Declarations
+
+    enum CodingKeys: String, CodingKey {
+        case profileURL = "html"
+        case apiProfileURL = "self"
+        case apiPhotosURL = "photos"
+        case apiLikesURL = "likes"
+        case apiPortfolioURL = "portfolio"
+        case apiFollowingURL = "following"
+        case apiFollowersURL = "followers"
     }
+
+    // MARK: - Properties
+
+    /// URL of the html version of the profile.
+    public let profileURL: URL
+
+    /// API URL for the user's profile.
+    let apiProfileURL: URL
+
+    /// API URL for the photos of the user's.
+    let apiPhotosURL: URL
+
+    /// API URL for the likes of the user.
+    let apiLikesURL: URL
+
+    /// API URL for the user's Unsplash portfolio.
+    let apiPortfolioURL: URL
+
+    /// API URL for the accounts the user is following.
+    let apiFollowingURL: URL
+
+    /// API URL for the accounts that follow the user.
+    let apiFollowersURL: URL
 }

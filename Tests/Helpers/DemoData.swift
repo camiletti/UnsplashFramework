@@ -34,6 +34,17 @@ enum DemoData {
         static let invalidURL = URL(string: "https://unsplash.com/rewqkjfdasaosnfhwlawfhyuip")!
     }
 
+    // MARK: - Users
+
+    /// Returns a sample public user profile.
+    ///
+    /// - Returns: JSON Data representing the user's public profile.
+    static var standardUserPublicProfileResponse: Data {
+        dataFromJSONFile(named: "UserPublicProfileResponse")
+    }
+
+    // MARK: - Photos
+
     /// Returns a sample list of photos.
     ///
     /// - Returns: JSON Data of the list of photos.
@@ -44,6 +55,8 @@ enum DemoData {
     static var validMultiplePhotosArray: [UNPhoto] {
         try! JSONDecoder().decode([UNPhoto].self, from: standardPhotoListResponse)
     }
+
+    // MARK: - Search
 
     /// Returns a sample search of photos.
     ///
@@ -72,9 +85,9 @@ enum DemoData {
     ///
     /// - Returns: Valid photo
     static var validSamplePhoto: UNPhoto {
-        let profileLinks = UNProfileImageLinks(small: URL(string: "https://images.unsplash.com/placeholder-avatars/extra-large.jpg?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=32&w=32&s=0ad68f44c4725d5a3fda019bab9d3edc"),
+        let profileLinks = UNProfileImageLinks(small: URL(string: "https://images.unsplash.com/placeholder-avatars/extra-large.jpg?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=32&w=32&s=0ad68f44c4725d5a3fda019bab9d3edc")!,
                                                medium: URL(string: "https://images.unsplash.com/placeholder-avatars/extra-large.jpg?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=64&w=64&s=356bd4b76a3d4eb97d63f45b818dd358")!,
-                                               big: URL(string: "https://images.unsplash.com/placeholder-avatars/extra-large.jpg?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=128&w=128&s=ee8bbf5fb8d6e43aaaa238feae2fe90d"))
+                                               large: URL(string: "https://images.unsplash.com/placeholder-avatars/extra-large.jpg?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=128&w=128&s=ee8bbf5fb8d6e43aaaa238feae2fe90d")!)
 
         let userAPILocations = UNUserAPILocations(apiProfileURL: URL(string: "https://api.unsplash.com/users/dustinlee")!,
                                                   apiPhotosURL: URL(string: "https://api.unsplash.com/users/dustinlee/photos")!,
@@ -161,9 +174,9 @@ enum DemoData {
     }
 
     static var validProfileImageLinks: UNProfileImageLinks {
-        UNProfileImageLinks(small: URL(string: "https://images.unsplash.com/profile-1441945026710-480e4372a5b5?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=32&w=32&s=6676f08bc1f6638d9d97e28f53252937"),
-                            medium: URL(string: "https://images.unsplash.com/profile-1441945026710-480e4372a5b5?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=64&w=64&s=fb59ebefbd52e943eb5abf68d7edc020"),
-                            big: URL(string: "https://images.unsplash.com/profile-1441945026710-480e4372a5b5?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=128&w=128&s=a506ec7dcb2fe02cb7089bea78c4df68"))
+        UNProfileImageLinks(small: URL(string: "https://images.unsplash.com/profile-1441945026710-480e4372a5b5?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=32&w=32&s=6676f08bc1f6638d9d97e28f53252937")!,
+                            medium: URL(string: "https://images.unsplash.com/profile-1441945026710-480e4372a5b5?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=64&w=64&s=fb59ebefbd52e943eb5abf68d7edc020")!,
+                            large: URL(string: "https://images.unsplash.com/profile-1441945026710-480e4372a5b5?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=128&w=128&s=a506ec7dcb2fe02cb7089bea78c4df68")!)
     }
 
     static var validUserAPILocations: UNUserAPILocations {
@@ -257,7 +270,7 @@ enum DemoData {
     static var invalidProfileImageLinks: UNProfileImageLinks {
         UNProfileImageLinks(small: Constant.invalidURL,
                             medium: Constant.invalidURL,
-                            big: Constant.invalidURL)
+                            large: Constant.invalidURL)
     }
 
     /// Creates an invalid photo API locations
@@ -294,7 +307,7 @@ enum DemoData {
     ///
     /// - Parameter named: Name of the JSON File.
     /// - Returns: JSON Data contained on the specified file.
-    private static func dataFromJSONFile(named: String) -> Data {
+    static func dataFromJSONFile(named: String) -> Data {
         let jsonFilePath = Bundle.module.path(forResource: named, ofType: ".json")!
         let url = URL(fileURLWithPath: jsonFilePath)
         return try! Data(contentsOf: url)

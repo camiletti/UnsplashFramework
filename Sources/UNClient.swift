@@ -40,6 +40,14 @@ public final class UNClient {
         self.queryManager = queryManager
     }
 
+    // MARK: - Users
+
+    public func publicProfile(for username: String) async throws -> UNUserPublicProfile {
+        let parameters = UNUserPublicProfileParameters(username: username)
+
+        return try await queryManager.publicProfile(with: parameters)
+    }
+
     // MARK: - Listing photos
 
     /// Get a single page from the list of all photos.
