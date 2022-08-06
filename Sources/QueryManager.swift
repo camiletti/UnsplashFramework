@@ -39,13 +39,13 @@ class QueryManager {
         self.api = api
     }
 
-    /// Get a single page from the list of all photos.
+    /// Get a single page from the Editorial feed.
     ///
     /// - Parameters:
     ///   - parameters: The parameters.
-    func listPhotos(with parameters: UNPhotoListParameters) async throws -> [UNPhoto] {
+    func editorialPhotosList(with parameters: UNPhotoListParameters) async throws -> [UNPhoto] {
         try await api.request(.get,
-                              endpoint: .photos,
+                              endpoint: .editorialPhotosList,
                               parameters: parameters)
     }
 

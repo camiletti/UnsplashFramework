@@ -40,7 +40,7 @@ extension URLRequest {
                               headers: [UNAPI.Header]) -> URLRequest {
         // Create new request
         let url = URLComponents(unsplashQuery: parameters?.asQueryItems(),
-                                withPath: endpoint.string()).url!
+                                withPath: endpoint.path).url!
         var request = URLRequest(url: url)
 
         // Set method

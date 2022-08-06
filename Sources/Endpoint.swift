@@ -25,26 +25,40 @@
 /// Endpoints Unsplash supports
 enum Endpoint {
 
-    // MARK: - General photos
+    // MARK: - Users
 
-    /// List of photos.
-    case photos
-    /// List of the curated photos.
-    case curatedPhotos
+    /// Get public details on a given user.
+    case userPublicProfile(username: String)
+    /// Get a user’s portfolio link.
+    case userPortfolioLink(username: String)
+    /// Get a list of photos uploaded by a user.
+    case userPhotos(username: String)
+    /// Get a list of photos liked by a user.
+    case userLikedPhotos(username: String)
+    /// Get a list of collections created by the user.
+    case userCollections(username: String)
+    /// Retrieve the consolidated number of downloads, views
+    /// and likes of all user’s photos, as well as the historical breakdown
+    /// and average of these stats in a specific timeframe (default is 30 days).
+    case userStatistics(username: String)
+
+    // MARK: - Photos
+
+    /// Get a single page from the Editorial feed.
+    case editorialPhotosList
+    /// Retrieve a single photo.
+    /// Also updates a photo on behalf of the logged-in user. This requires the `write_photos` scope.
+    case photo(id: String)
     /// Retrieve a single random photo, given optional filters.
     case randomPhoto
-
-    // MARK: - Single photos
-
-    /// Retrieve a single photo.
-    case singlePhoto(String)
-    /// Retrieve total number of downloads, views and likes of a single photo,
-    /// as well as the historical breakdown of these stats in a specific timeframe.
-    case singlePhotoStatistics(String)
-    /// Retrieve a single photo’s download link.
-    case singlePhotoDownload(String)
+    /// Retrieve total number of downloads, views and likes of
+    /// a single photo, as well as the historical breakdown of these
+    /// stats in a specific timeframe (default is 30 days).
+    case photoStatistics(id: String)
+    /// Track a photo download.
+    case trackPhotoDownload(id: String)
     /// Un/Like a photo on behalf of the logged-in user.
-    case singlePhotoLike(String)
+    case likePhoto(id: String)
 
     // MARK: - Search
 
@@ -57,32 +71,30 @@ enum Endpoint {
 
     // MARK: - General collections
 
-    /// List of all collections.
-    case collections
-    /// List of featured collections.
-    case featuredCollections
-    /// List of curated collections.
-    case curatedCollections
-
-    // MARK: - Single collections
-
-    /// Retrieve a single collection.
-    case singleCollection(String)
-
-    /// Retrieve a curated collection.
-    case singleCuratedCollection(String)
-
-    // MARK: - Photos in a collection
-
+    /// Get a single page from the list of all collections.
+    /// Also used to create a new collection. This requires the `write_collections` scope.
+    case collectionsList
+    /// Retrieve a single collection. To view a user’s private collections, the `read_collections` scope is required.
+    /// Also used to update an existing collection.
+    /// Also used to delete an existing collection.
+    case collection(id: String)
     /// Retrieve a collection’s photos.
-    case photosInCollection(String)
-    /// Retrieve a curated collection’s photos.
-    case photosInCuratedCollection(String)
-
-    // MARK: - Related collections
-
+    case photosInCollection(id: String)
     /// Retrieve a list of collections related to this one.
-    case relatedCollections(String)
+    case relatedCollections(id: String)
+    /// Add a photo to one of the logged-in user’s collections. Requires the `write_collections` scope.
+    case addPhotoToCollection(collectionID: String)
+    /// Remove a photo from one of the logged-in user’s collections. Requires the write_collections scope.
+    case removePhotoToCollection(collectionID: String)
+
+    // MARK: - Topics
+
+    /// Get a single page from the list of all topics.
+    case topicsList
+    /// Retrieve a single topic.
+    case topic(idOrSlug: String)
+    /// Retrieve a topic’s photos.
+    case photosOfTopic(idOrSlug: String)
 
     // MARK: - Unsplash stats
 
@@ -91,31 +103,46 @@ enum Endpoint {
     /// Get the overall Unsplash stats for the past 30 days.
     case unsplashMonthlyStats
 
-    // MARK: - To string
+    // MARK: - Path
 
-    /// Returns the string form for the endpoint.
-    func string() -> String {
+    /// Returns the path of the endpoint.
+    var path: String {
         switch self {
-        case .photos:
+        case .userPublicProfile(let username):
+            return "/users/\(username)"
+
+        case .userPortfolioLink(let username):
+            return "/users/\(username)/portfolio"
+
+        case .userPhotos(let username):
+            return "/users/\(username)/photos"
+
+        case .userLikedPhotos(let username):
+            return "/users/\(username)/likes"
+
+        case .userCollections(let username):
+            return "/users/\(username)/collections"
+
+        case .userStatistics(let username):
+            return "/users/\(username)/statistics"
+
+        case .editorialPhotosList:
             return "/photos"
 
-        case .curatedPhotos:
-            return "/photos/curated"
+        case .photo(let id):
+            return "/photos/\(id)"
 
         case .randomPhoto:
             return "/photos/random"
 
-        case .singlePhoto(let id):
-            return "/photos/" + id
+        case .photoStatistics(let id):
+            return "/photos/\(id)/statistics"
 
-        case .singlePhotoStatistics(let id):
-            return "/photos/" + id + "/statistics"
+        case .trackPhotoDownload(let id):
+            return "/photos/\(id)/download"
 
-        case .singlePhotoDownload(let id):
-            return "/photos/" + id + "/download"
-
-        case .singlePhotoLike(let id):
-            return "/photos/" + id + "/like"
+        case .likePhoto(let id):
+            return "/photos/\(id)/like"
 
         case .photoSearch:
             return "/search/photos"
@@ -126,29 +153,32 @@ enum Endpoint {
         case .userSearch:
             return "/search/users"
 
-        case .collections:
+        case .collectionsList:
             return "/collections"
 
-        case .featuredCollections:
-            return "/collections/featured"
-
-        case .curatedCollections:
-            return "/collections/curated"
-
-        case .singleCollection(let id):
-            return "/collections/" + id
-
-        case .singleCuratedCollection(let id):
-            return "/collections/curated/" + id
+        case .collection(let id):
+            return "/collections/\(id)"
 
         case .photosInCollection(let id):
-            return "/collections/" + id + "/photos"
-
-        case .photosInCuratedCollection(let id):
-            return "/collections/curated/" + id + "/photos"
+            return "/collections/\(id)/photos"
 
         case .relatedCollections(let id):
-            return "/collections/" + id + "/related"
+            return "/collections/\(id)/related"
+
+        case .addPhotoToCollection(let collectionID):
+            return "/collections/\(collectionID)/add"
+
+        case .removePhotoToCollection(let collectionID):
+            return "/collections/\(collectionID)/remove"
+
+        case .topicsList:
+            return "/topics"
+
+        case .topic(let idOrSlug):
+            return "/topics/\(idOrSlug)"
+
+        case .photosOfTopic(let idOrSlug):
+            return "/topics/\(idOrSlug)/photos"
 
         case .unsplashTotalStats:
             return "/stats/total"

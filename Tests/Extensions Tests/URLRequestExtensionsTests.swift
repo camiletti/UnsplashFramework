@@ -38,14 +38,31 @@ final class URLSessionExtensionsTests: XCTestCase {
         let parameters = UNPhotoListParameters(pageNumber: 1,
                                                photosPerPage: 10,
                                                sortOrder: .popular)
-        let endpoints: [Endpoint] = [.photos, .curatedPhotos, .randomPhoto,
-                                     .singlePhoto(id), .singlePhotoStatistics(id),
-                                     .singlePhotoDownload(id), .singlePhotoLike(id),
-                                     .photoSearch, .collectionSearch, .userSearch,
-                                     .collections, .featuredCollections, .curatedCollections,
-                                     .singleCollection(id), .singleCuratedCollection(id),
-                                     .photosInCollection(id), .photosInCuratedCollection(id),
-                                     .relatedCollections(id), .unsplashTotalStats,
+        let endpoints: [Endpoint] = [.userPublicProfile(username: id),
+                                     .userPortfolioLink(username: id),
+                                     .userPhotos(username: id),
+                                     .userLikedPhotos(username: id),
+                                     .userCollections(username: id),
+                                     .userStatistics(username: id),
+                                     .editorialPhotosList,
+                                     .photo(id: id),
+                                     .randomPhoto,
+                                     .photoStatistics(id: id),
+                                     .trackPhotoDownload(id: id),
+                                     .likePhoto(id: id),
+                                     .photoSearch,
+                                     .collectionSearch,
+                                     .userSearch,
+                                     .collectionsList,
+                                     .collection(id: id),
+                                     .photosInCollection(id: id),
+                                     .relatedCollections(id: id),
+                                     .addPhotoToCollection(collectionID: id),
+                                     .removePhotoToCollection(collectionID: id),
+                                     .topicsList,
+                                     .topic(idOrSlug: id),
+                                     .photosOfTopic(idOrSlug: id),
+                                     .unsplashTotalStats,
                                      .unsplashMonthlyStats]
 
         for endpoint in endpoints {
@@ -70,7 +87,7 @@ final class URLSessionExtensionsTests: XCTestCase {
     // MARK: - Helpers
 
     func expectedURL(withEndpoint endpoint: Endpoint, parameters: UNPhotoListParameters) -> URL? {
-        URL(string: UNAPI.scheme + "://" + UNAPI.location + endpoint.string() + "?" +
+        URL(string: UNAPI.scheme + "://" + UNAPI.location + endpoint.path + "?" +
                 UNPhotoListParameters.QueryParameterName.pageNumberName + "=\(parameters.pageNumber)&" +
                 UNPhotoListParameters.QueryParameterName.photosPerPageName + "=\(parameters.photosPerPage)&" +
                 UNPhotoListParameters.QueryParameterName.sortOrderName + "=\(parameters.sortOrder)")

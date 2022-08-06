@@ -48,14 +48,14 @@ public final class UNClient {
     ///   - page: Page number to retrieve.
     ///   - photosPerPage: Number of items per page.
     ///   - sort: How to sort the photos.
-    public func listPhotos(page: Int,
-                           photosPerPage: Int = 10,
-                           sortingBy sort: UNSort) async throws -> [UNPhoto] {
+    public func editorialPhotosList(page: Int,
+                                    photosPerPage: Int = 10,
+                                    sortingBy sort: UNSort) async throws -> [UNPhoto] {
         let parameters = UNPhotoListParameters(pageNumber: page,
                                                photosPerPage: photosPerPage,
                                                sortOrder: sort)
 
-        return try await queryManager.listPhotos(with: parameters)
+        return try await queryManager.editorialPhotosList(with: parameters)
     }
 
     // MARK: - Search

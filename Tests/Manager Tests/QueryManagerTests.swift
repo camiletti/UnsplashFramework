@@ -38,7 +38,7 @@ final class QueryManagerTests: XCTestCase {
     // MARK: - Test listing photos
 
     func testListingPhotosReturnsExpectedResponse() async throws {
-        let endpoint = Endpoint.photos
+        let endpoint = Endpoint.editorialPhotosList
         let expectedData = DemoData.standardPhotoListResponse
         let expectedPhotosCount = 10
         let parameters = UNPhotoListParameters(pageNumber: 10,
@@ -51,7 +51,7 @@ final class QueryManagerTests: XCTestCase {
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline)
 
-        let photos = try await queryManager.listPhotos(with: parameters)
+        let photos = try await queryManager.editorialPhotosList(with: parameters)
 
         XCTAssertEqual(photos.count, expectedPhotosCount)
     }

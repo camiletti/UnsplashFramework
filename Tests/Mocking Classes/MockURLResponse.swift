@@ -29,7 +29,7 @@ extension URLResponse {
 
     static func mockingSuccess(endpoint: Endpoint, parameters: ParametersURLRepresentable?) -> HTTPURLResponse {
         let url = URLComponents(unsplashQuery: parameters?.asQueryItems(),
-                                withPath: endpoint.string()).url!
+                                withPath: endpoint.path).url!
 
         return HTTPURLResponse(url: url,
                                statusCode: ResponseStatusCode.success.rawValue,
@@ -39,7 +39,7 @@ extension URLResponse {
 
     static func mockingFailure(endpoint: Endpoint, parameters: ParametersURLRepresentable?, statusCode: ResponseStatusCode = .internalServerError) -> HTTPURLResponse {
         let url = URLComponents(unsplashQuery: parameters?.asQueryItems(),
-                                withPath: endpoint.string()).url!
+                                withPath: endpoint.path).url!
 
         return HTTPURLResponse(url: url,
                                statusCode: statusCode.rawValue,

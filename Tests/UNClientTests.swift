@@ -40,7 +40,7 @@ final class UNClientTests: XCTestCase {
     func testListingPhotos() async throws {
         // The only important parameter for this test is the data that will be returned
         let queryManager = QueryManager.mock(data: DemoData.standardPhotoListResponse,
-                                             response: .mockingSuccess(endpoint: .photos,
+                                             response: .mockingSuccess(endpoint: .editorialPhotosList,
                                                                        parameters: nil),
                                              error: nil,
                                              credentials: Constant.credentials,
@@ -48,9 +48,9 @@ final class UNClientTests: XCTestCase {
         let client = UNClient(queryManager: queryManager)
 
         // None of the parameters are relevant for this test
-        let photos = try await client.listPhotos(page: 1,
-                                                 photosPerPage: 1,
-                                                 sortingBy: .popular)
+        let photos = try await client.editorialPhotosList(page: 1,
+                                                          photosPerPage: 1,
+                                                          sortingBy: .popular)
         XCTAssertFalse(photos.isEmpty)
     }
 
