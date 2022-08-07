@@ -22,6 +22,8 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+import Foundation
+
 class QueryManager {
 
     // MARK: - Properties
@@ -44,7 +46,13 @@ class QueryManager {
     func publicProfile(with parameters: UNUserPublicProfileParameters) async throws -> UNUserPublicProfile {
         try await api.request(.get,
                               endpoint: .userPublicProfile(username: parameters.username),
-                              parameters: parameters)
+                              parameters: nil)
+    }
+
+    public func portfolioLink(with parameters: UNUserPublicProfileParameters) async throws -> UNURLWrapper {
+        try await api.request(.get,
+                              endpoint: .userPublicProfile(username: parameters.username),
+                              parameters: nil)
     }
 
     /// Get a single page from the Editorial feed.

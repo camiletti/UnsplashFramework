@@ -40,7 +40,7 @@ final class UNClientTests: XCTestCase {
     func testPublicUserProfile() async throws {
         // The only important parameter for this test is the data that will be returned
         let username = "camiletti"
-        let queryManager = QueryManager.mock(data: DemoData.standardUserPublicProfileResponse,
+        let queryManager = QueryManager.mock(data: DemoData.userPublicProfileResponse,
                                              response: .mockingSuccess(endpoint: .userPublicProfile(username: username),
                                                                        parameters: nil),
                                              error: nil,
@@ -49,8 +49,25 @@ final class UNClientTests: XCTestCase {
         let client = UNClient(queryManager: queryManager)
 
         // None of the parameters are relevant for this test
-        let _ = try await client.publicProfile(for: username)
+        let _ = try await client.publicProfile(forUsername: username)
     }
+
+    func testUserPortfolio() async throws {
+        // The only important parameter for this test is the data that will be returned
+        let username = "camiletti"
+        let queryManager = QueryManager.mock(data: DemoData.userPortfolioResponse,
+                                             response: .mockingSuccess(endpoint: .userPortfolioLink(username: username),
+                                                                       parameters: nil),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline)
+        let client = UNClient(queryManager: queryManager)
+
+        // None of the parameters are relevant for this test
+        let _ = try await client.portfolioLink(forUsername: username)
+    }
+
+
 
     // MARK: - Photos
 

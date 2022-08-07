@@ -22,6 +22,8 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+import Foundation
+
 /// The UNClient is the point of access to every Unsplash request.
 public final class UNClient {
 
@@ -42,11 +44,22 @@ public final class UNClient {
 
     // MARK: - Users
 
-    public func publicProfile(for username: String) async throws -> UNUserPublicProfile {
+    public func publicProfile(forUsername username: String) async throws -> UNUserPublicProfile {
         let parameters = UNUserPublicProfileParameters(username: username)
-
         return try await queryManager.publicProfile(with: parameters)
     }
+
+    public func portfolioLink(forUsername username: String) async throws -> URL {
+        let parameters = UNUserPublicProfileParameters(username: username)
+        let urlWrapper = try await queryManager.portfolioLink(with: parameters)
+        return urlWrapper.url
+    }
+
+    public func photos(of username: String) {}
+
+    public func collections(of username: String) {}
+
+    public func statistics(for username: String) {}
 
     // MARK: - Listing photos
 

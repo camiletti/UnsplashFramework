@@ -39,8 +39,15 @@ enum DemoData {
     /// Returns a sample public user profile.
     ///
     /// - Returns: JSON Data representing the user's public profile.
-    static var standardUserPublicProfileResponse: Data {
+    static var userPublicProfileResponse: Data {
         dataFromJSONFile(named: "UserPublicProfileResponse")
+    }
+
+    /// Returns a sample user portfolio.
+    ///
+    /// - Returns: JSON Data representing the user's portfolio.
+    static var userPortfolioResponse: Data {
+        dataFromJSONFile(named: "URLWrapper")
     }
 
     // MARK: - Photos
