@@ -25,7 +25,7 @@
 import Foundation
 @testable import UnsplashFramework
 
-final class MockURLSession: URLSession {
+extension URLSession {
 
     // MARK: Life Cycle
 

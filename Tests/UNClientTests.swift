@@ -40,12 +40,17 @@ final class UNClientTests: XCTestCase {
     func testPublicUserProfile() async throws {
         // The only important parameter for this test is the data that will be returned
         let username = "camiletti"
+        let endpoint = Endpoint.userPublicProfile(username: username)
+        let parameters = UNUserPublicProfileParameters(username: username)
         let queryManager = QueryManager.mock(data: DemoData.userPublicProfileResponse,
-                                             response: .mockingSuccess(endpoint: .userPublicProfile(username: username),
-                                                                       parameters: nil),
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
                                              error: nil,
                                              credentials: Constant.credentials,
-                                             deadline: Constant.requestDeadline)
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
         // None of the parameters are relevant for this test
@@ -53,18 +58,52 @@ final class UNClientTests: XCTestCase {
     }
 
     func testUserPortfolio() async throws {
-        // The only important parameter for this test is the data that will be returned
         let username = "camiletti"
+        let endpoint = Endpoint.userPortfolioLink(username: username)
+        let parameters = UNUserPublicProfileParameters(username: username)
         let queryManager = QueryManager.mock(data: DemoData.userPortfolioResponse,
-                                             response: .mockingSuccess(endpoint: .userPortfolioLink(username: username),
-                                                                       parameters: nil),
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
                                              error: nil,
                                              credentials: Constant.credentials,
-                                             deadline: Constant.requestDeadline)
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
         // None of the parameters are relevant for this test
         let _ = try await client.portfolioLink(forUsername: username)
+    }
+
+    func testUserPhotos() async throws {
+        let parameters = UNUserPhotosParameters(username: "camiletti",
+                                                page: 2,
+                                                photosPerPage: 4,
+                                                sorting: .downloads,
+                                                includeStats: true,
+                                                statsAmount: 30,
+                                                orientationFilter: .landscape)
+        let endpoint = Endpoint.userPhotos(username: parameters.username)
+        let queryManager = QueryManager.mock(data: DemoData.userPhotosResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
+        let client = UNClient(queryManager: queryManager)
+
+        // None of the parameters are relevant for this test
+        let _ = try await client.photos(fromUsername: parameters.username,
+                                        page: parameters.page!,
+                                        photosPerPage: parameters.photosPerPage!,
+                                        sorting: parameters.sorting!,
+                                        includeStats: parameters.includeStats!,
+                                        statsAmount: parameters.statsAmount!,
+                                        orientationFilter: parameters.orientationFilter)
     }
 
 
@@ -72,75 +111,101 @@ final class UNClientTests: XCTestCase {
     // MARK: - Photos
 
     func testListingPhotos() async throws {
-        // The only important parameter for this test is the data that will be returned
+        let endpoint = Endpoint.editorialPhotosList
+        let parameters = UNPhotoListParameters(pageNumber: 2,
+                                               photosPerPage: 4,
+                                               sortOrder: .latest)
         let queryManager = QueryManager.mock(data: DemoData.standardPhotoListResponse,
-                                             response: .mockingSuccess(endpoint: .editorialPhotosList,
-                                                                       parameters: nil),
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
                                              error: nil,
                                              credentials: Constant.credentials,
-                                             deadline: Constant.requestDeadline)
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
         // None of the parameters are relevant for this test
-        let photos = try await client.editorialPhotosList(page: 1,
-                                                          photosPerPage: 1,
-                                                          sortingBy: .popular)
+        let photos = try await client.editorialPhotosList(page: parameters.pageNumber,
+                                                          photosPerPage: parameters.photosPerPage,
+                                                          sortingBy: parameters.sortOrder)
         XCTAssertFalse(photos.isEmpty)
     }
 
     // MARK: - Search
 
     func testSearchPhotos() async throws {
-        // The only important parameter for this test is the data that will be returned
+        let endpoint = SearchType.photo.endpoint
+        let parameters = UNPhotoSearchParameters(query: "camiletti",
+                                                 pageNumber: 2,
+                                                 photosPerPage: 4,
+                                                 collections: [],
+                                                 orientation: .landscape)
         let queryManager = QueryManager.mock(data: DemoData.standardPhotoSearchResponse,
-                                             response: .mockingSuccess(endpoint: SearchType.photo.endpoint,
-                                                                       parameters: nil),
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
                                              error: nil,
                                              credentials: Constant.credentials,
-                                             deadline: Constant.requestDeadline)
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
         // None of the parameters are relevant for this test
-        let photosSearchResult = try await client.searchPhotos(query: "",
-                                                               page: 1,
-                                                               photosPerPage: 10,
-                                                               collections: [],
-                                                               orientation: nil)
+        let photosSearchResult = try await client.searchPhotos(query: parameters.query,
+                                                               page: parameters.pageNumber,
+                                                               photosPerPage: parameters.photosPerPage,
+                                                               collections: parameters.collections,
+                                                               orientation: parameters.orientation)
         XCTAssertFalse(photosSearchResult.elements.isEmpty)
     }
 
     func testSearchCollection() async throws {
-        // The only important parameter for this test is the data that will be returned
+        let endpoint = SearchType.collection.endpoint
+        let parameters = UNCollectionSearchParameters(query: "camiletti",
+                                                      pageNumber: 2,
+                                                      collectionsPerPage: 4)
         let queryManager = QueryManager.mock(data: DemoData.standardCollectionSearchResponse,
-                                             response: .mockingSuccess(endpoint: SearchType.collection.endpoint,
+                                             response: .mockingSuccess(endpoint: endpoint,
                                                                        parameters: nil),
                                              error: nil,
                                              credentials: Constant.credentials,
-                                             deadline: Constant.requestDeadline)
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
         // None of the parameters are relevant for this test
-        let collectionsSearchResult = try await client.searchCollections(query: "",
-                                                                         page: 1,
-                                                                         collectionsPerPage: 10)
+        let collectionsSearchResult = try await client.searchCollections(query: parameters.query,
+                                                                         page: parameters.pageNumber,
+                                                                         collectionsPerPage: parameters.collectionsPerPage)
 
         XCTAssertFalse(collectionsSearchResult.elements.isEmpty)
     }
 
     func testSearchUsers() async throws {
-        // The only important parameter for this test is the data that will be returned
+        let endpoint = SearchType.user.endpoint
+        let parameters = UNUserSearchParameters(query: "camiletti",
+                                                pageNumber: 2,
+                                                usersPerPage: 4)
         let queryManager = QueryManager.mock(data: DemoData.standardUserSearchResponse,
-                                             response: .mockingSuccess(endpoint: SearchType.user.endpoint,
-                                                                       parameters: nil),
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
                                              error: nil,
                                              credentials: Constant.credentials,
-                                             deadline: Constant.requestDeadline)
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
         // None of the parameters are relevant for this test
-        let usersSearchResult = try await client.searchUsers(query: "",
-                                                             page: 1,
-                                                             usersPerPage: 10)
+        let usersSearchResult = try await client.searchUsers(query: parameters.query,
+                                                             page: parameters.pageNumber,
+                                                             usersPerPage: parameters.usersPerPage)
 
         XCTAssertFalse(usersSearchResult.elements.isEmpty)
     }

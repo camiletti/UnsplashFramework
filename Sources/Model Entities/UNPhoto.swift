@@ -33,15 +33,18 @@ public struct UNPhoto: Decodable, Identifiable {
         case id
         case creationDate = "created_at"
         case updateDate = "updated_at"
+        case promotedDate = "promoted_at"
         case width
         case height
         case hexColor = "color"
+        case description
+        case altDescription = "alt_description"
         case numberOfLikes = "likes"
         case isLikedByUser = "liked_by_user"
-        case description
         case user
         case collections = "current_user_collections"
         case categories
+        case statistics
         case imageLinks = "urls"
         case apiLocations = "links"
     }
@@ -57,6 +60,9 @@ public struct UNPhoto: Decodable, Identifiable {
     /// Date the photo was updated.
     public var updateDate: Date?
 
+    /// Date the photo was promoted.
+    public var promotedDate: Date?
+
     /// Width of the photo in pixels.
     public var width: Int
 
@@ -66,14 +72,17 @@ public struct UNPhoto: Decodable, Identifiable {
     /// Representative color of the photo in hex value.
     public var hexColor: String
 
+    /// Description of the photo.
+    public var description: String?
+
+    /// The accessible description of the photo.
+    public var altDescription: String?
+
     /// Number of likes the photo has.
     public var numberOfLikes: Int
 
     /// Whether the user liked their own photo or not.
     public var isLikedByUser: Bool
-
-    /// Description of the photo.
-    public var description: String?
 
     /// The user that owns the photo.
     public var user: UNUser
@@ -84,6 +93,12 @@ public struct UNPhoto: Decodable, Identifiable {
     /// Categories associated to the photo.
     public var categories: [UNCategory]
 
+    /// The statistics of the photos
+    /// Notes:
+    /// - They are optional as they will be returned if requested.
+    /// - Only some requests can return this property.
+    public var statistics: UNPhotoStatistics?
+
     /// Links to the different size of the photo.
     public var imageURLs: UNPhotoImageURLs
 
@@ -92,19 +107,21 @@ public struct UNPhoto: Decodable, Identifiable {
 
     // MARK: - Life Cycle
 
-    init(id: String, creationDate: Date?, updateDate: Date?, width: Int, height: Int, hexColor: String, numberOfLikes: Int, isLikedByUser: Bool, description: String?, user: UNUser, collections: [UNCollection], categories: [UNCategory], imageURLs: UNPhotoImageURLs, apiLocations: UNPhotoAPILocations) {
+    init(id: String, creationDate: Date?, updateDate: Date?, width: Int, height: Int, hexColor: String, description: String?, altDescription: String?, numberOfLikes: Int, isLikedByUser: Bool, user: UNUser, collections: [UNCollection], categories: [UNCategory], statistics: UNPhotoStatistics?, imageURLs: UNPhotoImageURLs, apiLocations: UNPhotoAPILocations) {
         self.id = id
         self.creationDate = creationDate
         self.updateDate = updateDate
         self.width = width
         self.height = height
         self.hexColor = hexColor
+        self.description = description
+        self.altDescription = altDescription
         self.numberOfLikes = numberOfLikes
         self.isLikedByUser = isLikedByUser
-        self.description = description
         self.user = user
         self.collections = collections
         self.categories = categories
+        self.statistics = statistics
         self.imageURLs = imageURLs
         self.apiLocations = apiLocations
     }
@@ -119,15 +136,18 @@ public struct UNPhoto: Decodable, Identifiable {
         id = try values.decode(String.self, forKey: .id)
         creationDate = try? values.decode(Date.self, forKey: .creationDate)
         updateDate = try? values.decode(Date.self, forKey: .updateDate)
+        promotedDate = try? values.decode(Date.self, forKey: .promotedDate)
         width  = try values.decode(Int.self, forKey: .width)
         height = try values.decode(Int.self, forKey: .height)
         hexColor = try values.decode(String.self, forKey: .hexColor)
+        description = try? values.decode(String.self, forKey: .description)
+        altDescription = try? values.decode(String.self, forKey: .altDescription)
         numberOfLikes = try values.decode(Int.self, forKey: .numberOfLikes)
         isLikedByUser = try values.decode(Bool.self, forKey: .isLikedByUser)
-        description = try? values.decode(String.self, forKey: .description)
         user = try values.decode(UNUser.self, forKey: .user)
         collections = (try? values.decode([UNCollection].self, forKey: .collections)) ?? [UNCollection]()
         categories = (try? values.decode([UNCategory].self, forKey: .categories)) ?? [UNCategory]()
+        statistics = try? values.decode(UNPhotoStatistics.self, forKey: .statistics)
         imageURLs = try values.decode(UNPhotoImageURLs.self, forKey: .imageLinks)
         apiLocations = try values.decode(UNPhotoAPILocations.self, forKey: .apiLocations)
     }

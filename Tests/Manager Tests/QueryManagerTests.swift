@@ -49,7 +49,10 @@ final class QueryManagerTests: XCTestCase {
                                                                        parameters: parameters),
                                              error: nil,
                                              credentials: Constant.credentials,
-                                             deadline: Constant.requestDeadline)
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
 
         let photos = try await queryManager.editorialPhotosList(with: parameters)
 
@@ -74,7 +77,10 @@ final class QueryManagerTests: XCTestCase {
                                                                        parameters: parameters),
                                              error: nil,
                                              credentials: Constant.credentials,
-                                             deadline: Constant.requestDeadline)
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: searchType.endpoint,
+                                             expectedParameters: parameters)
 
         let photosSearchResult: UNSearchResult<UNPhoto> = try await queryManager.search(searchType, with: parameters)
 
@@ -96,7 +102,10 @@ final class QueryManagerTests: XCTestCase {
                                                                        parameters: parameters),
                                              error: nil,
                                              credentials: Constant.credentials,
-                                             deadline: Constant.requestDeadline)
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: searchType.endpoint,
+                                             expectedParameters: parameters)
 
         do {
             let _: UNSearchResult<UNPhoto> = try await queryManager.search(searchType, with: parameters)

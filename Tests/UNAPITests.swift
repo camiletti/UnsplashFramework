@@ -62,10 +62,10 @@ final class UNAPITests: XCTestCase {
         let expectedError = UNError(reason: .serverNotReached)
         let credentials = UNCredentials(accessKey: "accessKey",
                                         secret: "secret")
-        let urlSession = MockURLSession.mocking(data: DemoData.standardPhotoSearchResponse,
-                                                response: nil,
-                                                error: expectedError,
-                                                deadline: 0)
+        let urlSession = URLSession.mocking(data: DemoData.standardPhotoSearchResponse,
+                                            response: nil,
+                                            error: expectedError,
+                                            deadline: 0)
         let api = UNAPI(credentials: credentials, urlSession: urlSession)
 
         do {

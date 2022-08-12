@@ -50,6 +50,13 @@ enum DemoData {
         dataFromJSONFile(named: "URLWrapper")
     }
 
+    /// Returns a sample user photos.
+    ///
+    /// - Returns: JSON Data representing the user's photos.
+    static var userPhotosResponse: Data {
+        dataFromJSONFile(named: "UserPhotos")
+    }
+
     // MARK: - Photos
 
     /// Returns a sample list of photos.
@@ -136,12 +143,14 @@ enum DemoData {
                        width: 4000,
                        height: 2667,
                        hexColor: "#A39F88",
+                       description: nil,
+                       altDescription: nil,
                        numberOfLikes: 4991,
                        isLikedByUser: false,
-                       description: nil,
                        user: user,
                        collections: [UNCollection](),
                        categories: [UNCategory](),
+                       statistics: nil,
                        imageURLs: imageURLs,
                        apiLocations: apiLocations)
     }
@@ -210,12 +219,14 @@ enum DemoData {
                        width: invalidNumber,
                        height: invalidNumber,
                        hexColor: invalidHexColor,
+                       description: nil,
+                       altDescription: nil,
                        numberOfLikes: invalidNumber,
                        isLikedByUser: false,
-                       description: nil,
                        user: invalidUser,
                        collections: [UNCollection](),
                        categories: [UNCategory](),
+                       statistics: nil,
                        imageURLs: invalidPhotoImageLinks,
                        apiLocations: invalidPhotoAPILocations)
     }

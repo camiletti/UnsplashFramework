@@ -31,12 +31,19 @@ extension QueryManager {
                      response: HTTPURLResponse?,
                      error: Error?,
                      credentials: UNCredentials,
-                     deadline: TimeInterval) -> QueryManager {
-        let urlSession = MockURLSession.mocking(data: data,
-                                                response: response,
-                                                error: error,
-                                                deadline: deadline)
-        let api = UNAPI(credentials: credentials, urlSession: urlSession)
+                     deadline: TimeInterval,
+                     expectedMethod: UNAPI.HTTPMethod,
+                     expectedEndpoint: Endpoint,
+                     expectedParameters: ParametersURLRepresentable?) -> QueryManager {
+        let urlSession = URLSession.mocking(data: data,
+                                            response: response,
+                                            error: error,
+                                            deadline: deadline)
+        let api = UNAPITester(credentials: credentials,
+                              urlSession: urlSession,
+                              expectedMethod: expectedMethod,
+                              expectedEndpoint: expectedEndpoint,
+                              expectedParameters: expectedParameters)
         return QueryManager(api: api)
     }
 }

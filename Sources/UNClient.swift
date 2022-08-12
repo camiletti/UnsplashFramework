@@ -55,7 +55,22 @@ public final class UNClient {
         return urlWrapper.url
     }
 
-    public func photos(of username: String) {}
+    public func photos(fromUsername username: String,
+                       page: Int = 1,
+                       photosPerPage: Int = 10,
+                       sorting: UNSort = .latest,
+                       includeStats: Bool = false,
+                       statsAmount: Int? = nil,
+                       orientationFilter: UNPhotoOrientation? = nil) async throws -> [UNPhoto] {
+        let parameters = UNUserPhotosParameters(username: username,
+                                                page: page,
+                                                photosPerPage: photosPerPage,
+                                                sorting: sorting,
+                                                includeStats: includeStats,
+                                                statsAmount: statsAmount,
+                                                orientationFilter: orientationFilter)
+        return try await queryManager.userPhotos(with: parameters)
+    }
 
     public func collections(of username: String) {}
 

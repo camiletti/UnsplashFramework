@@ -27,6 +27,36 @@ import XCTest
 
 final class UNPhotoTests: XCTestCase {
 
+    func testDecoding() throws {
+        let jsonData = DemoData.dataFromJSONFile(named: "Photo")
+        let decoder = JSONDecoder.unsplashDecoder
+        let photo = try decoder.decode(UNPhoto.self, from: jsonData)
+
+        XCTAssertEqual(photo.id, "DSpHm6LMSHA")
+        XCTAssertNotNil(photo.creationDate)
+        XCTAssertNotNil(photo.updateDate)
+        XCTAssertNotNil(photo.promotedDate)
+        XCTAssertEqual(photo.width, 5456)
+        XCTAssertEqual(photo.height, 3064)
+        XCTAssertEqual(photo.hexColor, "#d9d9d9")
+        XCTAssertEqual(photo.description, "Superman flying over NYC")
+        XCTAssertEqual(photo.altDescription, "2 fists are seeing over New York's sky pretending to be Superman flying")
+        XCTAssertEqual(photo.numberOfLikes, 427)
+        XCTAssertFalse(photo.isLikedByUser)
+        XCTAssertEqual(photo.collections, [])
+        XCTAssertEqual(photo.categories, [])
+    }
+
+    func testDecodingUserPhotos() throws {
+        let jsonData = DemoData.dataFromJSONFile(named: "UserPhotos")
+        let decoder = JSONDecoder.unsplashDecoder
+        let photos = try decoder.decode([UNPhoto].self, from: jsonData)
+
+        // A property that can specially be requested in user photos is statistics
+        // so we'll make sure it's decoded
+        photos.forEach { XCTAssertNotNil($0.statistics) }
+    }
+
     func testInequality() {
         var photoA = DemoData.validSamplePhoto
         var photoB = photoA

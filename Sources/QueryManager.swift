@@ -46,13 +46,19 @@ class QueryManager {
     func publicProfile(with parameters: UNUserPublicProfileParameters) async throws -> UNUserPublicProfile {
         try await api.request(.get,
                               endpoint: .userPublicProfile(username: parameters.username),
-                              parameters: nil)
+                              parameters: parameters)
     }
 
-    public func portfolioLink(with parameters: UNUserPublicProfileParameters) async throws -> UNURLWrapper {
+    func portfolioLink(with parameters: UNUserPublicProfileParameters) async throws -> UNURLWrapper {
         try await api.request(.get,
-                              endpoint: .userPublicProfile(username: parameters.username),
-                              parameters: nil)
+                              endpoint: .userPortfolioLink(username: parameters.username),
+                              parameters: parameters)
+    }
+
+    func userPhotos(with parameters: UNUserPhotosParameters) async throws -> [UNPhoto] {
+        try await api.request(.get,
+                              endpoint: .userPhotos(username: parameters.username),
+                              parameters: parameters)
     }
 
     /// Get a single page from the Editorial feed.
