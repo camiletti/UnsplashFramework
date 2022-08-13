@@ -44,24 +44,39 @@ public final class UNClient {
     // MARK: - Users
 
     /// Retrieve public details on a given user.
+    /// - Parameter username: The user’s username.
+    /// - Returns: An entity representing all the public information of the user's profile
     public func publicProfile(forUsername username: String) async throws -> UNUserPublicProfile {
         let parameters = UNUserPublicProfileParameters(username: username)
         return try await queryManager.publicProfile(with: parameters)
     }
 
-    /// Retrieve a single user’s portfolio link.
-    public func portfolioLink(forUsername username: String) async throws -> URL {
+    /// Retrieve a single user’s portfolio link (if set).
+    /// - Parameter username: The user’s username.
+    /// - Returns: The URL the user has set as they portfolio (if any).
+    public func portfolioLink(forUsername username: String) async throws -> URL? {
         let parameters = UNUserPublicProfileParameters(username: username)
         let urlWrapper = try await queryManager.portfolioLink(with: parameters)
         return urlWrapper.url
     }
 
     /// Get a list of photos uploaded by a user.
+    /// - Parameters:
+    ///   - username: The user’s username.
+    ///   - pageNumber: Page number to retrieve.
+    ///   - photosPerPage: Number of items per page.
+    ///   - sorting: How to sort the photos.
+    ///   - includeStats: Show the stats for each user’s photo.
+    ///   - statsInterval: The frequency of the stats.
+    ///   - statsAmount: The amount of for each stat.
+    ///   - orientationFilter: Filter by photo orientation.
+    /// - Returns: An array with the photos of the user in a given page.
     public func photos(fromUsername username: String,
                        pageNumber: Int = 1,
                        photosPerPage: Int = 10,
                        sorting: UNSort = .latest,
                        includeStats: Bool = false,
+                       statsInterval: UNStatisticsInterval = .days,
                        statsAmount: Int? = nil,
                        orientationFilter: UNPhotoOrientation? = nil) async throws -> [UNPhoto] {
         let parameters = UNUserPhotosParameters(username: username,
@@ -69,12 +84,20 @@ public final class UNClient {
                                                 photosPerPage: photosPerPage,
                                                 sorting: sorting,
                                                 includeStats: includeStats,
+                                                statsInterval: statsInterval,
                                                 statsAmount: statsAmount,
                                                 orientationFilter: orientationFilter)
         return try await queryManager.userPhotos(with: parameters)
     }
 
     /// Get a list of photos liked by a user.
+    /// - Parameters:
+    ///   - username: The user’s username.
+    ///   - pageNumber: Page number to retrieve.
+    ///   - photosPerPage: Number of items per page.
+    ///   - sorting: How to sort the photos.
+    ///   - orientationFilter: Filter by photo orientation.
+    /// - Returns: An array with the photos the user has liked in a given page.
     public func photosLiked(byUsername username: String,
                             pageNumber: Int = 1,
                             photosPerPage: Int = 10,
@@ -89,6 +112,12 @@ public final class UNClient {
     }
 
     /// Get a list of collections created by the user.
+    ///
+    /// - Parameters:
+    ///   - username: The user’s username.
+    ///   - pageNumber: Page number to retrieve.
+    ///   - collectionsPerPage: Number of items per page.
+    /// - Returns: An array with the user's collections in a given page.
     public func collections(byUsername username: String,
                             pageNumber: Int = 1,
                             collectionsPerPage: Int = 10) async throws -> [UNCollection] {
@@ -98,7 +127,23 @@ public final class UNClient {
         return try await queryManager.collections(with: parameters)
     }
 
-    public func statistics(for username: String) {}
+    /// Retrieve the consolidated number of downloads, views and likes of all user’s
+    /// photos, as well as the historical breakdown and average of these stats in a
+    /// specific timeframe (default is 30 days).
+    ///
+    /// - Parameters:
+    ///   - username: The user’s username.
+    ///   - interval: The frequency of the stats.
+    ///   - quantity: The amount of for each stat, between 1 and 30.
+    /// - Returns: The user's statistic entity.
+    public func statistics(forUsername username: String,
+                           interval: UNStatisticsInterval = .days,
+                           quantity: Int = 30) async throws -> UNUserStatistics {
+        let parameters = UNUserStatisticsParameters(username: username,
+                                                    interval: interval,
+                                                    quantity: quantity)
+        return try await queryManager.userStatistics(with: parameters)
+    }
 
     // MARK: - Listing photos
 

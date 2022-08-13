@@ -23,29 +23,39 @@
 
 import Foundation
 
-struct UNURLWrapper: Codable {
+/// The statistics of a given user.
+final public class UNUserStatistics: UNStatistics {
 
     // MARK: - Declarations
 
-    enum CodingKeys: CodingKey {
-        case url
+    private enum CodingKeys: CodingKey {
+        case id
+        case username
     }
 
     // MARK: - Properties
 
-    let url: URL?
+    /// The id of the user that the statistics represent.
+    public let id: String
+
+    /// The username of the user that the statistics represent.
+    public let username: String
 
     // MARK: - Life Cycle
 
-    init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.url = try? container.decodeIfPresent(URL.self, forKey: .url)
+        id = try container.decode(String.self, forKey: .id)
+        username = try container.decode(String.self, forKey: .username)
+        try super.init(from: decoder)
     }
 
-    func encode(to encoder: Encoder) throws {
+    public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encodeIfPresent(self.url, forKey: .url)
+        try container.encode(id, forKey: .id)
+        try container.encode(username, forKey: .username)
+        try super.encode(to: encoder)
     }
 }

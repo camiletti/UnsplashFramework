@@ -73,6 +73,12 @@ class QueryManager {
                               parameters: parameters)
     }
 
+    func userStatistics(with parameters: UNUserStatisticsParameters) async throws -> UNUserStatistics {
+        try await api.request(.get,
+                              endpoint: .userStatistics(username: parameters.username),
+                              parameters: parameters)
+    }
+
     /// Get a single page from the Editorial feed.
     ///
     /// - Parameters:

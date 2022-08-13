@@ -17,4 +17,12 @@ final class URLWrapperTests: XCTestCase {
 
         XCTAssertEqual(urlWrapper.url, URL(string: "https://image.unsplash.com/example")!)
     }
+
+    func testDecodingWhenURLNotSet() throws {
+        let jsonData = DemoData.dataFromJSONFile(named: "URLWrapperEmpty")
+        let decoder = JSONDecoder.unsplashDecoder
+        let urlWrapper = try decoder.decode(UNURLWrapper.self, from: jsonData)
+
+        XCTAssertNil(urlWrapper.url)
+    }
 }

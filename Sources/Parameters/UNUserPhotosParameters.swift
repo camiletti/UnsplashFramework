@@ -36,6 +36,8 @@ struct UNUserPhotosParameters {
         static let sorting = "order_by"
         /// Show the stats for each user’s photo.
         static let includeStats = "stats"
+        /// The frequency of the stats.
+        static let statsInterval = "resolution"
         /// The amount of for each stat.
         static let statsAmount = "quantity"
         /// Filter by photo orientation.
@@ -58,6 +60,9 @@ struct UNUserPhotosParameters {
 
     /// Show the stats for each user’s photo. (Optional; default: false)
     let includeStats: Bool?
+
+    /// The frequency of the stats. (Optional; default: “days”)
+    let statsInterval: UNStatisticsInterval?
 
     /// The amount of for each stat. (Optional; default: 30)
     let statsAmount: Int?
@@ -91,6 +96,11 @@ extension UNUserPhotosParameters: ParametersURLRepresentable {
         if let includeStats = includeStats {
             queryItems.append(URLQueryItem(name: QueryParameterName.includeStats,
                                            value: "\(includeStats)"))
+        }
+
+        if let statsInterval = statsInterval {
+            queryItems.append(URLQueryItem(name: QueryParameterName.statsInterval,
+                                           value: "\(statsInterval.rawValue)"))
         }
 
         if let statsAmount = statsAmount {

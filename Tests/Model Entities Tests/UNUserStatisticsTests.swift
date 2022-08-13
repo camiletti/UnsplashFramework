@@ -1,5 +1,5 @@
 //
-//  UnsplashFramework
+//  Unsplash Framework Tests
 //
 //  Copyright Pablo Camiletti
 //
@@ -21,31 +21,27 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
+@testable import UnsplashFramework
+import XCTest
 
-struct UNURLWrapper: Codable {
+final class UNUserStatisticsTests: XCTestCase {
 
-    // MARK: - Declarations
+    func testDecoding() throws {
+        let jsonData = DemoData.dataFromJSONFile(named: "UserStatistics")
+        let decoder = JSONDecoder.unsplashDecoder
+        let userStats = try decoder.decode(UNUserStatistics.self, from: jsonData)
 
-    enum CodingKeys: CodingKey {
-        case url
-    }
+        XCTAssertEqual(userStats.id, "bw613paXCbc")
+        XCTAssertEqual(userStats.username, "camiletti")
 
-    // MARK: - Properties
+        XCTAssertEqual(userStats.downloads.total, 25)
+        XCTAssertEqual(userStats.downloads.history.amountOfChanges, 0)
+        XCTAssertEqual(userStats.downloads.history.interval, .days)
+        XCTAssertEqual(userStats.downloads.history.changes.count, 30)
 
-    let url: URL?
-
-    // MARK: - Life Cycle
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        self.url = try? container.decodeIfPresent(URL.self, forKey: .url)
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-
-        try container.encodeIfPresent(self.url, forKey: .url)
+        XCTAssertEqual(userStats.views.total, 2191)
+        XCTAssertEqual(userStats.views.history.amountOfChanges, 7)
+        XCTAssertEqual(userStats.views.history.interval, .days)
+        XCTAssertEqual(userStats.views.history.changes.count, 30)
     }
 }

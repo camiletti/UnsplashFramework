@@ -71,6 +71,13 @@ enum DemoData {
         dataFromJSONFile(named: "UserCollections")
     }
 
+    /// Returns a sample of statistics of a user.
+    ///
+    /// - Returns: JSON Data representing the statistics of a user.
+    static var userStatisticsResponse: Data {
+        dataFromJSONFile(named: "UserStatistics")
+    }
+
     // MARK: - Photos
 
     /// Returns a sample list of photos.

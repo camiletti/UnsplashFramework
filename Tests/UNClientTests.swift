@@ -82,6 +82,7 @@ final class UNClientTests: XCTestCase {
                                                 photosPerPage: 4,
                                                 sorting: .downloads,
                                                 includeStats: true,
+                                                statsInterval: .days,
                                                 statsAmount: 30,
                                                 orientationFilter: .landscape)
         let endpoint = Endpoint.userPhotos(username: parameters.username)
@@ -152,6 +153,28 @@ final class UNClientTests: XCTestCase {
         let _ = try await client.collections(byUsername: parameters.username,
                                              pageNumber: parameters.pageNumber!,
                                              collectionsPerPage: parameters.collectionsPerPage!)
+    }
+
+    func testStatisticsByUser() async throws {
+        let parameters = UNUserStatisticsParameters(username: "camiletti",
+                                                    interval: .days,
+                                                    quantity: 15)
+        let endpoint = Endpoint.userStatistics(username: parameters.username)
+        let queryManager = QueryManager.mock(data: DemoData.userStatisticsResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
+        let client = UNClient(queryManager: queryManager)
+
+        // None of the parameters are relevant for this test
+        let _ = try await client.statistics(forUsername: parameters.username,
+                                            interval: parameters.interval!,
+                                            quantity: parameters.quantity!)
     }
 
     // MARK: - Photos
