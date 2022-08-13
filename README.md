@@ -1,4 +1,5 @@
-![UnsplashFramework](https://cdn.rawgit.com/camiletti/UnsplashFramework/master/UnsplashFramework.png)
+![UnsplashFramework-Light](https://raw.githubusercontent.com/camiletti/UnsplashFramework/master/UnsplashFrameworkLogo-Light.png#gh-light-mode-only)
+![UnsplashFramework-Dark](https://raw.githubusercontent.com/camiletti/UnsplashFramework/master/UnsplashFrameworkLogo-Dark.png#gh-dark-mode-only)
 
 <p align="center">
 	<a href="https://travis-ci.org/camiletti/UnsplashFramework"><img src="https://travis-ci.org/camiletti/UnsplashFramework.svg?branch=master" /></a>
