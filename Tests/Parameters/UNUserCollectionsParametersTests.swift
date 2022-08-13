@@ -1,8 +1,7 @@
 //
-//  UNCollectionSearchParametersTests.swift
-//  UNCollectionSearchParametersTests
+//  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,33 +24,52 @@
 @testable import UnsplashFramework
 import XCTest
 
-final class UNCollectionSearchParametersTests: XCTestCase {
+final class UNUserCollectionsTests: XCTestCase {
 
-    func testAsQueryItems() {
-        let expectedQuery = "Some collection"
+    func testAsQueryItemsWithoutOptionalProperties() {
+        let expectedUsername = "some_username"
+        let expectedQueryItemsAmount = 1
+
+        let parameters = UNUserCollectionsParameters(username: expectedUsername,
+                                                     pageNumber: nil,
+                                                     collectionsPerPage: nil)
+
+        let queryItems = parameters.asQueryItems()
+
+        XCTAssertEqual(queryItems.count, expectedQueryItemsAmount)
+
+        let usernameValue = queryItems
+            .first(where: { $0.name == UNUserCollectionsParameters.QueryParameterName.username })?
+            .value
+        XCTAssertEqual(usernameValue, expectedUsername)
+    }
+
+    func testAsQueryItemsWithOptionalProperties() {
+        let expectedUsername = "some_username"
         let expectedPageNumber = 9
         let expectedCollectionsPerPage = 6
         let expectedQueryItemsAmount = 3
 
-        let collectionSearchParameters = UNCollectionSearchParameters(query: expectedQuery,
-                                                                      pageNumber: expectedPageNumber,
-                                                                      collectionsPerPage: expectedCollectionsPerPage)
-        let queryItems = collectionSearchParameters.asQueryItems()
+        let parameters = UNUserCollectionsParameters(username: expectedUsername,
+                                               pageNumber: expectedPageNumber,
+                                               collectionsPerPage: expectedCollectionsPerPage)
+
+        let queryItems = parameters.asQueryItems()
 
         XCTAssertEqual(queryItems.count, expectedQueryItemsAmount)
 
-        let queryValue = queryItems
-            .first(where: { $0.name == UNCollectionSearchParameters.QueryParameterName.query })?
+        let usernameValue = queryItems
+            .first(where: { $0.name == UNUserCollectionsParameters.QueryParameterName.username })?
             .value
-        XCTAssertEqual(queryValue, expectedQuery)
+        XCTAssertEqual(usernameValue, expectedUsername)
 
         let pageNumberValue = queryItems
-            .first(where: { $0.name == UNCollectionSearchParameters.QueryParameterName.pageNumber })?
+            .first(where: { $0.name == UNUserCollectionsParameters.QueryParameterName.pageNumber })?
             .value
         XCTAssertEqual(pageNumberValue, "\(expectedPageNumber)")
 
         let collectionsPerPageValue = queryItems
-            .first(where: { $0.name == UNCollectionSearchParameters.QueryParameterName.collectionsPerPage })?
+            .first(where: { $0.name == UNUserCollectionsParameters.QueryParameterName.collectionsPerPage })?
             .value
         XCTAssertEqual(collectionsPerPageValue, "\(expectedCollectionsPerPage)")
     }

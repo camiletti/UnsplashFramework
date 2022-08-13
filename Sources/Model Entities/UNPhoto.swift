@@ -1,8 +1,7 @@
 //
-//  UFPhoto.swift
 //  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,19 +24,15 @@
 import Foundation
 
 /// Holds all the information about a photo.
-public struct UNPhoto: Decodable, Identifiable {
+public class UNPhoto: UNBasicPhoto {
 
     // MARK: - Declarations
 
     enum CodingKeys: String, CodingKey {
-        case id
-        case creationDate = "created_at"
-        case updateDate = "updated_at"
         case promotedDate = "promoted_at"
         case width
         case height
         case hexColor = "color"
-        case blurHash = "blur_hash"
         case description
         case altDescription = "alt_description"
         case numberOfLikes = "likes"
@@ -46,81 +41,77 @@ public struct UNPhoto: Decodable, Identifiable {
         case collections = "current_user_collections"
         case categories
         case statistics
-        case imageLinks = "urls"
         case apiLocations = "links"
     }
 
     // MARK: - Properties
 
-    /// Unique identifier of the photo.
-    public var id: String
-
-    /// Date the photo was created.
-    public var creationDate: Date?
-
-    /// Date the photo was updated.
-    public var updateDate: Date?
-
     /// Date the photo was promoted.
-    public var promotedDate: Date?
+    public let promotedDate: Date?
 
     /// Width of the photo in pixels.
-    public var width: Int
+    public let width: Int
 
     /// Height of the photo in pixels.
-    public var height: Int
+    public let height: Int
 
     /// Representative color of the photo in hex value.
-    public var hexColor: String
-
-    /// A very compact representation of an image placeholder
-    /// which can be used to display a blurred preview before
-    /// the real image loads. Learn more at https://blurha.sh
-    public var blurHash: String
+    public let hexColor: String
 
     /// Description of the photo.
-    public var description: String?
+    public let description: String?
 
     /// The accessible description of the photo.
-    public var altDescription: String?
+    public let altDescription: String?
 
     /// Number of likes the photo has.
-    public var numberOfLikes: Int
+    public let numberOfLikes: Int
 
     /// Whether the user liked their own photo or not.
-    public var isLikedByUser: Bool
+    public let isLikedByUser: Bool
 
     /// The user that owns the photo.
-    public var user: UNUser
+    public let user: UNUser
 
     /// The collections the photo belongs to.
-    public var collections: [UNCollection]
+    public let collections: [UNCollection]
 
     /// Categories associated to the photo.
-    public var categories: [UNCategory]
+    public let categories: [UNCategory]
 
     /// The statistics of the photos
     /// Notes:
     /// - They are optional as they will be returned if requested.
     /// - Only some requests can return this property.
-    public var statistics: UNPhotoStatistics?
-
-    /// Links to the different size of the photo.
-    public var imageURLs: UNPhotoImageURLs
+    public let statistics: UNPhotoStatistics?
 
     /// The locations related to the photo.
-    public var apiLocations: UNPhotoAPILocations
+    public let apiLocations: UNPhotoAPILocations
 
     // MARK: - Life Cycle
 
-    init(id: String, creationDate: Date?, updateDate: Date?, width: Int, height: Int, hexColor: String, blurHash: String, description: String?, altDescription: String?, numberOfLikes: Int, isLikedByUser: Bool, user: UNUser, collections: [UNCollection], categories: [UNCategory], statistics: UNPhotoStatistics?, imageURLs: UNPhotoImageURLs, apiLocations: UNPhotoAPILocations) {
-        self.id = id
-        self.creationDate = creationDate
-        self.updateDate = updateDate
+    init(id: String,
+         creationDate: Date?,
+         updateDate: Date?,
+         promotedDate: Date?,
+         width: Int,
+         height: Int,
+         hexColor: String,
+         blurHash: String,
+         description: String?,
+         altDescription: String?,
+         numberOfLikes: Int,
+         isLikedByUser: Bool,
+         user: UNUser,
+         collections: [UNCollection],
+         categories: [UNCategory],
+         statistics: UNPhotoStatistics?,
+         imageURLs: UNPhotoImageURLs,
+         apiLocations: UNPhotoAPILocations) {
+        self.promotedDate = promotedDate
         self.width = width
         self.height = height
         self.hexColor = hexColor
-        self.blurHash = blurHash
         self.description = description
         self.altDescription = altDescription
         self.numberOfLikes = numberOfLikes
@@ -129,25 +120,21 @@ public struct UNPhoto: Decodable, Identifiable {
         self.collections = collections
         self.categories = categories
         self.statistics = statistics
-        self.imageURLs = imageURLs
         self.apiLocations = apiLocations
+        super.init(id: id, creationDate: creationDate, updateDate: updateDate, blurHash: blurHash, imageURLs: imageURLs)
     }
 
     /// Creates a new instance by decoding from the given decoder.
     ///
     /// - Parameter decoder: Swift's decoder.
     /// - Throws: If a value that is non-optional is missing the function will throw.
-    public init(from decoder: Decoder) throws {
-        // Decode each value
+    public required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(String.self, forKey: .id)
-        creationDate = try? values.decode(Date.self, forKey: .creationDate)
-        updateDate = try? values.decode(Date.self, forKey: .updateDate)
+
         promotedDate = try? values.decode(Date.self, forKey: .promotedDate)
         width  = try values.decode(Int.self, forKey: .width)
         height = try values.decode(Int.self, forKey: .height)
         hexColor = try values.decode(String.self, forKey: .hexColor)
-        blurHash = try values.decode(String.self, forKey: .blurHash)
         description = try? values.decode(String.self, forKey: .description)
         altDescription = try? values.decode(String.self, forKey: .altDescription)
         numberOfLikes = try values.decode(Int.self, forKey: .numberOfLikes)
@@ -156,28 +143,8 @@ public struct UNPhoto: Decodable, Identifiable {
         collections = (try? values.decode([UNCollection].self, forKey: .collections)) ?? [UNCollection]()
         categories = (try? values.decode([UNCategory].self, forKey: .categories)) ?? [UNCategory]()
         statistics = try? values.decode(UNPhotoStatistics.self, forKey: .statistics)
-        imageURLs = try values.decode(UNPhotoImageURLs.self, forKey: .imageLinks)
         apiLocations = try values.decode(UNPhotoAPILocations.self, forKey: .apiLocations)
-    }
-}
 
-// MARK: - Equatable
-extension UNPhoto: Equatable {
-
-    /// Returns a Boolean value indicating whether two photos represent the same photo.
-    ///
-    /// Discussion: Two photos are considered to be the same if they represent the
-    /// same photo; that is, if they have the same id, regardless if
-    /// the other variables are different.
-    public static func == (lhs: UNPhoto, rhs: UNPhoto) -> Bool {
-        lhs.id == rhs.id
-    }
-}
-
-// MARK: - Hashable
-extension UNPhoto: Hashable {
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+        try super.init(from: decoder)
     }
 }

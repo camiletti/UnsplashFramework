@@ -32,50 +32,105 @@ public struct UNCollection: Decodable, Identifiable {
     enum CodingKeys: String, CodingKey {
         case id
         case title
+        case description
         case publishedDate = "published_at"
+        case lastCollectedDate = "last_collected_at"
         case updatedDate = "updated_at"
         case isCurated = "curated"
+        case isPrivate = "private"
+        case wasFeatured = "featured"
+        case totalAmountOfPhotos = "total_photos"
         case coverPhoto = "cover_photo"
+        case previewPhotos = "preview_photos"
+        case topics = "tags"
         case user
         case apiLocations = "links"
+        case shareKey = "share_key"
     }
 
     // MARK: - Properties
 
     /// The unique identifier of the collection.
-    public var id: String
+    public let id: String
 
     /// The title of the collection.
-    public var title: String?
+    public let title: String?
+
+    /// The description of the collection.
+    public let description: String?
 
     /// Date when the collection was published.
-    public var publishedDate: Date?
+    public let publishedDate: Date?
+
+    /// Date when the last photo was added.
+    public let lastCollectedDate: Date?
 
     /// Date when the collection was last updated.
-    public var updatedDate: Date?
+    public let updatedDate: Date?
 
     /// Boolean value indicating whether the collection is curated.
-    public var isCurated: Bool
+    public let isCurated: Bool
+
+    /// Whether the collection was ever featured.
+    public let wasFeatured: Bool
+
+    /// The total number of photos in the collection.
+    public let totalAmountOfPhotos: Int
+
+    /// Whether the collection is private to the user.
+    public let isPrivate: Bool
 
     /// Cover photo of the collection.
-    public var coverPhoto: UNPhoto?
+    public let coverPhoto: UNPhoto?
+
+    /// A small amount of photos that belong to the collection.
+    /// Normally a maximum 4.
+    public let previewPhotos: [UNBasicPhoto]
+
+    /// The topics that the collection is about or contains.
+    public let topics: [UNTopic]
 
     /// User that owns the collection.
-    public var user: UNUser?
+    public let user: UNUser?
+
+    public let shareKey: String
 
     /// API locations.
-    var apiLocations: UNCollectionAPILocations
+    let apiLocations: UNCollectionAPILocations
 
     // MARK: - Life Cycle
 
-    init(id: String, title: String?, publishedDate: Date?, updatedDate: Date?, isCurated: Bool, coverPhoto: UNPhoto?, user: UNUser?, apiLocations: UNCollectionAPILocations) {
+    init(id: String,
+         title: String?,
+         description: String?,
+         publishedDate: Date?,
+         lastCollectedDate: Date?,
+         updatedDate: Date?,
+         isCurated: Bool,
+         isPrivate: Bool,
+         wasFeatured: Bool,
+         totalAmountOfPhotos: Int,
+         coverPhoto: UNPhoto?,
+         previewPhotos: [UNPhoto],
+         topics: [UNTopic],
+         user: UNUser?,
+         shareKey: String,
+         apiLocations: UNCollectionAPILocations) {
         self.id = id
         self.title = title
+        self.description = description
         self.publishedDate = publishedDate
+        self.lastCollectedDate = lastCollectedDate
         self.updatedDate = updatedDate
         self.isCurated = isCurated
+        self.isPrivate = isPrivate
+        self.wasFeatured = wasFeatured
+        self.totalAmountOfPhotos = totalAmountOfPhotos
         self.coverPhoto = coverPhoto
+        self.previewPhotos = previewPhotos
+        self.topics = topics
         self.user = user
+        self.shareKey = shareKey
         self.apiLocations = apiLocations
     }
 
@@ -87,29 +142,19 @@ public struct UNCollection: Decodable, Identifiable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(String.self, forKey: .id)
         title = try? values.decode(String.self, forKey: .title)
+        description = try? values.decode(String.self, forKey: .description)
         publishedDate = try? values.decode(Date.self, forKey: .publishedDate)
+        lastCollectedDate = try? values.decode(Date.self, forKey: .lastCollectedDate)
         updatedDate = try? values.decode(Date.self, forKey: .updatedDate)
-        isCurated = try values.decode(Bool.self, forKey: .isCurated)
+        isCurated = (try? values.decode(Bool.self, forKey: .isCurated)) ?? false
+        isPrivate = (try? values.decode(Bool.self, forKey: .isPrivate)) ?? false
+        wasFeatured = (try? values.decode(Bool.self, forKey: .wasFeatured)) ?? false
+        totalAmountOfPhotos = try values.decode(Int.self, forKey: .totalAmountOfPhotos)
         coverPhoto = try? values.decode(UNPhoto.self, forKey: .coverPhoto)
+        previewPhotos = (try? values.decode([UNBasicPhoto].self, forKey: .previewPhotos)) ?? []
+        topics = try values.decode([UNTopic].self, forKey: .topics)
         user = try? values.decode(UNUser.self, forKey: .user)
+        shareKey = try values.decode(String.self, forKey: .shareKey)
         apiLocations = try values.decode(UNCollectionAPILocations.self, forKey: .apiLocations)
-    }
-}
-
-// MARK: - Equatable
-extension UNCollection: Equatable {
-
-    /// Returns a Boolean value indicating whether the two collections represent the same collection.
-    ///
-    /// Discussion: Two collections are considered to be the same if they represent
-    /// the same collection; that is, if they have the same id, regardless
-    /// if the other variables are different.
-    public static func == (lhs: UNCollection, rhs: UNCollection) -> Bool {
-        lhs.id == rhs.id
-    }
-
-    /// Returns a Boolean value indicating whether two collections don't represent the same collection.
-    public static func != (lhs: UNCollection, rhs: UNCollection) -> Bool {
-        !(lhs == rhs)
     }
 }

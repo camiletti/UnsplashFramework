@@ -28,7 +28,7 @@ import XCTest
 final class UNPhotoTests: XCTestCase {
 
     func testDecoding() throws {
-        let jsonData = DemoData.dataFromJSONFile(named: "Photo")
+        let jsonData = DemoData.standardPhotoAResponse
         let decoder = JSONDecoder.unsplashDecoder
         let photo = try decoder.decode(UNPhoto.self, from: jsonData)
 
@@ -44,54 +44,17 @@ final class UNPhotoTests: XCTestCase {
         XCTAssertEqual(photo.altDescription, "2 fists are seeing over New York's sky pretending to be Superman flying")
         XCTAssertEqual(photo.numberOfLikes, 427)
         XCTAssertFalse(photo.isLikedByUser)
-        XCTAssertEqual(photo.collections, [])
-        XCTAssertEqual(photo.categories, [])
+        XCTAssertEqual(photo.collections.count, 0)
+        XCTAssertEqual(photo.categories.count, 0)
     }
 
     func testDecodingUserPhotos() throws {
-        let jsonData = DemoData.dataFromJSONFile(named: "UserPhotos")
+        let jsonData = DemoData.userPhotosResponse
         let decoder = JSONDecoder.unsplashDecoder
         let photos = try decoder.decode([UNPhoto].self, from: jsonData)
 
         // A property that can specially be requested in user photos is statistics
         // so we'll make sure it's decoded
         photos.forEach { XCTAssertNotNil($0.statistics) }
-    }
-
-    func testInequality() {
-        var photoA = DemoData.validSamplePhoto
-        var photoB = photoA
-
-        photoA.id = "A"
-        photoB.id = "B"
-
-        XCTAssert(photoA != photoB, "Photos with same values but different IDs should not be equal")
-    }
-
-    func testHashForSamePhoto() {
-        let photoA = DemoData.validSamplePhoto
-        let photoB = photoA
-
-        XCTAssert(photoA.hashValue == photoB.hashValue)
-    }
-
-    func testThatTheHashValueForPhotosWithSameIDIsTheSameEvenIfTheOtherVariablesAreDifferent() {
-        var photoA = DemoData.validSamplePhoto
-        var photoB = DemoData.invalidPhoto
-
-        photoA.id = "A"
-        photoB.id = "B"
-
-        XCTAssert(photoA.hashValue != photoB.hashValue)
-    }
-
-    func testHashForDifferentPhotos() {
-        var photoA = DemoData.validSamplePhoto
-        var photoB = photoA
-
-        photoA.id = "A"
-        photoB.id = "B"
-
-        XCTAssert(photoA.hashValue != photoB.hashValue)
     }
 }

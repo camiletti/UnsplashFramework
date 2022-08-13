@@ -28,14 +28,10 @@ import XCTest
 final class UNPhotoExtensionTests: XCTestCase {
 
     func testSize() {
-        let width  = 200
-        let height = 300
-        let sizeToCompare = CGSize(width: CGFloat(width), height: CGFloat(height))
+        let validPhoto = DemoData.photoA
+        let sizeToCompare = CGSize(width: CGFloat(validPhoto.width), height: CGFloat(validPhoto.height))
 
-        var validPhoto = DemoData.validSamplePhoto
-        validPhoto.width  = width
-        validPhoto.height = height
 
-        XCTAssert(validPhoto.size == sizeToCompare)
+        XCTAssertEqual(validPhoto.size, sizeToCompare)
     }
 }

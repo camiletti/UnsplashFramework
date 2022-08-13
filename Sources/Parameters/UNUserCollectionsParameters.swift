@@ -1,8 +1,7 @@
 //
-//  UNCollectionSearchParameters.swift
 //  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,40 +23,48 @@
 
 import Foundation
 
-/// The parameters' names and values that can be passed to Unsplash in a search.
-struct UNCollectionSearchParameters {
+struct UNUserCollectionsParameters {
 
     // MARK: - Declarations
 
     enum QueryParameterName {
-        /// The requested query parameter's name.
-        static let query = "query"
-        /// The requested page parameter's name.
+        /// The user’s username. Required.
+        static let username = "username"
+        /// Page number to retrieve.
         static let pageNumber = "page"
-        /// Amount of collections per page parameter's name.
+        /// Number of items per page.
         static let collectionsPerPage = "per_page"
     }
 
-    /// Words that describe the collections to be searched.
-    let query: String
+    // MARK: - Properties
 
-    /// The requested page.
-    let pageNumber: Int
+    /// The user’s username. Required.
+    let username: String
 
-    /// The desired amount of collections per page.
-    let collectionsPerPage: Int
+    /// Page number to retrieve. (Optional; default: 1)
+    let pageNumber: Int?
+
+    /// Number of items per page. (Optional; default: 10)
+    let collectionsPerPage: Int?
 }
 
 // MARK: - ParametersURLRepresentable
-extension UNCollectionSearchParameters: ParametersURLRepresentable {
+extension UNUserCollectionsParameters: ParametersURLRepresentable {
 
     func asQueryItems() -> [URLQueryItem] {
-        [URLQueryItem(name: QueryParameterName.query,
-                      value: query),
-         URLQueryItem(name: QueryParameterName.pageNumber,
-                      value: "\(pageNumber)"),
-         URLQueryItem(name: QueryParameterName.collectionsPerPage,
-                      value: "\(collectionsPerPage)")
-        ]
+        var queryItems = [URLQueryItem(name: QueryParameterName.username,
+                                       value: "\(username)")]
+
+        if let pageNumber = pageNumber {
+            queryItems.append(URLQueryItem(name: QueryParameterName.pageNumber,
+                                           value: "\(pageNumber)"))
+        }
+
+        if let collectionsPerPage = collectionsPerPage {
+            queryItems.append(URLQueryItem(name: QueryParameterName.collectionsPerPage,
+                                           value: "\(collectionsPerPage)"))
+        }
+
+        return queryItems
     }
 }

@@ -42,17 +42,17 @@ final class UNUserSearchParametersTests: XCTestCase {
         XCTAssertEqual(queryItems.count, expectedQueryItemsAmount)
 
         let queryValue = queryItems
-            .first(where: { $0.name == UNUserSearchParameters.QueryParameterName.queryName })?
+            .first(where: { $0.name == UNUserSearchParameters.QueryParameterName.query })?
             .value
         XCTAssertEqual(queryValue, expectedQuery)
 
         let pageNumberValue = queryItems
-            .first(where: { $0.name == UNUserSearchParameters.QueryParameterName.pageNumberName })?
+            .first(where: { $0.name == UNUserSearchParameters.QueryParameterName.pageNumber })?
             .value
         XCTAssertEqual(pageNumberValue, "\(expectedPageNumber)")
 
         let collectionsPerPageValue = queryItems
-            .first(where: { $0.name == UNUserSearchParameters.QueryParameterName.usersPerPageName })?
+            .first(where: { $0.name == UNUserSearchParameters.QueryParameterName.usersPerPage })?
             .value
         XCTAssertEqual(collectionsPerPageValue, "\(expectedUsersPerPage)")
     }

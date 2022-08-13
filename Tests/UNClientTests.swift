@@ -132,6 +132,28 @@ final class UNClientTests: XCTestCase {
                                              orientationFilter: parameters.orientationFilter)
     }
 
+    func testCollectionsByUser() async throws {
+        let parameters = UNUserCollectionsParameters(username: "zmachacek",
+                                                     pageNumber: 2,
+                                                     collectionsPerPage: 4)
+        let endpoint = Endpoint.userCollections(username: parameters.username)
+        let queryManager = QueryManager.mock(data: DemoData.userCollectionsResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
+        let client = UNClient(queryManager: queryManager)
+
+        // None of the parameters are relevant for this test
+        let _ = try await client.collections(byUsername: parameters.username,
+                                             pageNumber: parameters.pageNumber!,
+                                             collectionsPerPage: parameters.collectionsPerPage!)
+    }
+
     // MARK: - Photos
 
     func testListingPhotos() async throws {

@@ -67,6 +67,12 @@ class QueryManager {
                               parameters: parameters)
     }
 
+    func collections(with parameters: UNUserCollectionsParameters) async throws -> [UNCollection] {
+        try await api.request(.get,
+                              endpoint: .userCollections(username: parameters.username),
+                              parameters: parameters)
+    }
+
     /// Get a single page from the Editorial feed.
     ///
     /// - Parameters:

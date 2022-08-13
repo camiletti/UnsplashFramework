@@ -27,31 +27,25 @@ import XCTest
 
 final class UNCollectionTests: XCTestCase {
 
-    func testEquality() {
-        var collectionA = DemoData.invalidCollection
-        var collectionB = collectionA
+    func testDecoding() throws {
+        let jsonData = DemoData.standardCollectionAResponse
+        let decoder = JSONDecoder.unsplashDecoder
+        let collection = try decoder.decode(UNCollection.self, from: jsonData)
 
-        XCTAssert(collectionA == collectionB)
-        XCTAssert(collectionB == collectionA)
-
-        collectionA.id = "123"
-        collectionB.id = "987"
-
-        XCTAssert((collectionA == collectionB) == false)
-        XCTAssert((collectionB == collectionA) == false)
-    }
-
-    func testInequality() {
-        var collectionA = DemoData.invalidCollection
-        var collectionB = collectionA
-
-        XCTAssert((collectionA != collectionB) == false)
-        XCTAssert((collectionB != collectionA) == false)
-
-        collectionA.id = "123"
-        collectionB.id = "987"
-
-        XCTAssert(collectionA != collectionB)
-        XCTAssert(collectionB != collectionA)
+        XCTAssertEqual(collection.id, "6820058")
+        XCTAssertEqual(collection.title, "Jungle")
+        XCTAssertEqual(collection.description, "Images about jungles")
+        XCTAssertNotNil(collection.publishedDate)
+        XCTAssertNotNil(collection.lastCollectedDate)
+        XCTAssertNotNil(collection.updatedDate)
+        XCTAssertTrue(collection.isCurated)
+        XCTAssertTrue(collection.wasFeatured)
+        XCTAssertTrue(collection.isPrivate)
+        XCTAssertEqual(collection.totalAmountOfPhotos, 13)
+        XCTAssertEqual(collection.shareKey, "09491bebece24560a48da4773e7fa2e2")
+        XCTAssertEqual(collection.topics.count, 6)
+        XCTAssertNotNil(collection.user)
+        XCTAssertNotNil(collection.coverPhoto)
+        XCTAssertEqual(collection.previewPhotos.count, 4)
     }
 }

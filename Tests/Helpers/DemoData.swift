@@ -64,6 +64,13 @@ enum DemoData {
         dataFromJSONFile(named: "UserLikes")
     }
 
+    /// Returns a sample of collections by a user.
+    ///
+    /// - Returns: JSON Data representing the collections by a user.
+    static var userCollectionsResponse: Data {
+        dataFromJSONFile(named: "UserCollections")
+    }
+
     // MARK: - Photos
 
     /// Returns a sample list of photos.
@@ -71,6 +78,20 @@ enum DemoData {
     /// - Returns: JSON Data of the list of photos.
     static var standardPhotoListResponse: Data {
         dataFromJSONFile(named: "StandardPhotoList")
+    }
+
+    /// Returns a sample of a photo.
+    ///
+    /// - Returns: JSON Data of a photo.
+    static var standardPhotoAResponse: Data {
+        dataFromJSONFile(named: "PhotoA")
+    }
+
+    /// Returns a sample of a photo.
+    ///
+    /// - Returns: JSON Data of a photo.
+    static var standardPhotoBResponse: Data {
+        dataFromJSONFile(named: "PhotoB")
     }
 
     static var validMultiplePhotosArray: [UNPhoto] {
@@ -100,67 +121,46 @@ enum DemoData {
         dataFromJSONFile(named: "StandardSearchUserResult")
     }
 
-    // MARK: - Valid data
+    // MARK: - Collections
 
-    /// Creates a new valid UNPhoto with sample data
+    /// Returns a sample of a collection.
     ///
-    /// - Returns: Valid photo
-    static var validSamplePhoto: UNPhoto {
-        let profileLinks = UNProfileImageLinks(small: URL(string: "https://images.unsplash.com/placeholder-avatars/extra-large.jpg?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=32&w=32&s=0ad68f44c4725d5a3fda019bab9d3edc")!,
-                                               medium: URL(string: "https://images.unsplash.com/placeholder-avatars/extra-large.jpg?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=64&w=64&s=356bd4b76a3d4eb97d63f45b818dd358")!,
-                                               large: URL(string: "https://images.unsplash.com/placeholder-avatars/extra-large.jpg?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=128&w=128&s=ee8bbf5fb8d6e43aaaa238feae2fe90d")!)
+    /// - Returns: JSON Data of a collection.
+    static var standardCollectionAResponse: Data {
+        dataFromJSONFile(named: "CollectionA")
+    }
 
-        let userAPILocations = UNUserAPILocations(apiProfileURL: URL(string: "https://api.unsplash.com/users/dustinlee")!,
-                                                  apiPhotosURL: URL(string: "https://api.unsplash.com/users/dustinlee/photos")!,
-                                                  apiLikesURL: URL(string: "https://api.unsplash.com/users/dustinlee/likes")!,
-                                                  apiPortfolioURL: URL(string: "https://api.unsplash.com/users/dustinlee/portfolio")!,
-                                                  apiFollowingURL: URL(string: "https://api.unsplash.com/users/dustinlee/following")!,
-                                                  apiFollowersURL: URL(string: "https://api.unsplash.com/users/dustinlee/followers")!,
-                                                  externalProfileURL: URL(string: "https://unsplash.com/@dustinlee")!)
+    /// Returns a sample of a collection.
+    ///
+    /// - Returns: JSON Data of a collection.
+    static var standardCollectionBResponse: Data {
+        dataFromJSONFile(named: "CollectionB")
+    }
 
-        let user = UNUser(id: "f-2B9H4K-Yo",
-                          username: "dustinlee",
-                          name: "Dustin Lee",
-                          firstName: "Dustin",
-                          lastName: "Lee",
-                          twitterUsername: nil,
-                          portfolioURL: nil,
-                          bio: nil,
-                          location: nil,
-                          totalLikes: 1,
-                          totalPhotos: 10,
-                          totalCollections: 0,
-                          profileImageLinks: profileLinks,
-                          apiLocations: userAPILocations)
+    // MARK: - Decoded entities
 
-        let imageURLs = UNPhotoImageURLs(rawURL: URL(string: "https://images.unsplash.com/photo-1432821596592-e2c18b78144f")!,
-                                         fullURL: URL(string: "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixlib=rb-0.3.5&q=85&fm=jpg&crop=entropy&cs=srgb&s=2d58953ffeb732135002a465be8230d3")!,
-                                         regularURL: URL(string: "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&s=d9bcb3e9a0c29aaebce247d1c84a2625")!,
-                                         smallURL: URL(string: "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&s=a2cb0662ff4cf8f41d2f0e8bb69eb628")!,
-                                         thumbURL: URL(string: "https://images.unsplash.com/photo-1432821596592-e2c18b78144f?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=985faed62252e0339501f9f83cdaa743")!)
+    static var photoA: UNPhoto {
+        let jsonData = DemoData.standardPhotoAResponse
+        let decoder = JSONDecoder.unsplashDecoder
+        return try! decoder.decode(UNPhoto.self, from: jsonData)
+    }
 
-        let apiLocations = UNPhotoAPILocations(apiPhotoURL: URL(string: "https://api.unsplash.com/photos/jLwVAUtLOAQ")!,
-                                               apiDownloadURL: URL(string: "https://api.unsplash.com/photos/jLwVAUtLOAQ/download")!,
-                                               externalPhotoURL: URL(string: "https://unsplash.com/photos/jLwVAUtLOAQ")!,
-                                               externalDownloadURL: URL(string: "https://unsplash.com/photos/jLwVAUtLOAQ/download")!)
+    static var photoB: UNPhoto {
+        let jsonData = DemoData.standardPhotoBResponse
+        let decoder = JSONDecoder.unsplashDecoder
+        return try! decoder.decode(UNPhoto.self, from: jsonData)
+    }
 
-        return UNPhoto(id: "jLwVAUtLOAQ",
-                       creationDate: nil,
-                       updateDate: nil,
-                       width: 4000,
-                       height: 2667,
-                       hexColor: "#A39F88",
-                       blurHash: "LnIEkXRkjFxZ_NoJWXR*?boJoLa}",
-                       description: nil,
-                       altDescription: nil,
-                       numberOfLikes: 4991,
-                       isLikedByUser: false,
-                       user: user,
-                       collections: [UNCollection](),
-                       categories: [UNCategory](),
-                       statistics: nil,
-                       imageURLs: imageURLs,
-                       apiLocations: apiLocations)
+    static var collectionA: UNCollection {
+        let jsonData = DemoData.standardCollectionAResponse
+        let decoder = JSONDecoder.unsplashDecoder
+        return try! decoder.decode(UNCollection.self, from: jsonData)
+    }
+
+    static var collectionB: UNCollection {
+        let jsonData = DemoData.standardCollectionBResponse
+        let decoder = JSONDecoder.unsplashDecoder
+        return try! decoder.decode(UNCollection.self, from: jsonData)
     }
 
     static var validUser: UNUser {
@@ -178,17 +178,6 @@ enum DemoData {
                totalCollections: 126,
                profileImageLinks: validProfileImageLinks,
                apiLocations: validUserAPILocations)
-    }
-
-    static var validCollection: UNCollection {
-        UNCollection(id: "334800",
-                     title: "Reflections",
-                     publishedDate: nil,
-                     updatedDate: nil,
-                     isCurated: false,
-                     coverPhoto: nil,
-                     user: validUser,
-                     apiLocations: validCollectionAPILocations)
     }
 
     static var validCollectionAPILocations: UNCollectionAPILocations {
@@ -214,31 +203,6 @@ enum DemoData {
     }
 
     // MARK: - Invalid data
-
-    /// Creates a new invalid UNPhoto
-    static var invalidPhoto: UNPhoto {
-        let invalidPhotoID = "InvalidID-92739120"
-        let invalidHexColor = "#ZZZZZZ"
-        let invalidNumber = -999
-
-        return UNPhoto(id: invalidPhotoID,
-                       creationDate: nil,
-                       updateDate: nil,
-                       width: invalidNumber,
-                       height: invalidNumber,
-                       hexColor: invalidHexColor,
-                       blurHash: "123",
-                       description: nil,
-                       altDescription: nil,
-                       numberOfLikes: invalidNumber,
-                       isLikedByUser: false,
-                       user: invalidUser,
-                       collections: [UNCollection](),
-                       categories: [UNCategory](),
-                       statistics: nil,
-                       imageURLs: invalidPhotoImageLinks,
-                       apiLocations: invalidPhotoAPILocations)
-    }
 
     /// Creates a new invalid UNUser
     static var invalidUser: UNUser {
@@ -266,18 +230,6 @@ enum DemoData {
                    title: "Fake category",
                    photoAmount: 999,
                    apiLocations: invalidCategoryAPILocations)
-    }
-
-    /// Creates an invalid collection
-    static var invalidCollection: UNCollection {
-        UNCollection(id: "1234567",
-                     title: "Fake collection",
-                     publishedDate: Date(),
-                     updatedDate: Date(),
-                     isCurated: true,
-                     coverPhoto: invalidPhoto,
-                     user: invalidUser,
-                     apiLocations: invalidCollectionAPILocations)
     }
 
     /// Creates an invalid category
@@ -317,15 +269,6 @@ enum DemoData {
                            apiFollowingURL: Constant.invalidURL,
                            apiFollowersURL: Constant.invalidURL,
                            externalProfileURL: Constant.invalidURL)
-    }
-
-    /// Creates an invalid user API locations
-    static var invalidPhotoImageLinks: UNPhotoImageURLs {
-        UNPhotoImageURLs(rawURL: Constant.invalidURL,
-                         fullURL: Constant.invalidURL,
-                         regularURL: Constant.invalidURL,
-                         smallURL: Constant.invalidURL,
-                         thumbURL: Constant.invalidURL)
     }
 
     // MARK: - Helpers

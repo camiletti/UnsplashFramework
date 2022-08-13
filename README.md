@@ -24,7 +24,7 @@ The plan is to achieve feature parity with Unsplash REST API
 - [x] Get a user’s portfolio link
 - [x] List a user’s photos
 - [x] List a user’s liked photos
-- [ ] List a user’s collections
+- [x] List a user’s collections
 - [ ] Get a user’s statistics
 
 ### Photos

@@ -30,13 +30,13 @@ struct UNUserSearchParameters {
 
     enum QueryParameterName {
         /// The requested query parameter's name.
-        static let queryName = "query"
+        static let query = "query"
 
         /// The requested page parameter's name.
-        static let pageNumberName = "page"
+        static let pageNumber = "page"
 
         /// Amount of users per page parameter's name.
-        static let usersPerPageName = "per_page"
+        static let usersPerPage = "per_page"
     }
 
     // MARK: - Properties
@@ -55,11 +55,11 @@ struct UNUserSearchParameters {
 extension UNUserSearchParameters: ParametersURLRepresentable {
 
     func asQueryItems() -> [URLQueryItem] {
-        [URLQueryItem(name: QueryParameterName.queryName,
+        [URLQueryItem(name: QueryParameterName.query,
                       value: "\(query)"),
-         URLQueryItem(name: QueryParameterName.pageNumberName,
+         URLQueryItem(name: QueryParameterName.pageNumber,
                       value: "\(pageNumber)"),
-         URLQueryItem(name: QueryParameterName.usersPerPageName,
+         URLQueryItem(name: QueryParameterName.usersPerPage,
                       value: "\(usersPerPage)")
         ]
     }

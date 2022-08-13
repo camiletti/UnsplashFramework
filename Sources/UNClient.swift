@@ -1,8 +1,7 @@
 //
-//  UnsplashFramework.swift
 //  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -44,17 +43,20 @@ public final class UNClient {
 
     // MARK: - Users
 
+    /// Retrieve public details on a given user.
     public func publicProfile(forUsername username: String) async throws -> UNUserPublicProfile {
         let parameters = UNUserPublicProfileParameters(username: username)
         return try await queryManager.publicProfile(with: parameters)
     }
 
+    /// Retrieve a single user’s portfolio link.
     public func portfolioLink(forUsername username: String) async throws -> URL {
         let parameters = UNUserPublicProfileParameters(username: username)
         let urlWrapper = try await queryManager.portfolioLink(with: parameters)
         return urlWrapper.url
     }
 
+    /// Get a list of photos uploaded by a user.
     public func photos(fromUsername username: String,
                        pageNumber: Int = 1,
                        photosPerPage: Int = 10,
@@ -72,6 +74,7 @@ public final class UNClient {
         return try await queryManager.userPhotos(with: parameters)
     }
 
+    /// Get a list of photos liked by a user.
     public func photosLiked(byUsername username: String,
                             pageNumber: Int = 1,
                             photosPerPage: Int = 10,
@@ -85,7 +88,15 @@ public final class UNClient {
         return try await queryManager.userLikedPhotos(with: parameters)
     }
 
-    public func collections(of username: String) {}
+    /// Get a list of collections created by the user.
+    public func collections(byUsername username: String,
+                            pageNumber: Int = 1,
+                            collectionsPerPage: Int = 10) async throws -> [UNCollection] {
+        let parameters = UNUserCollectionsParameters(username: username,
+                                                     pageNumber: pageNumber,
+                                                     collectionsPerPage: collectionsPerPage)
+        return try await queryManager.collections(with: parameters)
+    }
 
     public func statistics(for username: String) {}
 

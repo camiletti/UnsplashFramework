@@ -28,7 +28,7 @@ final class UNUserInterestsTests: XCTestCase {
         let decoder = JSONDecoder.unsplashDecoder
         let userInterests = try decoder.decode(UNUserInterests.self, from: jsonData)
 
-        XCTAssertEqual(userInterests.manuallySpecifiedTopicTitles.count, 5)
-        XCTAssertEqual(userInterests.inferredTopicTitles.count, 30)
+        XCTAssertEqual(userInterests.manuallySpecifiedTopics.count, 5)
+        XCTAssertEqual(userInterests.inferredTopics.count, 30)
     }
 }

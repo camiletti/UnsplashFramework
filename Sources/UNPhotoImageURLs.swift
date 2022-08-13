@@ -54,26 +54,26 @@ public struct UNPhotoImageURLs: Decodable {
     // MARK: - Properties
 
     /// Original image without any scaling nor quality reduction.
-    public var rawURL: URL
+    public let rawURL: URL
 
     /// Original size but quality reduction to 85%.
     /// The retrieved image will be jpg.
-    public var fullURL: URL
+    public let fullURL: URL
 
     /// 80% quality and width of 1080 pixels. The height will
     /// be the appropriate maintaining the aspect ratio.
     /// The retrieved image will be jpg.
-    public var regularURL: URL
+    public let regularURL: URL
 
     /// 80% quality and width of 400 pixels. The height will
     /// be the appropriate maintaining the aspect ratio.
     /// The retrieved image will be jpg.
-    public var smallURL: URL
+    public let smallURL: URL
 
     /// 80% quality and width of 200 pixels. The height will
     /// be the appropriate maintaining the aspect ratio.
     /// The retrieved image will be jpg.
-    public var thumbURL: URL
+    public let thumbURL: URL
 
     // MARK: - Actions
 
@@ -98,19 +98,5 @@ public struct UNPhotoImageURLs: Decodable {
         case .thumb:
             return thumbURL
         }
-    }
-}
-
-// MARK: - Equatable
-extension UNPhotoImageURLs: Equatable {
-
-    /// Returns a Boolean value indicating whether the two UNPhotoImageURLs have the same
-    /// value for their variables.
-    public static func == (lhs: UNPhotoImageURLs, rhs: UNPhotoImageURLs) -> Bool {
-        lhs.rawURL == rhs.rawURL &&
-            lhs.fullURL == rhs.fullURL &&
-            lhs.regularURL == rhs.regularURL &&
-            lhs.smallURL == rhs.smallURL &&
-            lhs.thumbURL == rhs.thumbURL
     }
 }

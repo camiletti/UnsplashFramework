@@ -48,8 +48,8 @@ final class UNPhotoSearchParametersTests: XCTestCase {
         let expectedQuery = "Some search"
         let expectedPageNumber = 9
         let expectedPhotosPerPage = 6
-        let expectedCollectionIDs = "1,2"
-        let expectedCollections = [UNCollection.mock(id: "1"), UNCollection.mock(id: "2")]
+        let expectedCollections = [DemoData.collectionA, DemoData.collectionB]
+        let expectedCollectionIDs = "\(expectedCollections[0].id),\(expectedCollections[1].id)"
         let expectedOrientation = UNPhotoOrientation.landscape
         let expectedQueryItemsAmount = 5
 

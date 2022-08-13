@@ -1,8 +1,7 @@
 //
-//  MockUNProfileImageLinks.swift
-//  MockUNProfileImageLinks
+//  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +22,10 @@
 //
 
 import Foundation
-@testable import UnsplashFramework
 
-extension UNProfileImageLinks {
+public struct UNTopic: Codable, Equatable {
 
-    static func mock(small: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
-                     medium: URL = URL(string: "https://api.unsplash.com/image.jpg")!,
-                     large: URL = URL(string: "https://api.unsplash.com/image.jpg")!) -> UNProfileImageLinks {
-        UNProfileImageLinks(small: small,
-                            medium: medium,
-                            large: large)
-    }
+    public let type: String
+
+    public let title: String
 }

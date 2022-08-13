@@ -25,37 +25,15 @@ public struct UNUserInterests: Codable, Equatable {
     // MARK: - Declarations
 
     enum CodingKeys: String, CodingKey {
-        case manuallySpecifiedTopicTitles = "custom"
-        case inferredTopicTitles = "aggregated"
-    }
-
-    struct NestedTopicTileContainer: Codable {
-        let title: String
+        case manuallySpecifiedTopics = "custom"
+        case inferredTopics = "aggregated"
     }
 
     // MARK: - Properties
 
     /// Titles of topics that the user has manually specified in their profile page.
-    public let manuallySpecifiedTopicTitles: [String]
+    public let manuallySpecifiedTopics: [UNTopic]
 
     /// Titles of topics that Unsplash has inferred based on user activity.
-    public let inferredTopicTitles: [String]
-
-    // MARK: - Life Cycle
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        manuallySpecifiedTopicTitles = (try container.decode([NestedTopicTileContainer].self, forKey: .manuallySpecifiedTopicTitles))
-            .map { $0.title }
-        inferredTopicTitles = try container.decode([NestedTopicTileContainer].self, forKey: .inferredTopicTitles)
-            .map { $0.title }
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: UNUserInterests.CodingKeys.self)
-
-        try container.encode(manuallySpecifiedTopicTitles.map { NestedTopicTileContainer(title: $0) }, forKey: .manuallySpecifiedTopicTitles)
-        try container.encode(inferredTopicTitles.map { NestedTopicTileContainer(title: $0) }, forKey: .inferredTopicTitles)
-    }
+    public let inferredTopics: [UNTopic]
 }
