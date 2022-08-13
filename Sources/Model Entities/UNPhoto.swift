@@ -37,6 +37,7 @@ public struct UNPhoto: Decodable, Identifiable {
         case width
         case height
         case hexColor = "color"
+        case blurHash = "blur_hash"
         case description
         case altDescription = "alt_description"
         case numberOfLikes = "likes"
@@ -71,6 +72,11 @@ public struct UNPhoto: Decodable, Identifiable {
 
     /// Representative color of the photo in hex value.
     public var hexColor: String
+
+    /// A very compact representation of an image placeholder
+    /// which can be used to display a blurred preview before
+    /// the real image loads. Learn more at https://blurha.sh
+    public var blurHash: String
 
     /// Description of the photo.
     public var description: String?
@@ -107,13 +113,14 @@ public struct UNPhoto: Decodable, Identifiable {
 
     // MARK: - Life Cycle
 
-    init(id: String, creationDate: Date?, updateDate: Date?, width: Int, height: Int, hexColor: String, description: String?, altDescription: String?, numberOfLikes: Int, isLikedByUser: Bool, user: UNUser, collections: [UNCollection], categories: [UNCategory], statistics: UNPhotoStatistics?, imageURLs: UNPhotoImageURLs, apiLocations: UNPhotoAPILocations) {
+    init(id: String, creationDate: Date?, updateDate: Date?, width: Int, height: Int, hexColor: String, blurHash: String, description: String?, altDescription: String?, numberOfLikes: Int, isLikedByUser: Bool, user: UNUser, collections: [UNCollection], categories: [UNCategory], statistics: UNPhotoStatistics?, imageURLs: UNPhotoImageURLs, apiLocations: UNPhotoAPILocations) {
         self.id = id
         self.creationDate = creationDate
         self.updateDate = updateDate
         self.width = width
         self.height = height
         self.hexColor = hexColor
+        self.blurHash = blurHash
         self.description = description
         self.altDescription = altDescription
         self.numberOfLikes = numberOfLikes
@@ -140,6 +147,7 @@ public struct UNPhoto: Decodable, Identifiable {
         width  = try values.decode(Int.self, forKey: .width)
         height = try values.decode(Int.self, forKey: .height)
         hexColor = try values.decode(String.self, forKey: .hexColor)
+        blurHash = try values.decode(String.self, forKey: .blurHash)
         description = try? values.decode(String.self, forKey: .description)
         altDescription = try? values.decode(String.self, forKey: .altDescription)
         numberOfLikes = try values.decode(Int.self, forKey: .numberOfLikes)

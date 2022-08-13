@@ -56,20 +56,33 @@ public final class UNClient {
     }
 
     public func photos(fromUsername username: String,
-                       page: Int = 1,
+                       pageNumber: Int = 1,
                        photosPerPage: Int = 10,
                        sorting: UNSort = .latest,
                        includeStats: Bool = false,
                        statsAmount: Int? = nil,
                        orientationFilter: UNPhotoOrientation? = nil) async throws -> [UNPhoto] {
         let parameters = UNUserPhotosParameters(username: username,
-                                                page: page,
+                                                pageNumber: pageNumber,
                                                 photosPerPage: photosPerPage,
                                                 sorting: sorting,
                                                 includeStats: includeStats,
                                                 statsAmount: statsAmount,
                                                 orientationFilter: orientationFilter)
         return try await queryManager.userPhotos(with: parameters)
+    }
+
+    public func photosLiked(byUsername username: String,
+                            pageNumber: Int = 1,
+                            photosPerPage: Int = 10,
+                            sorting: UNSort = .latest,
+                            orientationFilter: UNPhotoOrientation? = nil) async throws -> [UNPhoto] {
+        let parameters = UNUserLikesParameters(username: username,
+                                               pageNumber: pageNumber,
+                                               photosPerPage: photosPerPage,
+                                               sorting: sorting,
+                                               orientationFilter: orientationFilter)
+        return try await queryManager.userLikedPhotos(with: parameters)
     }
 
     public func collections(of username: String) {}

@@ -50,11 +50,18 @@ enum DemoData {
         dataFromJSONFile(named: "URLWrapper")
     }
 
-    /// Returns a sample user photos.
+    /// Returns a sample of user photos.
     ///
     /// - Returns: JSON Data representing the user's photos.
     static var userPhotosResponse: Data {
         dataFromJSONFile(named: "UserPhotos")
+    }
+
+    /// Returns a sample of photos liked by a user.
+    ///
+    /// - Returns: JSON Data representing the photos liked by a user.
+    static var userLikesResponse: Data {
+        dataFromJSONFile(named: "UserLikes")
     }
 
     // MARK: - Photos
@@ -143,6 +150,7 @@ enum DemoData {
                        width: 4000,
                        height: 2667,
                        hexColor: "#A39F88",
+                       blurHash: "LnIEkXRkjFxZ_NoJWXR*?boJoLa}",
                        description: nil,
                        altDescription: nil,
                        numberOfLikes: 4991,
@@ -219,6 +227,7 @@ enum DemoData {
                        width: invalidNumber,
                        height: invalidNumber,
                        hexColor: invalidHexColor,
+                       blurHash: "123",
                        description: nil,
                        altDescription: nil,
                        numberOfLikes: invalidNumber,

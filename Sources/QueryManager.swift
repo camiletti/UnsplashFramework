@@ -61,6 +61,12 @@ class QueryManager {
                               parameters: parameters)
     }
 
+    func userLikedPhotos(with parameters: UNUserLikesParameters) async throws -> [UNPhoto] {
+        try await api.request(.get,
+                              endpoint: .userLikedPhotos(username: parameters.username),
+                              parameters: parameters)
+    }
+
     /// Get a single page from the Editorial feed.
     ///
     /// - Parameters:

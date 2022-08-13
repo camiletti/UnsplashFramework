@@ -3,7 +3,6 @@
 
 <p align="center">
 	<a href="https://travis-ci.org/camiletti/UnsplashFramework"><img src="https://travis-ci.org/camiletti/UnsplashFramework.svg?branch=master" /></a>
-	<a href="#-documentation"><img src="https://cdn.rawgit.com/camiletti/UnsplashFramework/master/docs/badge.svg" /></a>
     <a href="#SPM"><img src="https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat" /></a>
 	<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift-5.5-orange.svg?style=flat" /></a>
 	<a href="#-license"><img src="https://img.shields.io/cocoapods/l/UnsplashFramework.svg" /></a>
@@ -24,7 +23,7 @@ The plan is to achieve feature parity with Unsplash REST API
 - [x] Get a user’s public profile
 - [x] Get a user’s portfolio link
 - [x] List a user’s photos
-- [ ] List a user’s liked photos
+- [x] List a user’s liked photos
 - [ ] List a user’s collections
 - [ ] Get a user’s statistics
 
@@ -109,6 +108,14 @@ let photos = try await client.listPhotos(page: 1,
 ```
 
 
+### User profiles
+
+
+```swift
+let profile = try await client.publicProfile(forUsername "unsplash")
+```
+
+
 ### Searching
 
 ```swift
@@ -133,7 +140,7 @@ let users = try await client.searchUsers(query: "camiletti",
 
 ## 📖 Documentation
 
-[Full documentation here](http://htmlpreview.github.io/?https://github.com/camiletti/UnsplashFramework/blob/master/docs/Classes/UNClient.html)
+[Full documentation here](https://swiftpackageindex.com/camiletti/UnsplashFramework/0.2.0/documentation/unsplashframework)
 
 
 ## 🐦 Contact

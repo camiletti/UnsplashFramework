@@ -78,7 +78,7 @@ final class UNClientTests: XCTestCase {
 
     func testUserPhotos() async throws {
         let parameters = UNUserPhotosParameters(username: "camiletti",
-                                                page: 2,
+                                                pageNumber: 2,
                                                 photosPerPage: 4,
                                                 sorting: .downloads,
                                                 includeStats: true,
@@ -98,7 +98,7 @@ final class UNClientTests: XCTestCase {
 
         // None of the parameters are relevant for this test
         let _ = try await client.photos(fromUsername: parameters.username,
-                                        page: parameters.page!,
+                                        pageNumber: parameters.pageNumber!,
                                         photosPerPage: parameters.photosPerPage!,
                                         sorting: parameters.sorting!,
                                         includeStats: parameters.includeStats!,
@@ -106,7 +106,31 @@ final class UNClientTests: XCTestCase {
                                         orientationFilter: parameters.orientationFilter)
     }
 
+    func testPhotosLikedByUser() async throws {
+        let parameters = UNUserLikesParameters(username: "camiletti",
+                                               pageNumber: 2,
+                                               photosPerPage: 4,
+                                               sorting: .downloads,
+                                               orientationFilter: .landscape)
+        let endpoint = Endpoint.userLikedPhotos(username: parameters.username)
+        let queryManager = QueryManager.mock(data: DemoData.userLikesResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
+        let client = UNClient(queryManager: queryManager)
 
+        // None of the parameters are relevant for this test
+        let _ = try await client.photosLiked(byUsername: parameters.username,
+                                             pageNumber: parameters.pageNumber!,
+                                             photosPerPage: parameters.photosPerPage!,
+                                             sorting: parameters.sorting!,
+                                             orientationFilter: parameters.orientationFilter)
+    }
 
     // MARK: - Photos
 

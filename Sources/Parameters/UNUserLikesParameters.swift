@@ -1,3 +1,6 @@
+//
+//  UnsplashFramework
+//
 //  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,8 +23,7 @@
 
 import Foundation
 
-/// The parameters' names and values that can be passed to fetch a user's public profile.
-struct UNUserPhotosParameters {
+struct UNUserLikesParameters {
 
     // MARK: - Declarations
 
@@ -34,10 +36,6 @@ struct UNUserPhotosParameters {
         static let photosPerPage = "per_page"
         /// How to sort the photos.
         static let sorting = "order_by"
-        /// Show the stats for each user’s photo.
-        static let includeStats = "stats"
-        /// The amount of for each stat.
-        static let statsAmount = "quantity"
         /// Filter by photo orientation.
         static let orientationFilter = "orientation"
     }
@@ -53,21 +51,15 @@ struct UNUserPhotosParameters {
     /// Number of items per page. (Optional; default: 10)
     let photosPerPage: Int?
 
-    /// How to sort the photos. (Optional.; default: latest)
+    /// How to sort the photos. (Optional; default: latest)
     let sorting: UNSort?
 
-    /// Show the stats for each user’s photo. (Optional; default: false)
-    let includeStats: Bool?
-
-    /// The amount of for each stat. (Optional; default: 30)
-    let statsAmount: Int?
-
-    /// Filter by photo orientation. (Optional)
+    /// Filter by photo orientation.(Optional)
     let orientationFilter: UNPhotoOrientation?
 }
 
 // MARK: - ParametersURLRepresentable
-extension UNUserPhotosParameters: ParametersURLRepresentable {
+extension UNUserLikesParameters: ParametersURLRepresentable {
 
     func asQueryItems() -> [URLQueryItem] {
         var queryItems = [URLQueryItem(name: QueryParameterName.username,
@@ -86,16 +78,6 @@ extension UNUserPhotosParameters: ParametersURLRepresentable {
         if let sorting = sorting {
             queryItems.append(URLQueryItem(name: QueryParameterName.sorting,
                                            value: "\(sorting.rawValue)"))
-        }
-
-        if let includeStats = includeStats {
-            queryItems.append(URLQueryItem(name: QueryParameterName.includeStats,
-                                           value: "\(includeStats)"))
-        }
-
-        if let statsAmount = statsAmount {
-            queryItems.append(URLQueryItem(name: QueryParameterName.statsAmount,
-                                           value: "\(statsAmount)"))
         }
 
         if let orientationFilter = orientationFilter {

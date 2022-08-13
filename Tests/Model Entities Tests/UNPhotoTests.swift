@@ -39,6 +39,7 @@ final class UNPhotoTests: XCTestCase {
         XCTAssertEqual(photo.width, 5456)
         XCTAssertEqual(photo.height, 3064)
         XCTAssertEqual(photo.hexColor, "#d9d9d9")
+        XCTAssertEqual(photo.blurHash, "LnIEkXRkjFxZ_NoJWXR*?boJoLa}")
         XCTAssertEqual(photo.description, "Superman flying over NYC")
         XCTAssertEqual(photo.altDescription, "2 fists are seeing over New York's sky pretending to be Superman flying")
         XCTAssertEqual(photo.numberOfLikes, 427)
