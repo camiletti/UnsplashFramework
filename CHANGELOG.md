@@ -1,3 +1,17 @@
+# [0.3.0](https://github.com/camiletti/UnsplashFramework/releases/tag/0.3.0)
+_14 Aug 2022_
+
+## ✨ Added
+
+- **All user fetching functionality**
+  - Get a user’s public profile
+  - Get a user’s portfolio link
+  - List a user’s photos
+  - List a user’s liked photos
+  - List a user’s collections
+  - Get a user’s statistics
+ 
+
 # [0.2.0](https://github.com/camiletti/UnsplashFramework/releases/tag/0.2.0)
 _31 Jul 2022_
 
