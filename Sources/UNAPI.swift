@@ -87,13 +87,13 @@ open class UNAPI {
 
     // MARK: - Actions
 
-    /// Makes a REST request
+    /// Makes a REST request that expects a returned value
+    ///
     /// - Parameters:
-    ///   - method: The HTTP method to use
-    ///   - endpoint: The endpoint to call
-    ///   - parameters: The parameters to use for the request
-    ///   - completion: Completion closure to invoke once the request finished. This will always be called on the main thread
-    /// - Returns: The URLSessionTask representing the request after being started
+    ///   - method: The HTTP method to use.
+    ///   - endpoint: The endpoint to call.
+    ///   - parameters: The parameters to use for the request.
+    /// - Returns: The value for the requested type.
     @discardableResult
     func request<T: Decodable>(_ method: HTTPMethod,
                                endpoint: Endpoint,

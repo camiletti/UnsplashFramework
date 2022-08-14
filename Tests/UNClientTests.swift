@@ -298,6 +298,25 @@ final class UNClientTests: XCTestCase {
                                             quantity: parameters.quantity!)
     }
 
+    func testTrackingDownloadOfPhoto() async throws {
+        let photoID = "123"
+        let endpoint = Endpoint.trackPhotoDownload(id: photoID)
+        let queryManager = QueryManager.mock(data: DemoData.standardTrackPhotoDownload,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: nil),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: nil)
+        let client = UNClient(queryManager: queryManager)
+
+        let url = try await client.trackPhotoDownloaded(withID: photoID)
+
+        XCTAssertNotNil(url)
+    }
+
     // MARK: - Search
 
     func testSearchPhotos() async throws {

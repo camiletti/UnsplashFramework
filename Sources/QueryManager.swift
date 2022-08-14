@@ -104,6 +104,12 @@ class QueryManager {
                               parameters: parameters)
     }
 
+    public func trackPhotoDownloaded(withID photoID: String) async throws -> UNURLWrapper {
+        try await api.request(.get,
+                              endpoint: .trackPhotoDownload(id: photoID),
+                              parameters: nil)
+    }
+
     /// Makes a query to Unsplash.
     ///
     /// - Parameters:

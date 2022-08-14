@@ -117,6 +117,13 @@ enum DemoData {
         dataFromJSONFile(named: "RandomPhotosByCollectionIDs")
     }
 
+    /// Returns a sample when calling track download.
+    ///
+    /// - Returns: JSON Data when calling track download.
+    static var standardTrackPhotoDownload: Data {
+        dataFromJSONFile(named: "TrackPhotoDownload")
+    }
+
     // MARK: - Search
 
     /// Returns a sample search of photos.

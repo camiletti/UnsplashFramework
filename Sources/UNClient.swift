@@ -237,6 +237,21 @@ public final class UNClient {
         return try await queryManager.userStatistics(forPhotoWithID: photoID, with: parameters)
     }
 
+    /// To abide by the API guidelines, you need call this function
+    /// every time your application performs a download of a photo.
+    /// To understand what constitutes a download, please refer to
+    /// the ‘Triggering a download’ guideline from Unsplash.
+    ///
+    /// Note: This is different than the concept of a view, which is
+    /// tracked automatically when you `hotlink` an image.
+    ///
+    /// - Parameter photoID: The ID of the photo to track.
+    /// - Returns: The download URL for the photo.
+    public func trackPhotoDownloaded(withID photoID: String) async throws -> URL? {
+        let urlWrapper = try await queryManager.trackPhotoDownloaded(withID: photoID)
+        return urlWrapper.url
+    }
+
     // MARK: - Search
 
     /// Get a single page of photo results for a query.
