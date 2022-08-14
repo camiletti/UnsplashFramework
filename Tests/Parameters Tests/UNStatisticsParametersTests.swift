@@ -24,52 +24,38 @@
 @testable import UnsplashFramework
 import XCTest
 
-final class UNUserStatisticsParametersTests: XCTestCase {
+final class UNStatisticsParametersTests: XCTestCase {
 
     func testAsQueryItemsWithoutOptionalProperties() {
-        let expectedUsername = "some_username"
-        let expectedQueryItemsAmount = 1
+        let expectedQueryItemsAmount = 0
 
-        let parameters = UNUserStatisticsParameters(username: expectedUsername,
-                                                    interval: nil,
-                                                    quantity: nil)
+        let parameters = UNStatisticsParameters(interval: nil,
+                                                quantity: nil)
 
         let queryItems = parameters.asQueryItems()
 
         XCTAssertEqual(queryItems.count, expectedQueryItemsAmount)
-
-        let usernameValue = queryItems
-            .first(where: { $0.name == UNUserStatisticsParameters.QueryParameterName.username })?
-            .value
-        XCTAssertEqual(usernameValue, expectedUsername)
     }
 
     func testAsQueryItemsWithOptionalProperties() {
-        let expectedUsername = "some_username"
         let expectedInterval = UNStatisticsInterval.days
         let expectedQuantity = 6
-        let expectedQueryItemsAmount = 3
+        let expectedQueryItemsAmount = 2
 
-        let parameters = UNUserStatisticsParameters(username: expectedUsername,
-                                                    interval: expectedInterval,
-                                                    quantity: expectedQuantity)
+        let parameters = UNStatisticsParameters(interval: expectedInterval,
+                                                quantity: expectedQuantity)
 
         let queryItems = parameters.asQueryItems()
 
         XCTAssertEqual(queryItems.count, expectedQueryItemsAmount)
 
-        let usernameValue = queryItems
-            .first(where: { $0.name == UNUserStatisticsParameters.QueryParameterName.username })?
-            .value
-        XCTAssertEqual(usernameValue, expectedUsername)
-
         let intervalValue = queryItems
-            .first(where: { $0.name == UNUserStatisticsParameters.QueryParameterName.interval })?
+            .first(where: { $0.name == UNStatisticsParameters.QueryParameterName.interval })?
             .value
         XCTAssertEqual(intervalValue, "\(expectedInterval)")
 
         let quantityValue = queryItems
-            .first(where: { $0.name == UNUserStatisticsParameters.QueryParameterName.quantity })?
+            .first(where: { $0.name == UNStatisticsParameters.QueryParameterName.quantity })?
             .value
         XCTAssertEqual(quantityValue, "\(expectedQuantity)")
     }

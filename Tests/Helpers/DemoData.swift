@@ -140,6 +140,13 @@ enum DemoData {
         dataFromJSONFile(named: "StandardSearchUserResult")
     }
 
+    /// Returns a sample of statistics of a photo.
+    ///
+    /// - Returns: JSON Data representing the statistics of a photo.
+    static var photoStatisticsResponse: Data {
+        dataFromJSONFile(named: "PhotoStatistics")
+    }
+
     // MARK: - Collections
 
     /// Returns a sample of a collection.

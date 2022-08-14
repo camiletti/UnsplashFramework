@@ -23,13 +23,11 @@
 
 import Foundation
 
-struct UNUserStatisticsParameters {
+struct UNStatisticsParameters {
 
     // MARK: - Declarations
 
     enum QueryParameterName {
-        /// The user’s username. Required.
-        static let username = "username"
         /// The frequency of the stats.
         static let interval = "resolution"
         /// The amount of for each stat.
@@ -37,9 +35,6 @@ struct UNUserStatisticsParameters {
     }
 
     // MARK: - Properties
-
-    /// The user’s username. Required.
-    let username: String
 
     /// The frequency of the stats. (Optional; default: “days”)
     let interval: UNStatisticsInterval?
@@ -49,11 +44,10 @@ struct UNUserStatisticsParameters {
 }
 
 // MARK: - ParametersURLRepresentable
-extension UNUserStatisticsParameters: ParametersURLRepresentable {
+extension UNStatisticsParameters: ParametersURLRepresentable {
 
     func asQueryItems() -> [URLQueryItem] {
-        var queryItems = [URLQueryItem(name: QueryParameterName.username,
-                                       value: "\(username)")]
+        var queryItems = [URLQueryItem]()
 
         if let interval = interval {
             queryItems.append(URLQueryItem(name: QueryParameterName.interval,

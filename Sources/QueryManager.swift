@@ -73,38 +73,34 @@ class QueryManager {
                               parameters: parameters)
     }
 
-    func userStatistics(with parameters: UNUserStatisticsParameters) async throws -> UNUserStatistics {
+    func userStatistics(forUsername username: String, with parameters: UNStatisticsParameters) async throws -> UNUserStatistics {
         try await api.request(.get,
-                              endpoint: .userStatistics(username: parameters.username),
+                              endpoint: .userStatistics(username: username),
                               parameters: parameters)
     }
 
-    /// Get a single page from the Editorial feed.
-    ///
-    /// - Parameters:
-    ///   - parameters: The parameters.
+    // MARK: - Photos
     func editorialPhotosList(with parameters: UNPhotoListParameters) async throws -> [UNPhoto] {
         try await api.request(.get,
                               endpoint: .editorialPhotosList,
                               parameters: parameters)
     }
 
-    /// Retrieve a single photo.
-    /// - Parameter id: The photo’s ID.
-    /// - Returns: A single photo with all its information given its ID.
     func photo(withID id: String) async throws -> UNFullPhoto {
         try await api.request(.get,
                               endpoint: .photo(id: id),
                               parameters: nil)
     }
 
-    /// Retrieve a single random photo, given optional filters.
-    ///
-    /// - Parameters:
-    ///   - parameters: The parameters.
     func randomPhotos(with parameters: UNRandomPhotoParameters) async throws -> [UNFullPhoto] {
         try await api.request(.get,
                               endpoint: .randomPhoto,
+                              parameters: parameters)
+    }
+
+    func userStatistics(forPhotoWithID photoID: String, with parameters: UNStatisticsParameters) async throws -> UNPhotoStatistics {
+        try await api.request(.get,
+                              endpoint: .photoStatistics(id: photoID),
                               parameters: parameters)
     }
 

@@ -27,7 +27,7 @@ import XCTest
 final class UNPhotoStatisticsTests: XCTestCase {
 
     func testDecoding() throws {
-        let jsonData = DemoData.dataFromJSONFile(named: "PhotoStatistics")
+        let jsonData = DemoData.photoStatisticsResponse
         let decoder = JSONDecoder.unsplashDecoder
         let photoStats = try decoder.decode(UNPhotoStatistics.self, from: jsonData)
 

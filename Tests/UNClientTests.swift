@@ -157,10 +157,10 @@ final class UNClientTests: XCTestCase {
     }
 
     func testStatisticsByUser() async throws {
-        let parameters = UNUserStatisticsParameters(username: "camiletti",
-                                                    interval: .days,
-                                                    quantity: 15)
-        let endpoint = Endpoint.userStatistics(username: parameters.username)
+        let username = "camiletti"
+        let parameters = UNStatisticsParameters(interval: .days,
+                                                quantity: 15)
+        let endpoint = Endpoint.userStatistics(username: username)
         let queryManager = QueryManager.mock(data: DemoData.userStatisticsResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
                                                                        parameters: parameters),
@@ -172,7 +172,7 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
-        let _ = try await client.statistics(forUsername: parameters.username,
+        let _ = try await client.statistics(forUsername: username,
                                             interval: parameters.interval!,
                                             quantity: parameters.quantity!)
     }
@@ -275,6 +275,27 @@ final class UNClientTests: XCTestCase {
                                                    returningAmount: parameters.amountOfRandomPhotos)
 
         XCTAssertEqual(photos.count, 2)
+    }
+
+    func testStatisticsOfPhoto() async throws {
+        let photoID = "123"
+        let parameters = UNStatisticsParameters(interval: .days,
+                                                quantity: 15)
+        let endpoint = Endpoint.photoStatistics(id: photoID)
+        let queryManager = QueryManager.mock(data: DemoData.photoStatisticsResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
+        let client = UNClient(queryManager: queryManager)
+
+        let _ = try await client.statistics(forPhotoWithID: photoID,
+                                            interval: parameters.interval!,
+                                            quantity: parameters.quantity!)
     }
 
     // MARK: - Search

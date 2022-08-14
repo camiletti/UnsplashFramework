@@ -139,10 +139,9 @@ public final class UNClient {
     public func statistics(forUsername username: String,
                            interval: UNStatisticsInterval = .days,
                            quantity: Int = 30) async throws -> UNUserStatistics {
-        let parameters = UNUserStatisticsParameters(username: username,
-                                                    interval: interval,
-                                                    quantity: quantity)
-        return try await queryManager.userStatistics(with: parameters)
+        let parameters = UNStatisticsParameters(interval: interval,
+                                                quantity: quantity)
+        return try await queryManager.userStatistics(forUsername: username, with: parameters)
     }
 
     // MARK: - Listing photos
@@ -219,6 +218,23 @@ public final class UNClient {
                                                  contentFilter: contentFilter,
                                                  amountOfRandomPhotos: amountOfRandomPhotos)
         return try await queryManager.randomPhotos(with: parameters)
+    }
+
+    /// Retrieve total number of downloads, views and likes of a
+    /// single photo, as well as the historical breakdown of these
+    ///  stats in a specific timeframe (default is 30 days).
+    ///
+    /// - Parameters:
+    ///   - photoID: The photo’s ID.
+    ///   - interval: The frequency of the stats.
+    ///   - quantity: The amount of for each stat, between 1 and 30.
+    /// - Returns: The user's statistic entity.
+    public func statistics(forPhotoWithID photoID: String,
+                           interval: UNStatisticsInterval = .days,
+                           quantity: Int = 30) async throws -> UNPhotoStatistics {
+        let parameters = UNStatisticsParameters(interval: interval,
+                                                quantity: quantity)
+        return try await queryManager.userStatistics(forPhotoWithID: photoID, with: parameters)
     }
 
     // MARK: - Search
