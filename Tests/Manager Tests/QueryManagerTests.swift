@@ -43,7 +43,7 @@ final class QueryManagerTests: XCTestCase {
         let expectedPhotosCount = 10
         let parameters = UNPhotoListParameters(pageNumber: 10,
                                                photosPerPage: 10,
-                                               sortOrder: .latest)
+                                               sorting: .latest)
         let queryManager = QueryManager.mock(data: expectedData,
                                              response: .mockingSuccess(endpoint: endpoint,
                                                                        parameters: parameters),

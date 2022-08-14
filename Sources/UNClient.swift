@@ -74,7 +74,7 @@ public final class UNClient {
     public func photos(fromUsername username: String,
                        pageNumber: Int = 1,
                        photosPerPage: Int = 10,
-                       sorting: UNSort = .latest,
+                       sortingBy sortOrder: UNSort = .latest,
                        includeStats: Bool = false,
                        statsInterval: UNStatisticsInterval = .days,
                        statsAmount: Int? = nil,
@@ -82,7 +82,7 @@ public final class UNClient {
         let parameters = UNUserPhotosParameters(username: username,
                                                 pageNumber: pageNumber,
                                                 photosPerPage: photosPerPage,
-                                                sorting: sorting,
+                                                sorting: sortOrder,
                                                 includeStats: includeStats,
                                                 statsInterval: statsInterval,
                                                 statsAmount: statsAmount,
@@ -101,12 +101,12 @@ public final class UNClient {
     public func photosLiked(byUsername username: String,
                             pageNumber: Int = 1,
                             photosPerPage: Int = 10,
-                            sorting: UNSort = .latest,
+                            sortingBy sortOrder: UNSort = .latest,
                             orientationFilter: UNPhotoOrientation? = nil) async throws -> [UNPhoto] {
         let parameters = UNUserLikesParameters(username: username,
                                                pageNumber: pageNumber,
                                                photosPerPage: photosPerPage,
-                                               sorting: sorting,
+                                               sorting: sortOrder,
                                                orientationFilter: orientationFilter)
         return try await queryManager.userLikedPhotos(with: parameters)
     }
@@ -150,15 +150,16 @@ public final class UNClient {
     /// Get a single page from the list of all photos.
     ///
     /// - Parameters:
-    ///   - page: Page number to retrieve.
+    ///   - pageNumber: Page number to retrieve.
     ///   - photosPerPage: Number of items per page.
-    ///   - sort: How to sort the photos.
-    public func editorialPhotosList(page: Int,
+    ///   - sortOrder: How to sort the photos.
+    /// - Returns: A single page from the list of all editorial photos.
+    public func editorialPhotosList(pageNumber: Int,
                                     photosPerPage: Int = 10,
-                                    sortingBy sort: UNSort) async throws -> [UNPhoto] {
-        let parameters = UNPhotoListParameters(pageNumber: page,
+                                    sortingBy sortOrder: UNSort) async throws -> [UNPhoto] {
+        let parameters = UNPhotoListParameters(pageNumber: pageNumber,
                                                photosPerPage: photosPerPage,
-                                               sortOrder: sort)
+                                               sorting: sortOrder)
 
         return try await queryManager.editorialPhotosList(with: parameters)
     }

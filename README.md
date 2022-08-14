@@ -28,7 +28,7 @@ The plan is to achieve feature parity with Unsplash REST API
 - [x] Get a user’s statistics
 
 ### Photos
-- [x] List photos
+- [x] List editorial photos
 - [ ] Get a photo
 - [ ] Get a random photo
 - [ ] Get a photo’s statistics
@@ -67,7 +67,7 @@ The plan is to achieve feature parity with Unsplash REST API
 
 - iOS 15.0+
 - Swift 5.6+
-- XCode 13.0+
+- Xcode 13.0+
 
 
 ## ⬇️ Installation

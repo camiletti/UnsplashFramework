@@ -1,8 +1,7 @@
 //
-//  UNPhotoListParameters.swift
 //  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -31,35 +30,46 @@ struct UNPhotoListParameters {
 
     enum QueryParameterName {
         /// The requested page parameter's name.
-        static let pageNumberName = "page"
+        static let pageNumber = "page"
         /// Amount of photos per page parameter's name.
-        static let photosPerPageName = "per_page"
+        static let photosPerPage = "per_page"
         /// The sort order parameter's name.
-        static let sortOrderName = "order_by"
+        static let sorting = "order_by"
     }
 
     // MARK: - Properties
 
-    /// The requested page.
-    let pageNumber: Int
+    /// Page number to retrieve. (Optional; default: 1).
+    let pageNumber: Int?
 
-    /// The desired amount of photos per page.
-    let photosPerPage: Int
+    /// Number of items per page. (Optional; default: 10).
+    let photosPerPage: Int?
 
-    /// The desired sort order of the query's result.
-    let sortOrder: UNSort
+    /// How to sort the photos. (Optional; default: latest)
+    let sorting: UNSort?
 }
 
 // MARK: - ParametersURLRepresentable
 extension UNPhotoListParameters: ParametersURLRepresentable {
 
     func asQueryItems() -> [URLQueryItem] {
-        [URLQueryItem(name: QueryParameterName.pageNumberName,
-                      value: "\(pageNumber)"),
-         URLQueryItem(name: QueryParameterName.photosPerPageName,
-                      value: "\(photosPerPage)"),
-         URLQueryItem(name: QueryParameterName.sortOrderName,
-                      value: "\(sortOrder.rawValue)")
-        ]
+        var queryItems = [URLQueryItem]()
+
+        if let pageNumber = pageNumber {
+            queryItems.append(URLQueryItem(name: QueryParameterName.pageNumber,
+                                           value: "\(pageNumber)"))
+        }
+
+        if let photosPerPage = photosPerPage {
+            queryItems.append(URLQueryItem(name: QueryParameterName.photosPerPage,
+                                           value: "\(photosPerPage)"))
+        }
+
+        if let sorting = sorting {
+            queryItems.append(URLQueryItem(name: QueryParameterName.sorting,
+                                           value: "\(sorting.rawValue)"))
+        }
+
+        return queryItems
     }
 }

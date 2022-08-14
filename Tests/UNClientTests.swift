@@ -98,13 +98,15 @@ final class UNClientTests: XCTestCase {
         let client = UNClient(queryManager: queryManager)
 
         // None of the parameters are relevant for this test
-        let _ = try await client.photos(fromUsername: parameters.username,
+        let photos = try await client.photos(fromUsername: parameters.username,
                                         pageNumber: parameters.pageNumber!,
                                         photosPerPage: parameters.photosPerPage!,
-                                        sorting: parameters.sorting!,
+                                        sortingBy: parameters.sorting!,
                                         includeStats: parameters.includeStats!,
                                         statsAmount: parameters.statsAmount!,
                                         orientationFilter: parameters.orientationFilter)
+
+        XCTAssertFalse(photos.isEmpty)
     }
 
     func testPhotosLikedByUser() async throws {
@@ -126,11 +128,13 @@ final class UNClientTests: XCTestCase {
         let client = UNClient(queryManager: queryManager)
 
         // None of the parameters are relevant for this test
-        let _ = try await client.photosLiked(byUsername: parameters.username,
-                                             pageNumber: parameters.pageNumber!,
-                                             photosPerPage: parameters.photosPerPage!,
-                                             sorting: parameters.sorting!,
-                                             orientationFilter: parameters.orientationFilter)
+        let photos = try await client.photosLiked(byUsername: parameters.username,
+                                                  pageNumber: parameters.pageNumber!,
+                                                  photosPerPage: parameters.photosPerPage!,
+                                                  sortingBy: parameters.sorting!,
+                                                  orientationFilter: parameters.orientationFilter)
+
+        XCTAssertFalse(photos.isEmpty)
     }
 
     func testCollectionsByUser() async throws {
@@ -150,9 +154,11 @@ final class UNClientTests: XCTestCase {
         let client = UNClient(queryManager: queryManager)
 
         // None of the parameters are relevant for this test
-        let _ = try await client.collections(byUsername: parameters.username,
-                                             pageNumber: parameters.pageNumber!,
-                                             collectionsPerPage: parameters.collectionsPerPage!)
+        let collections = try await client.collections(byUsername: parameters.username,
+                                                       pageNumber: parameters.pageNumber!,
+                                                       collectionsPerPage: parameters.collectionsPerPage!)
+
+        XCTAssertFalse(collections.isEmpty)
     }
 
     func testStatisticsByUser() async throws {
@@ -179,11 +185,11 @@ final class UNClientTests: XCTestCase {
 
     // MARK: - Photos
 
-    func testListingPhotos() async throws {
+    func testListingEditorialPhotos() async throws {
         let endpoint = Endpoint.editorialPhotosList
         let parameters = UNPhotoListParameters(pageNumber: 2,
                                                photosPerPage: 4,
-                                               sortOrder: .latest)
+                                               sorting: .latest)
         let queryManager = QueryManager.mock(data: DemoData.standardPhotoListResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
                                                                        parameters: parameters),
@@ -196,9 +202,9 @@ final class UNClientTests: XCTestCase {
         let client = UNClient(queryManager: queryManager)
 
         // None of the parameters are relevant for this test
-        let photos = try await client.editorialPhotosList(page: parameters.pageNumber,
-                                                          photosPerPage: parameters.photosPerPage,
-                                                          sortingBy: parameters.sortOrder)
+        let photos = try await client.editorialPhotosList(pageNumber: parameters.pageNumber!,
+                                                          photosPerPage: parameters.photosPerPage!,
+                                                          sortingBy: parameters.sorting!)
         XCTAssertFalse(photos.isEmpty)
     }
 

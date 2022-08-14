@@ -35,9 +35,13 @@ final class URLSessionExtensionsTests: XCTestCase {
         let credentials = UNCredentials(accessKey: "123", secret: "789")
         let headers: [UNAPI.Header] = [UNAPI.Header.acceptVersion,
                                        UNAPI.Header.authorization(accessKey: credentials.accessKey)]
+        // The parameters chosen are a sample of typical parameters. The test will make sure
+        // the URLSession extension is converting the parameters into a correct URL format.
+        // Tests for each parameter type are tested independently in their own tests.
         let parameters = UNPhotoListParameters(pageNumber: 1,
                                                photosPerPage: 10,
-                                               sortOrder: .popular)
+                                               sorting: .popular)
+        // Make sure all endpoint's `path` generate a valid URL.
         let endpoints: [Endpoint] = [.userPublicProfile(username: id),
                                      .userPortfolioLink(username: id),
                                      .userPhotos(username: id),
@@ -88,8 +92,8 @@ final class URLSessionExtensionsTests: XCTestCase {
 
     func expectedURL(withEndpoint endpoint: Endpoint, parameters: UNPhotoListParameters) -> URL? {
         URL(string: UNAPI.scheme + "://" + UNAPI.location + endpoint.path + "?" +
-                UNPhotoListParameters.QueryParameterName.pageNumberName + "=\(parameters.pageNumber)&" +
-                UNPhotoListParameters.QueryParameterName.photosPerPageName + "=\(parameters.photosPerPage)&" +
-                UNPhotoListParameters.QueryParameterName.sortOrderName + "=\(parameters.sortOrder)")
+                UNPhotoListParameters.QueryParameterName.pageNumber + "=\(parameters.pageNumber!)&" +
+                UNPhotoListParameters.QueryParameterName.photosPerPage + "=\(parameters.photosPerPage!)&" +
+                UNPhotoListParameters.QueryParameterName.sorting + "=\(parameters.sorting!)")
     }
 }
