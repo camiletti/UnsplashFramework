@@ -98,6 +98,16 @@ class QueryManager {
                               parameters: nil)
     }
 
+    /// Retrieve a single random photo, given optional filters.
+    ///
+    /// - Parameters:
+    ///   - parameters: The parameters.
+    func randomPhotos(with parameters: UNRandomPhotoParameters) async throws -> [UNFullPhoto] {
+        try await api.request(.get,
+                              endpoint: .randomPhoto,
+                              parameters: parameters)
+    }
+
     /// Makes a query to Unsplash.
     ///
     /// - Parameters:

@@ -21,22 +21,9 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-@testable import UnsplashFramework
-import XCTest
+import Foundation
 
-final class UNFullPhotoTests: XCTestCase {
-
-    func testDecoding() throws {
-        let jsonData = DemoData.standardPhotoAResponse
-        let decoder = JSONDecoder.unsplashDecoder
-        let photo = try decoder.decode(UNFullPhoto.self, from: jsonData)
-
-        XCTAssertNotNil(photo.cameraDetails)
-        XCTAssertNotNil(photo.location)
-        XCTAssertTrue(photo.isPublicDomain!)
-        XCTAssertEqual(photo.topics!.count, 8)
-        XCTAssertEqual(photo.relatedCollections!.count, 3)
-        XCTAssertEqual(photo.numberOfViews, 2184)
-        XCTAssertEqual(photo.numberOfDownloads, 25)
-    }
+public enum UNContentSafetyFilter: String {
+    case low
+    case high
 }

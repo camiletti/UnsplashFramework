@@ -30,7 +30,7 @@ The plan is to achieve feature parity with Unsplash REST API
 ### Photos
 - [x] List editorial photos
 - [x] Get a photo
-- [ ] Get a random photo
+- [x] Get a random photo
 - [ ] Get a photo’s statistics
 - [ ] Track a photo download
 - [ ] Update a photo

@@ -101,8 +101,20 @@ enum DemoData {
         dataFromJSONFile(named: "PhotoB")
     }
 
-    static var validMultiplePhotosArray: [UNPhoto] {
-        try! JSONDecoder().decode([UNPhoto].self, from: standardPhotoListResponse)
+    /// Returns a sample of random photos when using the
+    /// search query parameter in the request.
+    ///
+    /// - Returns: JSON Data of random photos.
+    static var standardRandomPhotosByQueryResponse: Data {
+        dataFromJSONFile(named: "RandomPhotosByQuery")
+    }
+
+    /// Returns a sample of random photos when using
+    /// collection IDs as parameter in the request.
+    ///
+    /// - Returns: JSON Data of random photos.
+    static var standardRandomPhotosWithQueryResponse: Data {
+        dataFromJSONFile(named: "RandomPhotosByCollectionIDs")
     }
 
     // MARK: - Search

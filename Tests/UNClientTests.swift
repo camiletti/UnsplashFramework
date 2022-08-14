@@ -218,6 +218,65 @@ final class UNClientTests: XCTestCase {
         let _ = try await client.photo(withID: photoID)
     }
 
+    func testFetchingRandomPhotoWithSearchQuery() async throws {
+        let endpoint = Endpoint.randomPhoto
+        let parameters = UNRandomPhotoParameters(collectionIDs: [],
+                                                 topicIDs: [],
+                                                 username: "camiletti",
+                                                 searchQuery: "forest",
+                                                 orientationFilter: .landscape,
+                                                 contentFilter: .high,
+                                                 amountOfRandomPhotos: 2)
+        let queryManager = QueryManager.mock(data: DemoData.standardRandomPhotosWithQueryResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
+        let client = UNClient(queryManager: queryManager)
+
+        let photos = try await client.randomPhotos(usingQuery: parameters.searchQuery,
+                                                   fromUsername: parameters.username,
+                                                   oriented: parameters.orientationFilter,
+                                                   safetyLevel: parameters.contentFilter,
+                                                   returningAmount: parameters.amountOfRandomPhotos)
+
+        XCTAssertEqual(photos.count, 2)
+    }
+
+    func testFetchingRandomPhotoWithCollectionsAndTopics() async throws {
+        let endpoint = Endpoint.randomPhoto
+        let parameters = UNRandomPhotoParameters(collectionIDs: ["6820058"],
+                                                 topicIDs: ["A", "B"],
+                                                 username: "camiletti",
+                                                 searchQuery: nil,
+                                                 orientationFilter: .landscape,
+                                                 contentFilter: .high,
+                                                 amountOfRandomPhotos: 2)
+        let queryManager = QueryManager.mock(data: DemoData.standardRandomPhotosWithQueryResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
+        let client = UNClient(queryManager: queryManager)
+
+        let photos = try await client.randomPhotos(fromCollectionWithIDs: parameters.collectionIDs,
+                                                   ofTopicWithIDs: parameters.topicIDs,
+                                                   fromUsername: parameters.username,
+                                                   oriented: parameters.orientationFilter,
+                                                   safetyLevel: parameters.contentFilter,
+                                                   returningAmount: parameters.amountOfRandomPhotos)
+
+        XCTAssertEqual(photos.count, 2)
+    }
+
     // MARK: - Search
 
     func testSearchPhotos() async throws {

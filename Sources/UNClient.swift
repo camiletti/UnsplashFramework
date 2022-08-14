@@ -171,6 +171,56 @@ public final class UNClient {
         try await queryManager.photo(withID: id)
     }
 
+    /// Retrieve random photos, given optional filters.
+    ///
+    /// - Parameters:
+    ///   - collectionIDs: Public collection ID(‘s) to filter selection.
+    ///   - topicIDs: Public topic ID(‘s) to filter selection.
+    ///   - username: Limit selection to a single user.
+    ///   - orientationFilter: Filter by photo orientation.
+    ///   - contentFilter: Limit results by content safety.
+    ///   - amountOfRandomPhotos: The number of photos to return. (max: 30)
+    ///   - Returns: An array of random photos.
+    public func randomPhotos(fromCollectionWithIDs collectionIDs: [String] = [],
+                             ofTopicWithIDs topicIDs: [String] = [],
+                             fromUsername username: String? = nil,
+                             oriented orientationFilter: UNPhotoOrientation? = nil,
+                             safetyLevel contentFilter: UNContentSafetyFilter? = nil,
+                             returningAmount amountOfRandomPhotos: Int = 1) async throws -> [UNFullPhoto] {
+        let parameters = UNRandomPhotoParameters(collectionIDs: collectionIDs,
+                                                 topicIDs: topicIDs,
+                                                 username: username,
+                                                 searchQuery: nil,
+                                                 orientationFilter: orientationFilter,
+                                                 contentFilter: contentFilter,
+                                                 amountOfRandomPhotos: amountOfRandomPhotos)
+        return try await queryManager.randomPhotos(with: parameters)
+    }
+
+    /// Retrieve a single random photos, given optional filters.
+    ///
+    /// - Parameters:
+    ///   - searchQuery: Limit selection to photos matching a search term.
+    ///   - username: Limit selection to a single user.
+    ///   - orientationFilter: Filter by photo orientation.
+    ///   - contentFilter: Limit results by content safety.
+    ///   - amountOfRandomPhotos: The number of photos to return. (max: 30)
+    ///   - Returns: An array of random photos.
+    public func randomPhotos(usingQuery searchQuery: String? = nil,
+                             fromUsername username: String? = nil,
+                             oriented orientationFilter: UNPhotoOrientation? = nil,
+                             safetyLevel contentFilter: UNContentSafetyFilter? = nil,
+                             returningAmount amountOfRandomPhotos: Int = 1) async throws -> [UNFullPhoto] {
+        let parameters = UNRandomPhotoParameters(collectionIDs: [],
+                                                 topicIDs: [],
+                                                 username: username,
+                                                 searchQuery: searchQuery,
+                                                 orientationFilter: orientationFilter,
+                                                 contentFilter: contentFilter,
+                                                 amountOfRandomPhotos: amountOfRandomPhotos)
+        return try await queryManager.randomPhotos(with: parameters)
+    }
+
     // MARK: - Search
 
     /// Get a single page of photo results for a query.

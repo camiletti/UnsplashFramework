@@ -50,13 +50,13 @@ public class UNFullPhoto: UNPhoto {
     public let location: UNLocation?
 
     /// Whether the photo is of public domain
-    public let isPublicDomain: Bool
+    public let isPublicDomain: Bool?
 
     /// The topics that the photos is about.
-    public let topics: [UNTopic]
+    public let topics: [UNTopic]?
 
     /// Suggested collections that are related to the photo
-    public let relatedCollections: [UNCollection]
+    public let relatedCollections: [UNCollection]?
 
     /// The total amount of times the photo was viewed
     public let numberOfViews: Int
@@ -75,13 +75,13 @@ public class UNFullPhoto: UNPhoto {
 
         cameraDetails = try? container.decode(UNCameraDetails.self, forKey: .cameraDetails)
         location  = try? container.decode(UNLocation.self, forKey: .location)
-        isPublicDomain = try container.decode(Bool.self, forKey: .isPublicDomain)
-        topics = try container.decode([UNTopic].self, forKey: .topics)
+        isPublicDomain = try? container.decode(Bool.self, forKey: .isPublicDomain)
+        topics = try? container.decode([UNTopic].self, forKey: .topics)
         numberOfViews = try container.decode(Int.self, forKey: .numberOfViews)
         numberOfDownloads = try container.decode(Int.self, forKey: .numberOfDownloads)
 
-        let relatedCollectionsContainer = try container.nestedContainer(keyedBy: RelatedCollectionsCodingKeys.self, forKey: .relatedCollections)
-        relatedCollections = try relatedCollectionsContainer.decode([UNCollection].self, forKey: .results)
+        let relatedCollectionsContainer = try? container.nestedContainer(keyedBy: RelatedCollectionsCodingKeys.self, forKey: .relatedCollections)
+        relatedCollections = try? relatedCollectionsContainer?.decode([UNCollection].self, forKey: .results)
 
         try super.init(from: decoder)
     }
