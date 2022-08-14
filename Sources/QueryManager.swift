@@ -89,6 +89,15 @@ class QueryManager {
                               parameters: parameters)
     }
 
+    /// Retrieve a single photo.
+    /// - Parameter id: The photo’s ID.
+    /// - Returns: A single photo with all its information given its ID.
+    func photo(withID id: String) async throws -> UNFullPhoto {
+        try await api.request(.get,
+                              endpoint: .photo(id: id),
+                              parameters: nil)
+    }
+
     /// Makes a query to Unsplash.
     ///
     /// - Parameters:

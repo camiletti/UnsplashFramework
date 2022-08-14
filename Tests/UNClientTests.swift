@@ -53,7 +53,6 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
-        // None of the parameters are relevant for this test
         let _ = try await client.publicProfile(forUsername: username)
     }
 
@@ -72,7 +71,6 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
-        // None of the parameters are relevant for this test
         let _ = try await client.portfolioLink(forUsername: username)
     }
 
@@ -97,7 +95,6 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
-        // None of the parameters are relevant for this test
         let photos = try await client.photos(fromUsername: parameters.username,
                                         pageNumber: parameters.pageNumber!,
                                         photosPerPage: parameters.photosPerPage!,
@@ -127,7 +124,6 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
-        // None of the parameters are relevant for this test
         let photos = try await client.photosLiked(byUsername: parameters.username,
                                                   pageNumber: parameters.pageNumber!,
                                                   photosPerPage: parameters.photosPerPage!,
@@ -153,7 +149,6 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
-        // None of the parameters are relevant for this test
         let collections = try await client.collections(byUsername: parameters.username,
                                                        pageNumber: parameters.pageNumber!,
                                                        collectionsPerPage: parameters.collectionsPerPage!)
@@ -177,7 +172,6 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
-        // None of the parameters are relevant for this test
         let _ = try await client.statistics(forUsername: parameters.username,
                                             interval: parameters.interval!,
                                             quantity: parameters.quantity!)
@@ -201,11 +195,27 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
-        // None of the parameters are relevant for this test
         let photos = try await client.editorialPhotosList(pageNumber: parameters.pageNumber!,
                                                           photosPerPage: parameters.photosPerPage!,
                                                           sortingBy: parameters.sorting!)
         XCTAssertFalse(photos.isEmpty)
+    }
+
+    func testFetchingAPhoto() async throws {
+        let photoID = "123"
+        let endpoint = Endpoint.photo(id: photoID)
+        let queryManager = QueryManager.mock(data: DemoData.standardPhotoAResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: nil),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: nil)
+        let client = UNClient(queryManager: queryManager)
+
+        let _ = try await client.photo(withID: photoID)
     }
 
     // MARK: - Search
@@ -228,7 +238,6 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
-        // None of the parameters are relevant for this test
         let photosSearchResult = try await client.searchPhotos(query: parameters.query,
                                                                page: parameters.pageNumber,
                                                                photosPerPage: parameters.photosPerPage,
@@ -253,7 +262,6 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
-        // None of the parameters are relevant for this test
         let collectionsSearchResult = try await client.searchCollections(query: parameters.query,
                                                                          page: parameters.pageNumber,
                                                                          collectionsPerPage: parameters.collectionsPerPage)
@@ -277,7 +285,6 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
-        // None of the parameters are relevant for this test
         let usersSearchResult = try await client.searchUsers(query: parameters.query,
                                                              page: parameters.pageNumber,
                                                              usersPerPage: parameters.usersPerPage)

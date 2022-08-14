@@ -71,12 +71,12 @@ public class UNBasicPhoto: Decodable, Identifiable {
     /// - Parameter decoder: Swift's decoder.
     /// - Throws: If a value that is non-optional is missing the function will throw.
     public required init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
+        let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        id = try values.decode(String.self, forKey: .id)
-        creationDate = try? values.decode(Date.self, forKey: .creationDate)
-        updateDate = try? values.decode(Date.self, forKey: .updateDate)
-        blurHash = try values.decode(String.self, forKey: .blurHash)
-        imageURLs = try values.decode(UNPhotoImageURLs.self, forKey: .imageLinks)
+        id = try container.decode(String.self, forKey: .id)
+        creationDate = try? container.decode(Date.self, forKey: .creationDate)
+        updateDate = try? container.decode(Date.self, forKey: .updateDate)
+        blurHash = try container.decode(String.self, forKey: .blurHash)
+        imageURLs = try container.decode(UNPhotoImageURLs.self, forKey: .imageLinks)
     }
 }

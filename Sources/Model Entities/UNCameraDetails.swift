@@ -21,30 +21,42 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-@testable import UnsplashFramework
-import XCTest
+import Foundation
 
-final class UNCollectionTests: XCTestCase {
+public struct UNCameraDetails: Codable {
 
-    func testDecoding() throws {
-        let jsonData = DemoData.standardCollectionAResponse
-        let decoder = JSONDecoder.unsplashDecoder
-        let collection = try decoder.decode(UNCollection.self, from: jsonData)
+    // MARK: - Declarations
 
-        XCTAssertEqual(collection.id, "6820058")
-        XCTAssertEqual(collection.title, "Jungle")
-        XCTAssertEqual(collection.description, "Images about jungles")
-        XCTAssertNotNil(collection.publishedDate)
-        XCTAssertNotNil(collection.lastCollectedDate)
-        XCTAssertNotNil(collection.updatedDate)
-        XCTAssertTrue(collection.isCurated)
-        XCTAssertTrue(collection.wasFeatured)
-        XCTAssertTrue(collection.isPrivate)
-        XCTAssertEqual(collection.totalAmountOfPhotos, 13)
-        XCTAssertEqual(collection.shareKey, "09491bebece24560a48da4773e7fa2e2")
-        XCTAssertEqual(collection.topics.count, 6)
-        XCTAssertNotNil(collection.user)
-        XCTAssertNotNil(collection.coverPhoto)
-        XCTAssertEqual(collection.previewPhotos.count, 4)
+    enum CodingKeys: String, CodingKey {
+        case brand = "make"
+        case model
+        case formattedName = "name"
+        case exposureTime = "exposure_time"
+        case aperture
+        case focalLength = "focal_length"
+        case iso
     }
+
+    // MARK: - Properties
+
+    /// The brand of the camera
+    public let brand: String
+
+    /// The model of the camera
+    public let model: String
+
+    /// Formatted (full) name of the brand plus model
+    public let formattedName: String
+
+    /// The time exposure used to take the photo
+    public let exposureTime: String
+
+    /// The lens aperture used to take the photo
+    public let aperture: String
+
+    /// The focal length used to take the photo
+    public let focalLength: String
+
+    /// The iso used to take the photo
+    public let iso: Int
 }

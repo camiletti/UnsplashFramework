@@ -21,30 +21,30 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-@testable import UnsplashFramework
-import XCTest
+import CoreLocation
 
-final class UNCollectionTests: XCTestCase {
+extension CLLocationCoordinate2D: Codable {
 
-    func testDecoding() throws {
-        let jsonData = DemoData.standardCollectionAResponse
-        let decoder = JSONDecoder.unsplashDecoder
-        let collection = try decoder.decode(UNCollection.self, from: jsonData)
+    // MARK: - Declarations
 
-        XCTAssertEqual(collection.id, "6820058")
-        XCTAssertEqual(collection.title, "Jungle")
-        XCTAssertEqual(collection.description, "Images about jungles")
-        XCTAssertNotNil(collection.publishedDate)
-        XCTAssertNotNil(collection.lastCollectedDate)
-        XCTAssertNotNil(collection.updatedDate)
-        XCTAssertTrue(collection.isCurated)
-        XCTAssertTrue(collection.wasFeatured)
-        XCTAssertTrue(collection.isPrivate)
-        XCTAssertEqual(collection.totalAmountOfPhotos, 13)
-        XCTAssertEqual(collection.shareKey, "09491bebece24560a48da4773e7fa2e2")
-        XCTAssertEqual(collection.topics.count, 6)
-        XCTAssertNotNil(collection.user)
-        XCTAssertNotNil(collection.coverPhoto)
-        XCTAssertEqual(collection.previewPhotos.count, 4)
+    private enum CodingKeys: String, CodingKey {
+        case latitude
+        case longitude
+    }
+
+    // MARK: - Life Cycle
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let latitude = try container.decode(CGFloat.self, forKey: .latitude)
+        let longitude = try container.decode(CGFloat.self, forKey: .longitude)
+        self = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(latitude, forKey: .latitude)
+        try container.encode(longitude, forKey: .longitude)
     }
 }

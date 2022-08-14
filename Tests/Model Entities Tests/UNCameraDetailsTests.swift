@@ -24,27 +24,19 @@
 @testable import UnsplashFramework
 import XCTest
 
-final class UNCollectionTests: XCTestCase {
+final class UNCameraDetailsTests: XCTestCase {
 
     func testDecoding() throws {
-        let jsonData = DemoData.standardCollectionAResponse
+        let jsonData = DemoData.standardCameraDetails
         let decoder = JSONDecoder.unsplashDecoder
-        let collection = try decoder.decode(UNCollection.self, from: jsonData)
+        let cameraDetails = try decoder.decode(UNCameraDetails.self, from: jsonData)
 
-        XCTAssertEqual(collection.id, "6820058")
-        XCTAssertEqual(collection.title, "Jungle")
-        XCTAssertEqual(collection.description, "Images about jungles")
-        XCTAssertNotNil(collection.publishedDate)
-        XCTAssertNotNil(collection.lastCollectedDate)
-        XCTAssertNotNil(collection.updatedDate)
-        XCTAssertTrue(collection.isCurated)
-        XCTAssertTrue(collection.wasFeatured)
-        XCTAssertTrue(collection.isPrivate)
-        XCTAssertEqual(collection.totalAmountOfPhotos, 13)
-        XCTAssertEqual(collection.shareKey, "09491bebece24560a48da4773e7fa2e2")
-        XCTAssertEqual(collection.topics.count, 6)
-        XCTAssertNotNil(collection.user)
-        XCTAssertNotNil(collection.coverPhoto)
-        XCTAssertEqual(collection.previewPhotos.count, 4)
+        XCTAssertEqual(cameraDetails.brand, "SONY")
+        XCTAssertEqual(cameraDetails.model, "ILCE-5000")
+        XCTAssertEqual(cameraDetails.formattedName, "SONY, ILCE-5000")
+        XCTAssertEqual(cameraDetails.exposureTime, "1/250")
+        XCTAssertEqual(cameraDetails.aperture, "3.5")
+        XCTAssertEqual(cameraDetails.focalLength, "16.0")
+        XCTAssertEqual(cameraDetails.iso, 100)
     }
 }

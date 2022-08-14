@@ -24,27 +24,16 @@
 @testable import UnsplashFramework
 import XCTest
 
-final class UNCollectionTests: XCTestCase {
+final class UNLocationTests: XCTestCase {
 
     func testDecoding() throws {
-        let jsonData = DemoData.standardCollectionAResponse
+        let jsonData = DemoData.standardLocation
         let decoder = JSONDecoder.unsplashDecoder
-        let collection = try decoder.decode(UNCollection.self, from: jsonData)
+        let location = try decoder.decode(UNLocation.self, from: jsonData)
 
-        XCTAssertEqual(collection.id, "6820058")
-        XCTAssertEqual(collection.title, "Jungle")
-        XCTAssertEqual(collection.description, "Images about jungles")
-        XCTAssertNotNil(collection.publishedDate)
-        XCTAssertNotNil(collection.lastCollectedDate)
-        XCTAssertNotNil(collection.updatedDate)
-        XCTAssertTrue(collection.isCurated)
-        XCTAssertTrue(collection.wasFeatured)
-        XCTAssertTrue(collection.isPrivate)
-        XCTAssertEqual(collection.totalAmountOfPhotos, 13)
-        XCTAssertEqual(collection.shareKey, "09491bebece24560a48da4773e7fa2e2")
-        XCTAssertEqual(collection.topics.count, 6)
-        XCTAssertNotNil(collection.user)
-        XCTAssertNotNil(collection.coverPhoto)
-        XCTAssertEqual(collection.previewPhotos.count, 4)
+        XCTAssertEqual(location.title, "New York, United States")
+        XCTAssertEqual(location.name, "New York, United States")
+        XCTAssertEqual(location.city, "New York")
+        XCTAssertEqual(location.country, "United States")
     }
 }

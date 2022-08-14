@@ -95,7 +95,7 @@
    "meta":{
       "index":false
    },
-   "public_domain":false,
+   "public_domain":true,
    "tags":[
       {
          "type":"landing_page",

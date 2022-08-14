@@ -164,6 +164,13 @@ public final class UNClient {
         return try await queryManager.editorialPhotosList(with: parameters)
     }
 
+    /// Retrieve a single photo.
+    /// - Parameter id: The photo’s ID.
+    /// - Returns: A single photo by the given ID.
+    public func photo(withID id: String) async throws -> UNFullPhoto {
+        try await queryManager.photo(withID: id)
+    }
+
     // MARK: - Search
 
     /// Get a single page of photo results for a query.

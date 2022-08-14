@@ -144,18 +144,41 @@ enum DemoData {
         dataFromJSONFile(named: "CollectionB")
     }
 
-    // MARK: - Decoded entities
+    // MARK: - General purpose models
 
-    static var photoA: UNPhoto {
-        let jsonData = DemoData.standardPhotoAResponse
-        let decoder = JSONDecoder.unsplashDecoder
-        return try! decoder.decode(UNPhoto.self, from: jsonData)
+    /// Returns a sample of a CLLocationCoordinates2D.
+    ///
+    /// - Returns: JSON Data of a CLLocationCoordinates2D.
+    static var standardCLCoordinates2D: Data {
+        dataFromJSONFile(named: "CLLocationCoordinates2D")
     }
 
-    static var photoB: UNPhoto {
+    /// Returns a sample of a location.
+    ///
+    /// - Returns: JSON Data of a location.
+    static var standardLocation: Data {
+        dataFromJSONFile(named: "Location")
+    }
+
+    /// Returns a sample of a camera details.
+    ///
+    /// - Returns: JSON Data of a camera details.
+    static var standardCameraDetails: Data {
+        dataFromJSONFile(named: "CameraDetails")
+    }
+
+    // MARK: - Decoded entities
+
+    static var photoA: UNFullPhoto {
+        let jsonData = DemoData.standardPhotoAResponse
+        let decoder = JSONDecoder.unsplashDecoder
+        return try! decoder.decode(UNFullPhoto.self, from: jsonData)
+    }
+
+    static var photoB: UNFullPhoto {
         let jsonData = DemoData.standardPhotoBResponse
         let decoder = JSONDecoder.unsplashDecoder
-        return try! decoder.decode(UNPhoto.self, from: jsonData)
+        return try! decoder.decode(UNFullPhoto.self, from: jsonData)
     }
 
     static var collectionA: UNCollection {

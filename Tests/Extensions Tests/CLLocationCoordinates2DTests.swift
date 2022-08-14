@@ -21,30 +21,18 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+import CoreLocation
 @testable import UnsplashFramework
 import XCTest
 
-final class UNCollectionTests: XCTestCase {
+final class CLLocationCoordinates2DTests: XCTestCase {
 
     func testDecoding() throws {
-        let jsonData = DemoData.standardCollectionAResponse
+        let jsonData = DemoData.standardCLCoordinates2D
         let decoder = JSONDecoder.unsplashDecoder
-        let collection = try decoder.decode(UNCollection.self, from: jsonData)
+        let coordinates = try decoder.decode(CLLocationCoordinate2D.self, from: jsonData)
 
-        XCTAssertEqual(collection.id, "6820058")
-        XCTAssertEqual(collection.title, "Jungle")
-        XCTAssertEqual(collection.description, "Images about jungles")
-        XCTAssertNotNil(collection.publishedDate)
-        XCTAssertNotNil(collection.lastCollectedDate)
-        XCTAssertNotNil(collection.updatedDate)
-        XCTAssertTrue(collection.isCurated)
-        XCTAssertTrue(collection.wasFeatured)
-        XCTAssertTrue(collection.isPrivate)
-        XCTAssertEqual(collection.totalAmountOfPhotos, 13)
-        XCTAssertEqual(collection.shareKey, "09491bebece24560a48da4773e7fa2e2")
-        XCTAssertEqual(collection.topics.count, 6)
-        XCTAssertNotNil(collection.user)
-        XCTAssertNotNil(collection.coverPhoto)
-        XCTAssertEqual(collection.previewPhotos.count, 4)
+        XCTAssertEqual(coordinates.latitude, 40.7127753)
+        XCTAssertEqual(coordinates.longitude, -74.0059728)
     }
 }

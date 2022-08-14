@@ -28,7 +28,7 @@ public class UNPhoto: UNBasicPhoto {
 
     // MARK: - Declarations
 
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case promotedDate = "promoted_at"
         case width
         case height
@@ -129,21 +129,21 @@ public class UNPhoto: UNBasicPhoto {
     /// - Parameter decoder: Swift's decoder.
     /// - Throws: If a value that is non-optional is missing the function will throw.
     public required init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
+        let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        promotedDate = try? values.decode(Date.self, forKey: .promotedDate)
-        width  = try values.decode(Int.self, forKey: .width)
-        height = try values.decode(Int.self, forKey: .height)
-        hexColor = try values.decode(String.self, forKey: .hexColor)
-        description = try? values.decode(String.self, forKey: .description)
-        altDescription = try? values.decode(String.self, forKey: .altDescription)
-        numberOfLikes = try values.decode(Int.self, forKey: .numberOfLikes)
-        isLikedByUser = try values.decode(Bool.self, forKey: .isLikedByUser)
-        user = try values.decode(UNUser.self, forKey: .user)
-        collections = (try? values.decode([UNCollection].self, forKey: .collections)) ?? [UNCollection]()
-        categories = (try? values.decode([UNCategory].self, forKey: .categories)) ?? [UNCategory]()
-        statistics = try? values.decode(UNPhotoStatistics.self, forKey: .statistics)
-        apiLocations = try values.decode(UNPhotoAPILocations.self, forKey: .apiLocations)
+        promotedDate = try? container.decode(Date.self, forKey: .promotedDate)
+        width  = try container.decode(Int.self, forKey: .width)
+        height = try container.decode(Int.self, forKey: .height)
+        hexColor = try container.decode(String.self, forKey: .hexColor)
+        description = try? container.decode(String.self, forKey: .description)
+        altDescription = try? container.decode(String.self, forKey: .altDescription)
+        numberOfLikes = try container.decode(Int.self, forKey: .numberOfLikes)
+        isLikedByUser = try container.decode(Bool.self, forKey: .isLikedByUser)
+        user = try container.decode(UNUser.self, forKey: .user)
+        collections = (try? container.decode([UNCollection].self, forKey: .collections)) ?? [UNCollection]()
+        categories = (try? container.decode([UNCategory].self, forKey: .categories)) ?? [UNCategory]()
+        statistics = try? container.decode(UNPhotoStatistics.self, forKey: .statistics)
+        apiLocations = try container.decode(UNPhotoAPILocations.self, forKey: .apiLocations)
 
         try super.init(from: decoder)
     }
