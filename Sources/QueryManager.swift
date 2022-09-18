@@ -116,6 +116,12 @@ class QueryManager {
                               parameters: parameters)
     }
 
+    func likePhoto(withID photoID: String) async throws -> UNPhoto {
+        try await api.request(.post,
+                              endpoint: .likePhoto(id: photoID),
+                              parameters: nil)
+    }
+
     /// Makes a query to Unsplash.
     ///
     /// - Parameters:

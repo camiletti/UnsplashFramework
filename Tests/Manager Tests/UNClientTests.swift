@@ -347,6 +347,25 @@ final class UNClientTests: XCTestCase {
         XCTAssertNotNil(url)
     }
 
+    func testLikingAPhoto() async throws {
+        let photoID = "123"
+        let endpoint = Endpoint.likePhoto(id: photoID)
+        let queryManager = QueryManager.mock(data: DemoData.standardPhotoAResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: nil),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .post,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: nil)
+        let client = UNClient(queryManager: queryManager)
+
+        let url = try await client.likePhoto(withID: photoID)
+
+        XCTAssertNotNil(url)
+    }
+
     // MARK: - Search
 
     func testSearchPhotos() async throws {

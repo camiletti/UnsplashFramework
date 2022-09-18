@@ -276,6 +276,16 @@ public final class UNClient {
         return try await queryManager.updatePhotoInfo(forPhotoWithID: photoID, with: parameters)
     }
 
+    /// Like a photo on behalf of the logged-in user. This requires the write_likes scope.
+    ///
+    /// This action is idempotent; liking an already liked photo has no additional effect.
+    ///
+    /// - Parameter id: The photo’s ID.
+    /// - Returns: The liked photo.
+    public func likePhoto(withID id: String) async throws -> UNPhoto {
+        try await queryManager.likePhoto(withID: id)
+    }
+
     // MARK: - Search
 
     /// Get a single page of photo results for a query.
