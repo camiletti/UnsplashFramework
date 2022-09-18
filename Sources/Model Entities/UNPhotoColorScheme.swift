@@ -23,7 +23,16 @@
 
 import Foundation
 
-public enum UNContentSafetyFilter: String, Codable {
-    case low
-    case high
+public enum UNPhotoColorScheme: String, Codable {
+    case black
+    case blackAndWhite = "black_and_white"
+    case blue
+    case green
+    case red
+    case magenta
+    case orange
+    case purple
+    case teal
+    case white
+    case yellow
 }

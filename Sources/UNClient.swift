@@ -302,23 +302,33 @@ public final class UNClient {
     ///
     /// - Parameters:
     ///   - query: Search terms.
-    ///   - page: Page number to retrieve.
+    ///   - pageNumber: Page number to retrieve.
     ///   - photosPerPage: Number of items per page.
-    ///   - collections: Collection ID(‘s) to narrow search.
+    ///   - order: How to sort the photos.
+    ///   - collectionIDS: Collection ID(‘s) to narrow search.
+    ///   - safetyLevel: Limit results by content safety.
+    ///   - colorScheme: Filter results by color.
     ///   - orientation: Filter search results by photo orientation.
+    /// - Returns: The search result containing the photos that met the specified criteria.
     public func searchPhotos(query: String,
-                             page: Int,
-                             photosPerPage: Int,
-                             collections: [UNCollection]? = nil,
+                             pageNumber: Int = 1,
+                             photosPerPage: Int = 10,
+                             orderedBy order: UNOrder = .relevance,
+                             containedInCollectionsWithIDs collectionIDS: [String] = [],
+                             safetyLevel: UNContentSafetyFilter? = .low,
+                             colorScheme: UNPhotoColorScheme? = nil,
                              orientation: UNPhotoOrientation? = nil) async throws -> UNSearchResult<UNPhoto> {
         let parameters = UNPhotoSearchParameters(query: query,
-                                                 pageNumber: page,
+                                                 pageNumber: pageNumber,
                                                  photosPerPage: photosPerPage,
-                                                 collections: collections,
+                                                 order: order,
+                                                 collectionsIDs: collectionIDS,
+                                                 safetyLevel: safetyLevel,
+                                                 colorScheme: colorScheme,
                                                  orientation: orientation)
 
-        return try await search(.photo,
-                                with: parameters)
+        return try await queryManager.search(.photo,
+                                             with: parameters)
     }
 
     /// Get a single page of collections results for a query.
@@ -333,8 +343,8 @@ public final class UNClient {
         let parameters = UNCollectionSearchParameters(query: query,
                                                       pageNumber: page,
                                                       collectionsPerPage: collectionsPerPage)
-        return try await search(.collection,
-                                with: parameters)
+        return try await queryManager.search(.collection,
+                                             with: parameters)
     }
 
     /// Get a single page of users results for a query.
@@ -351,19 +361,7 @@ public final class UNClient {
                                                 pageNumber: page,
                                                 usersPerPage: usersPerPage)
 
-        return try await search(.user,
-                                with: parameters)
-    }
-
-    /// Makes a search according to the specified parameters.
-    ///
-    /// - Parameters:
-    ///   - searchType: The type of search to perform.
-    ///   - parameters: Parameters to filter the search.
-    ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
-    func search<T>(_ searchType: SearchType,
-                   with parameters: ParametersURLRepresentable) async throws -> UNSearchResult<T> {
-        try await queryManager.search(searchType,
-                                      with: parameters)
+        return try await queryManager.search(.user,
+                                             with: parameters)
     }
 }

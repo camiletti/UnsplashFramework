@@ -31,32 +31,47 @@ struct UNPhotoSearchParameters {
 
     enum QueryParameterName {
         /// The requested query parameter's name.
-        static let queryName = "query"
+        static let query = "query"
         /// The requested page parameter's name.
-        static let pageNumberName = "page"
+        static let pageNumber = "page"
         /// Amount of photos per page parameter's name.
-        static let photosPerPageName = "per_page"
+        static let photosPerPage = "per_page"
+        /// How to sort the photos.
+        static let order = "order_by"
         /// Collections to narrow search parameter's name.
-        static let collectionIDsName = "collections"
-        /// Orientation of the desired photo parameter's name.
-        static let orientationName = "orientation"
+        static let collectionIDs = "collections"
+        /// Limit results by content safety.
+        static let safetyLevel = "content_filter"
+        /// Filter results by color.
+        static let colorScheme = "color"
+        /// Filter by photo orientation.
+        static let orientation = "orientation"
     }
 
     // MARK: - Life Cycle
 
-    /// Words that describe the photos to be searched.
+    /// Search terms.
     let query: String
 
-    /// The requested page.
-    let pageNumber: Int
+    /// Page number to retrieve. (Optional; default: 1)
+    let pageNumber: Int?
 
-    /// The desired amount of photos per page.
-    let photosPerPage: Int
+    /// Number of items per page. (Optional; default: 10)
+    let photosPerPage: Int?
 
-    /// Collections to narrow search.
-    let collections: [UNCollection]?
+    /// How to sort the photos. (Optional; default: relevant)
+    let order: UNOrder?
 
-    /// Orientation of the desired photo.
+    /// Collection ID(‘s) to narrow search. Optional.
+    let collectionsIDs: [String]
+
+    /// Limit results by content safety. (Optional; default: low).
+    let safetyLevel: UNContentSafetyFilter?
+
+    /// Filter results by color. Optional.
+    let colorScheme: UNPhotoColorScheme?
+
+    /// Filter by photo orientation. Optional.
     let orientation: UNPhotoOrientation?
 }
 
@@ -64,30 +79,44 @@ struct UNPhotoSearchParameters {
 extension UNPhotoSearchParameters: ParametersURLRepresentable {
 
     func asQueryItems() -> [URLQueryItem] {
-        var items = [URLQueryItem(name: QueryParameterName.queryName,
-                                  value: "\(self.query)"),
-                     URLQueryItem(name: QueryParameterName.pageNumberName,
-                                  value: "\(self.pageNumber)"),
-                     URLQueryItem(name: QueryParameterName.photosPerPageName,
-                                  value: "\(self.photosPerPage)")
-        ]
+        var queryItems = [URLQueryItem(name: QueryParameterName.query,
+                                       value: "\(self.query)")]
 
-        // In case specific collections were specified
-        if let collections = collections,
-           !collections.isEmpty {
-            let commaSeparatedIDs = collections.map({ "\($0.id)" }).joined(separator: ",")
-            let collectionsItem = URLQueryItem(name: QueryParameterName.collectionIDsName,
-                                               value: commaSeparatedIDs)
-            items.append(collectionsItem)
+        if let pageNumber {
+            queryItems.append(URLQueryItem(name: QueryParameterName.pageNumber,
+                                           value: "\(pageNumber)"))
         }
 
-        // In case a particular orientation was specified
-        if let orientation = self.orientation {
-            let orientationItem = URLQueryItem(name: QueryParameterName.orientationName,
-                                               value: orientation.rawValue)
-            items.append(orientationItem)
+        if let photosPerPage {
+            queryItems.append(URLQueryItem(name: QueryParameterName.photosPerPage,
+                                           value: "\(photosPerPage)"))
         }
 
-        return items
+        if let order {
+            queryItems.append(URLQueryItem(name: QueryParameterName.order,
+                                           value: order.rawValue))
+        }
+
+        if !collectionsIDs.isEmpty {
+            queryItems.append(URLQueryItem(name: QueryParameterName.collectionIDs,
+                                           value: collectionsIDs.joined(separator: ",")))
+        }
+
+        if let safetyLevel {
+            queryItems.append(URLQueryItem(name: QueryParameterName.safetyLevel,
+                                           value: safetyLevel.rawValue))
+        }
+
+        if let colorScheme {
+            queryItems.append(URLQueryItem(name: QueryParameterName.colorScheme,
+                                           value: colorScheme.rawValue))
+        }
+
+        if let orientation {
+            queryItems.append(URLQueryItem(name: QueryParameterName.orientation,
+                                           value: orientation.rawValue))
+        }
+
+        return queryItems
     }
 }

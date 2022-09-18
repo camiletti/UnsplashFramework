@@ -80,6 +80,7 @@ class QueryManager {
     }
 
     // MARK: - Photos
+
     func editorialPhotosList(with parameters: UNPhotoListParameters) async throws -> [UNPhoto] {
         try await api.request(.get,
                               endpoint: .editorialPhotosList,
@@ -128,11 +129,8 @@ class QueryManager {
                               parameters: nil)
     }
 
-    /// Makes a query to Unsplash.
-    ///
-    /// - Parameters:
-    ///   - searchType: The type of search to perform.
-    ///   - parameters: Parameters to narrow the search.
+    // MARK: - Search
+
     func search<T>(_ searchType: SearchType,
                    with parameters: ParametersURLRepresentable)  async throws -> UNSearchResult<T> {
         try await api.request(.get,

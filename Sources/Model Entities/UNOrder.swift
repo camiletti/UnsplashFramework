@@ -23,7 +23,9 @@
 
 import Foundation
 
-public enum UNContentSafetyFilter: String, Codable {
-    case low
-    case high
+public enum UNOrder: String, Codable {
+    /// Ordered by Unsplash's relevance criteria.
+    case relevance
+    /// Ordered by date from the latest to the oldest.
+    case latest
 }

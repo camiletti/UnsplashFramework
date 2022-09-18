@@ -337,14 +337,14 @@ final class UNClientTests: XCTestCase {
 
         let client = UNClient(queryManager: queryManager)
 
-        let url = try await client.updatePhotoInfo(withID: photoID,
-                                                   changingDescription: parameters.description,
-                                                   showsOnProfile: parameters.showsOnProfile,
-                                                   tags: parameters.tags,
-                                                   location: parameters.location,
-                                                   cameraDetails: parameters.cameraDetails)
+        let photo = try await client.updatePhotoInfo(withID: photoID,
+                                                     changingDescription: parameters.description,
+                                                     showsOnProfile: parameters.showsOnProfile,
+                                                     tags: parameters.tags,
+                                                     location: parameters.location,
+                                                     cameraDetails: parameters.cameraDetails)
 
-        XCTAssertNotNil(url)
+        XCTAssertNotNil(photo)
     }
 
     func testLikingAPhoto() async throws {
@@ -361,9 +361,9 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: nil)
         let client = UNClient(queryManager: queryManager)
 
-        let url = try await client.likePhoto(withID: photoID)
+        let photo = try await client.likePhoto(withID: photoID)
 
-        XCTAssertNotNil(url)
+        XCTAssertNotNil(photo)
     }
 
     func testUnlikingAPhoto() async throws {
@@ -380,9 +380,9 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: nil)
         let client = UNClient(queryManager: queryManager)
 
-        let url = try await client.unlikePhoto(withID: photoID)
+        let photo = try await client.unlikePhoto(withID: photoID)
 
-        XCTAssertNotNil(url)
+        XCTAssertNotNil(photo)
     }
 
     // MARK: - Search
@@ -392,7 +392,10 @@ final class UNClientTests: XCTestCase {
         let parameters = UNPhotoSearchParameters(query: "camiletti",
                                                  pageNumber: 2,
                                                  photosPerPage: 4,
-                                                 collections: [],
+                                                 order: .latest,
+                                                 collectionsIDs: [],
+                                                 safetyLevel: .high,
+                                                 colorScheme: .blackAndWhite,
                                                  orientation: .landscape)
         let queryManager = QueryManager.mock(data: DemoData.standardPhotoSearchResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
@@ -406,10 +409,14 @@ final class UNClientTests: XCTestCase {
         let client = UNClient(queryManager: queryManager)
 
         let photosSearchResult = try await client.searchPhotos(query: parameters.query,
-                                                               page: parameters.pageNumber,
-                                                               photosPerPage: parameters.photosPerPage,
-                                                               collections: parameters.collections,
-                                                               orientation: parameters.orientation)
+                                                               pageNumber: parameters.pageNumber!,
+                                                               photosPerPage: parameters.photosPerPage!,
+                                                               orderedBy: parameters.order!,
+                                                               containedInCollectionsWithIDs: parameters.collectionsIDs,
+                                                               safetyLevel: parameters.safetyLevel!,
+                                                               colorScheme: parameters.colorScheme!,
+                                                               orientation: parameters.orientation!)
+
         XCTAssertFalse(photosSearchResult.elements.isEmpty)
     }
 

@@ -66,7 +66,7 @@ The plan is to achieve feature parity with Unsplash REST API
 ## Requirement
 
 - iOS 15.0+
-- Swift 5.6+
+- Swift 5.7+
 - Xcode 13.0+
 
 
