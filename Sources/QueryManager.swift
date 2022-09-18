@@ -110,6 +110,12 @@ class QueryManager {
                               parameters: nil)
     }
 
+    func updatePhotoInfo(forPhotoWithID photoID: String, with parameters: UNUpdatePhotoInfoParameters) async throws -> UNPhoto {
+        try await api.request(.put,
+                              endpoint: .photo(id: photoID),
+                              parameters: parameters)
+    }
+
     /// Makes a query to Unsplash.
     ///
     /// - Parameters:

@@ -317,6 +317,36 @@ final class UNClientTests: XCTestCase {
         XCTAssertNotNil(url)
     }
 
+    func testUpdatingPhotoInfo() async throws {
+        let photoID = "123"
+        let endpoint = Endpoint.photo(id: photoID)
+        let parameters = UNUpdatePhotoInfoParameters(description: "A description",
+                                                     showsOnProfile: true,
+                                                     tags: ["Tag A", "Tag B"],
+                                                     location: DemoData.location,
+                                                     cameraDetails: DemoData.cameraDetails)
+        let queryManager = QueryManager.mock(data: DemoData.standardPhotoAResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .put,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
+
+        let client = UNClient(queryManager: queryManager)
+
+        let url = try await client.updatePhotoInfo(withID: photoID,
+                                                   changingDescription: parameters.description,
+                                                   showsOnProfile: parameters.showsOnProfile,
+                                                   tags: parameters.tags,
+                                                   location: parameters.location,
+                                                   cameraDetails: parameters.cameraDetails)
+
+        XCTAssertNotNil(url)
+    }
+
     // MARK: - Search
 
     func testSearchPhotos() async throws {

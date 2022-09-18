@@ -186,6 +186,13 @@ enum DemoData {
         dataFromJSONFile(named: "Location")
     }
 
+    /// Returns a sample of a location with optional values missing.
+    ///
+    /// - Returns: JSON Data of a location.
+    static var locationWithNulls: Data {
+        dataFromJSONFile(named: "LocationWithNulls")
+    }
+
     /// Returns a sample of a camera details.
     ///
     /// - Returns: JSON Data of a camera details.
@@ -217,6 +224,18 @@ enum DemoData {
         let jsonData = DemoData.standardCollectionBResponse
         let decoder = JSONDecoder.unsplashDecoder
         return try! decoder.decode(UNCollection.self, from: jsonData)
+    }
+
+    static var location: UNLocation {
+        let jsonData = DemoData.standardLocation
+        let decoder = JSONDecoder.unsplashDecoder
+        return try! decoder.decode(UNLocation.self, from: jsonData)
+    }
+
+    static var cameraDetails: UNCameraDetails {
+        let jsonData = DemoData.standardCameraDetails
+        let decoder = JSONDecoder.unsplashDecoder
+        return try! decoder.decode(UNCameraDetails.self, from: jsonData)
     }
 
     static var validUser: UNUser {

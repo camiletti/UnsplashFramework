@@ -51,8 +51,8 @@ final class UNUserCollectionsTests: XCTestCase {
         let expectedQueryItemsAmount = 3
 
         let parameters = UNUserCollectionsParameters(username: expectedUsername,
-                                               pageNumber: expectedPageNumber,
-                                               collectionsPerPage: expectedCollectionsPerPage)
+                                                     pageNumber: expectedPageNumber,
+                                                     collectionsPerPage: expectedCollectionsPerPage)
 
         let queryItems = parameters.asQueryItems()
 

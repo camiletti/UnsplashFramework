@@ -35,5 +35,17 @@ final class UNLocationTests: XCTestCase {
         XCTAssertEqual(location.name, "New York, United States")
         XCTAssertEqual(location.city, "New York")
         XCTAssertEqual(location.country, "United States")
+        XCTAssertNotNil(location.coordinates)
+    }
+
+    func testDecodingOptionalProperties() throws {
+        let jsonData = DemoData.locationWithNulls
+        let decoder = JSONDecoder.unsplashDecoder
+        let location = try decoder.decode(UNLocation.self, from: jsonData)
+
+        XCTAssertEqual(location.title, "New York, United States")
+        XCTAssertEqual(location.name, "New York, United States")
+        XCTAssertEqual(location.city, "New York")
+        XCTAssertNil(location.coordinates)
     }
 }

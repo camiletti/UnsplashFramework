@@ -51,9 +51,17 @@ public struct UNLocation: Codable {
     public let country: String
 
     /// The coordinates of the location
-    public let coordinates: CLLocationCoordinate2D
+    public let coordinates: CLLocationCoordinate2D?
 
     // MARK: - Life Cycle
+
+    public init(title: String, name: String, city: String, country: String, coordinates: CLLocationCoordinate2D? = nil) {
+        self.title = title
+        self.name = name
+        self.city = city
+        self.country = country
+        self.coordinates = coordinates
+    }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -62,7 +70,7 @@ public struct UNLocation: Codable {
         name = try container.decode(String.self, forKey: .name)
         city = try container.decode(String.self, forKey: .city)
         country = try container.decode(String.self, forKey: .country)
-        coordinates = try container.decode(CLLocationCoordinate2D.self, forKey: .coordinates)
+        coordinates = try? container.decode(CLLocationCoordinate2D.self, forKey: .coordinates)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -72,6 +80,6 @@ public struct UNLocation: Codable {
         try container.encode(name, forKey: .name)
         try container.encode(city, forKey: .city)
         try container.encode(country, forKey: .country)
-        try container.encode(coordinates, forKey: .coordinates)
+        try container.encodeIfPresent(coordinates, forKey: .coordinates)
     }
 }

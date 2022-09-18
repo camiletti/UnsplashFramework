@@ -252,6 +252,30 @@ public final class UNClient {
         return urlWrapper.url
     }
 
+    /// Update a photo on behalf of the logged-in user. This requires the `write_photos` scope.
+    ///
+    /// - Parameters:
+    ///   - photoID: The ID of the photo to update.
+    ///   - changingDescription: The new description.
+    ///   - showsOnProfile: Whether it should show on the user's profile.
+    ///   - tags: The tags to set to the photo.
+    ///   - location: The location information to update.
+    ///   - cameraDetails: The camera details to update.
+    /// - Returns: A photo object with the changes done.
+    public func updatePhotoInfo(withID photoID: String,
+                                changingDescription: String? = nil,
+                                showsOnProfile: Bool? = nil,
+                                tags: [String]? = nil,
+                                location: UNLocation? = nil,
+                                cameraDetails: UNCameraDetails? = nil) async throws -> UNPhoto {
+        let parameters = UNUpdatePhotoInfoParameters(description: changingDescription,
+                                                     showsOnProfile: showsOnProfile,
+                                                     tags: tags,
+                                                     location: location,
+                                                     cameraDetails: cameraDetails)
+        return try await queryManager.updatePhotoInfo(forPhotoWithID: photoID, with: parameters)
+    }
+
     // MARK: - Search
 
     /// Get a single page of photo results for a query.
