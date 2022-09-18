@@ -286,6 +286,16 @@ public final class UNClient {
         try await queryManager.likePhoto(withID: id)
     }
 
+    /// Remove a user’s like of a photo. This requires the write_likes scope.
+    ///
+    /// This action is idempotent; unliking a photo that was not liked by the user has no additional effect.
+    ///
+    /// - Parameter id: The photo’s ID.
+    /// - Returns: The unliked photo.
+    public func unlikePhoto(withID id: String) async throws -> UNPhoto {
+        try await queryManager.unlikePhoto(withID: id)
+    }
+
     // MARK: - Search
 
     /// Get a single page of photo results for a query.

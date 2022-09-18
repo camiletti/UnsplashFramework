@@ -35,7 +35,7 @@ The plan is to achieve feature parity with Unsplash REST API
 - [x] Track a photo download
 - [x] Update a photo
 - [x] Like a photo
-- [ ] Unlike a photo
+- [x] Unlike a photo
 
 ### Search
 - [x] Search photos

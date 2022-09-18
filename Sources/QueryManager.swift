@@ -122,6 +122,12 @@ class QueryManager {
                               parameters: nil)
     }
 
+    func unlikePhoto(withID photoID: String) async throws -> UNPhoto {
+        try await api.request(.delete,
+                              endpoint: .likePhoto(id: photoID),
+                              parameters: nil)
+    }
+
     /// Makes a query to Unsplash.
     ///
     /// - Parameters:
