@@ -460,8 +460,8 @@ final class UNClientTests: XCTestCase {
         let client = UNClient(queryManager: queryManager)
 
         let usersSearchResult = try await client.searchUsers(query: parameters.query,
-                                                             page: parameters.pageNumber,
-                                                             usersPerPage: parameters.usersPerPage)
+                                                             page: parameters.pageNumber!,
+                                                             usersPerPage: parameters.usersPerPage!)
 
         XCTAssertFalse(usersSearchResult.elements.isEmpty)
     }

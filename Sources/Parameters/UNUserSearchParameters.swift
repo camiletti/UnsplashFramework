@@ -1,8 +1,7 @@
 //
-//  UNUserSearchParameters.swift
 //  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -29,38 +28,45 @@ struct UNUserSearchParameters {
     // MARK: - Declarations
 
     enum QueryParameterName {
-        /// The requested query parameter's name.
+        /// Search terms.
         static let query = "query"
 
-        /// The requested page parameter's name.
+        /// Page number to retrieve.
         static let pageNumber = "page"
 
-        /// Amount of users per page parameter's name.
+        /// Number of items per page.
         static let usersPerPage = "per_page"
     }
 
     // MARK: - Properties
 
-    /// Words that describe the users to be searched.
+    /// Search terms.
     let query: String
 
-    /// The requested page.
-    let pageNumber: Int
+    /// Page number to retrieve. (Optional; default: 1)
+    let pageNumber: Int?
 
-    /// The desired amount of users per page.
-    let usersPerPage: Int
+    /// Number of items per page. (Optional; default: 10)
+    let usersPerPage: Int?
 }
 
 // MARK: - ParametersURLRepresentable
 extension UNUserSearchParameters: ParametersURLRepresentable {
 
     func asQueryItems() -> [URLQueryItem] {
-        [URLQueryItem(name: QueryParameterName.query,
-                      value: "\(query)"),
-         URLQueryItem(name: QueryParameterName.pageNumber,
-                      value: "\(pageNumber)"),
-         URLQueryItem(name: QueryParameterName.usersPerPage,
-                      value: "\(usersPerPage)")
-        ]
+        var queryItems = [URLQueryItem(name: QueryParameterName.query,
+                                       value: "\(query)")]
+
+        if let pageNumber {
+            queryItems.append(URLQueryItem(name: QueryParameterName.pageNumber,
+                                           value: "\(pageNumber)"))
+        }
+
+        if let usersPerPage {
+            queryItems.append(URLQueryItem(name: QueryParameterName.usersPerPage,
+                                           value: "\(usersPerPage)"))
+        }
+
+        return queryItems
     }
 }

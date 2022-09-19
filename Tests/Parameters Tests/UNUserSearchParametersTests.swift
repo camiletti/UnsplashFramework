@@ -27,7 +27,7 @@ import XCTest
 
 final class UNUserSearchParametersTests: XCTestCase {
 
-    func testAsQueryItems() {
+    func testAsQueryItemsWithoutOptionalProperties() {
         let expectedQuery = "Some search"
         let expectedPageNumber = 9
         let expectedUsersPerPage = 6
@@ -55,5 +55,23 @@ final class UNUserSearchParametersTests: XCTestCase {
             .first(where: { $0.name == UNUserSearchParameters.QueryParameterName.usersPerPage })?
             .value
         XCTAssertEqual(collectionsPerPageValue, "\(expectedUsersPerPage)")
+    }
+
+    func testAsQueryItemsWithOptionalProperties() {
+        let expectedQuery = "Some search"
+        let expectedQueryItemsAmount = 1
+
+        let collectionSearchParameters = UNUserSearchParameters(query: expectedQuery,
+                                                                pageNumber: nil,
+                                                                usersPerPage: nil)
+
+        let queryItems = collectionSearchParameters.asQueryItems()
+
+        XCTAssertEqual(queryItems.count, expectedQueryItemsAmount)
+
+        let queryValue = queryItems
+            .first(where: { $0.name == UNUserSearchParameters.QueryParameterName.query })?
+            .value
+        XCTAssertEqual(queryValue, expectedQuery)
     }
 }

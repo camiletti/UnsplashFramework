@@ -355,8 +355,8 @@ public final class UNClient {
     ///   - usersPerPage: Number of items per page.
     ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
     public func searchUsers(query: String,
-                            page: Int,
-                            usersPerPage: Int) async throws -> UNSearchResult<UNUser> {
+                            page: Int = 1,
+                            usersPerPage: Int = 10) async throws -> UNSearchResult<UNUser> {
         let parameters = UNUserSearchParameters(query: query,
                                                 pageNumber: page,
                                                 usersPerPage: usersPerPage)
