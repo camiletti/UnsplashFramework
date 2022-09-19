@@ -30,34 +30,41 @@ struct UNCollectionSearchParameters {
     // MARK: - Declarations
 
     enum QueryParameterName {
-        /// The requested query parameter's name.
+        /// Search terms.
         static let query = "query"
-        /// The requested page parameter's name.
+        /// Page number to retrieve.
         static let pageNumber = "page"
-        /// Amount of collections per page parameter's name.
+        /// Number of items per page.
         static let collectionsPerPage = "per_page"
     }
 
-    /// Words that describe the collections to be searched.
+    /// Search terms.
     let query: String
 
-    /// The requested page.
-    let pageNumber: Int
+    /// Page number to retrieve. (Optional; default: 1)
+    let pageNumber: Int?
 
-    /// The desired amount of collections per page.
-    let collectionsPerPage: Int
+    /// Number of items per page. (Optional; default: 10)
+    let collectionsPerPage: Int?
 }
 
 // MARK: - ParametersURLRepresentable
 extension UNCollectionSearchParameters: ParametersURLRepresentable {
 
     func asQueryItems() -> [URLQueryItem] {
-        [URLQueryItem(name: QueryParameterName.query,
-                      value: query),
-         URLQueryItem(name: QueryParameterName.pageNumber,
-                      value: "\(pageNumber)"),
-         URLQueryItem(name: QueryParameterName.collectionsPerPage,
-                      value: "\(collectionsPerPage)")
-        ]
+        var queryItems = [URLQueryItem(name: QueryParameterName.query,
+                                       value: "\(query)")]
+
+        if let pageNumber {
+            queryItems.append(URLQueryItem(name: QueryParameterName.pageNumber,
+                                           value: "\(pageNumber)"))
+        }
+
+        if let collectionsPerPage {
+            queryItems.append(URLQueryItem(name: QueryParameterName.collectionsPerPage,
+                                           value: "\(collectionsPerPage)"))
+        }
+
+        return queryItems
     }
 }

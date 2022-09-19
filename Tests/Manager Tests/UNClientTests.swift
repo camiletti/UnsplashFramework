@@ -437,8 +437,8 @@ final class UNClientTests: XCTestCase {
         let client = UNClient(queryManager: queryManager)
 
         let collectionsSearchResult = try await client.searchCollections(query: parameters.query,
-                                                                         page: parameters.pageNumber,
-                                                                         collectionsPerPage: parameters.collectionsPerPage)
+                                                                         page: parameters.pageNumber!,
+                                                                         collectionsPerPage: parameters.collectionsPerPage!)
 
         XCTAssertFalse(collectionsSearchResult.elements.isEmpty)
     }

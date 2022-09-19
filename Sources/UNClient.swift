@@ -331,15 +331,15 @@ public final class UNClient {
                                              with: parameters)
     }
 
-    /// Get a single page of collections results for a query.
+    /// Get a single page of collection results for a query.
     ///
     /// - Parameters:
     ///   - query: Search terms.
     ///   - page: Page number to retrieve.
     ///   - collectionsPerPage: Number of items per page.
     public func searchCollections(query: String,
-                                  page: Int,
-                                  collectionsPerPage: Int) async throws-> UNSearchResult<UNCollection> {
+                                  page: Int = 1,
+                                  collectionsPerPage: Int = 10) async throws-> UNSearchResult<UNCollection> {
         let parameters = UNCollectionSearchParameters(query: query,
                                                       pageNumber: page,
                                                       collectionsPerPage: collectionsPerPage)
