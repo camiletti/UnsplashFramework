@@ -43,7 +43,7 @@ The plan is to achieve feature parity with Unsplash REST API
 - [x] Search user
 
 ### Collections
-- [ ] List collections
+- [x] List collections
 - [ ] Get a collection
 - [ ] Get a collection’s photos
 - [ ] List a collection’s related collections

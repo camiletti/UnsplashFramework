@@ -364,4 +364,14 @@ public final class UNClient {
         return try await queryManager.search(.user,
                                              with: parameters)
     }
+
+    // MARK: - Collections
+
+    public func collectionList(pageNumber: Int = 1,
+                               collectionsPerPage: Int = 10) async throws -> [UNCollection] {
+        let parameters = UNCollectionListParameters(pageNumber: pageNumber,
+                                                    collectionsPerPage: collectionsPerPage)
+
+        return try await queryManager.collectionList(parameters: parameters)
+    }
 }

@@ -132,9 +132,17 @@ class QueryManager {
     // MARK: - Search
 
     func search<T>(_ searchType: SearchType,
-                   with parameters: ParametersURLRepresentable)  async throws -> UNSearchResult<T> {
+                   with parameters: ParametersURLRepresentable) async throws -> UNSearchResult<T> {
         try await api.request(.get,
                               endpoint: searchType.endpoint,
+                              parameters: parameters)
+    }
+
+    // MARK: - Collections
+
+    func collectionList(parameters: UNCollectionListParameters) async throws -> [UNCollection] {
+        try await api.request(.get,
+                              endpoint: .collectionsList,
                               parameters: parameters)
     }
 }

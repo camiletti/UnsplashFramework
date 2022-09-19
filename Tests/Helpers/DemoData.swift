@@ -170,6 +170,13 @@ enum DemoData {
         dataFromJSONFile(named: "CollectionB")
     }
 
+    /// Returns a sample of a list of collections.
+    ///
+    /// - Returns: JSON Data of a collection.
+    static var standardCollectionListResponse: Data {
+        dataFromJSONFile(named: "CollectionList")
+    }
+
     // MARK: - General purpose models
 
     /// Returns a sample of a CLLocationCoordinates2D.

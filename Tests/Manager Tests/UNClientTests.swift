@@ -465,4 +465,27 @@ final class UNClientTests: XCTestCase {
 
         XCTAssertFalse(usersSearchResult.elements.isEmpty)
     }
+
+    // MARK: - Collections
+
+    func testListingCollections() async throws {
+        let endpoint = Endpoint.collectionsList
+        let parameters = UNCollectionListParameters(pageNumber: 2,
+                                                    collectionsPerPage: 4)
+        let queryManager = QueryManager.mock(data: DemoData.standardCollectionListResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
+        let client = UNClient(queryManager: queryManager)
+
+        let collections = try await client.collectionList(pageNumber: parameters.pageNumber!,
+                                                          collectionsPerPage: parameters.collectionsPerPage!)
+
+        XCTAssertFalse(collections.isEmpty)
+    }
 }
