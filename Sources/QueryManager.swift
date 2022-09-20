@@ -151,4 +151,10 @@ class QueryManager {
                               endpoint: .collection(id: id),
                               parameters: nil)
     }
+
+    func photosInCollection(withID collectionID: String, parameters: UNCollectionPhotosParameters) async throws -> [UNPhoto] {
+        try await api.request(.get,
+                              endpoint: .photosInCollection(id: collectionID),
+                              parameters: parameters)
+    }
 }

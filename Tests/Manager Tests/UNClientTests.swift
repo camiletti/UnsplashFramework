@@ -505,4 +505,29 @@ final class UNClientTests: XCTestCase {
 
         let _ = try await client.collection(withID: photoID)
     }
+
+    func testPhotosInCollection() async throws {
+        let collectionID = "123"
+        let endpoint = Endpoint.photosInCollection(id: collectionID)
+        let parameters = UNCollectionPhotosParameters(pageNumber: 8,
+                                                      photosPerPage: 12,
+                                                      orientation: .landscape)
+        let queryManager = QueryManager.mock(data: DemoData.standardPhotosInCollectionResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
+        let client = UNClient(queryManager: queryManager)
+
+        let photos = try await client.photosInCollection(withID: collectionID,
+                                                         page: parameters.pageNumber!,
+                                                         photosPerPage: parameters.photosPerPage!,
+                                                         orientation: parameters.orientation!)
+
+        XCTAssertFalse(photos.isEmpty)
+    }
 }

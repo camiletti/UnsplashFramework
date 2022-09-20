@@ -367,6 +367,11 @@ public final class UNClient {
 
     // MARK: - Collections
 
+    /// Get a single page from the list of all collections.
+    /// - Parameters:
+    ///   - pageNumber: Page number to retrieve.
+    ///   - collectionsPerPage: Number of items per page.
+    /// - Returns: Array with collections
     public func collectionList(pageNumber: Int = 1,
                                collectionsPerPage: Int = 10) async throws -> [UNCollection] {
         let parameters = UNCollectionListParameters(pageNumber: pageNumber,
@@ -375,7 +380,28 @@ public final class UNClient {
         return try await queryManager.collectionList(parameters: parameters)
     }
 
+    /// Retrieve a single collection. To view a user’s private collections, the `read_collections` scope is required.
+    /// - Parameter id: The collections’s ID.
+    /// - Returns: A single collection
     public func collection(withID id: String) async throws -> UNCollection {
         try await queryManager.collection(withID: id)
+    }
+
+    /// Retrieve a collection’s photos.
+    /// - Parameters:
+    ///   - collectionID: The collection’s ID.
+    ///   - page: Page number to retrieve.
+    ///   - photosPerPage: Number of items per page.
+    ///   - orientation: Filter by photo orientation.
+    /// - Returns: A collection’s photos.
+    public func photosInCollection(withID collectionID: String,
+                                   page: Int = 1,
+                                   photosPerPage: Int = 10,
+                                   orientation: UNPhotoOrientation? = nil) async throws -> [UNPhoto] {
+        let parameters = UNCollectionPhotosParameters(pageNumber: page,
+                                                      photosPerPage: photosPerPage,
+                                                      orientation: orientation)
+
+        return try await queryManager.photosInCollection(withID: collectionID, parameters: parameters)
     }
 }
