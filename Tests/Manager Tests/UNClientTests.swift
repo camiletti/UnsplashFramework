@@ -488,4 +488,21 @@ final class UNClientTests: XCTestCase {
 
         XCTAssertFalse(collections.isEmpty)
     }
+
+    func testFetchingACollection() async throws {
+        let photoID = "123"
+        let endpoint = Endpoint.collection(id: photoID)
+        let queryManager = QueryManager.mock(data: DemoData.standardCollectionAResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: nil),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: nil)
+        let client = UNClient(queryManager: queryManager)
+
+        let _ = try await client.collection(withID: photoID)
+    }
 }

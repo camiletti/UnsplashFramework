@@ -374,4 +374,8 @@ public final class UNClient {
 
         return try await queryManager.collectionList(parameters: parameters)
     }
+
+    public func collection(withID id: String) async throws -> UNCollection {
+        try await queryManager.collection(withID: id)
+    }
 }

@@ -145,4 +145,10 @@ class QueryManager {
                               endpoint: .collectionsList,
                               parameters: parameters)
     }
+
+    func collection(withID id: String) async throws -> UNCollection {
+        try await api.request(.get,
+                              endpoint: .collection(id: id),
+                              parameters: nil)
+    }
 }
