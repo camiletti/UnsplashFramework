@@ -1,8 +1,7 @@
 //
-//  UNPhotoSearchResult.swift
 //  UnsplashFramework
 //
-//  Copyright 2017 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,21 +21,31 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-public struct UNPhotoSearchResult: Decodable {
+import Foundation
+
+/// Holds the API URLs for a photo.
+public struct UNPhotoAPILocations: Decodable, Equatable {
 
     // MARK: - Declarations
 
     enum CodingKeys: String, CodingKey {
-        case totalPhotos = "total"
-        case totalPages = "total_pages"
-        case photos = "results"
+        case apiPhotoURL = "self"
+        case apiDownloadURL = "download_location"
+        case externalPhotoURL = "html"
+        case externalDownloadURL = "download"
     }
 
     // MARK: - Properties
 
-    public let totalPhotos: Int
+    /// Photo URL. Accessible only through the API.
+    public var apiPhotoURL: URL
 
-    public let totalPages: Int
+    /// Download photo URL. Accessible only through the API.
+    public var apiDownloadURL: URL
 
-    public let photos: [UNPhoto]
+    /// Public link to the photo.
+    public var externalPhotoURL: URL
+
+    /// Public download link to the photo.
+    public var externalDownloadURL: URL
 }

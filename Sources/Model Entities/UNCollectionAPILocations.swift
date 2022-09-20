@@ -1,8 +1,7 @@
 //
-//  UNSort.swift
 //  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,16 +21,27 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-/// Available sorting options for a query.
-public enum UNSort: String {
-    /// Ordered by date from the latest to the oldest.
-    case latest
-    /// Ordered by date from the oldest to the latest.
-    case oldest
-    /// Ordered by popularity
-    case popular
-    /// Ordered by views
-    case views
-    /// Order by downloads
-    case downloads
+import Foundation
+
+/// Holds the API URLs for a collection.
+struct UNCollectionAPILocations: Decodable, Equatable {
+
+    // MARK: - Declarations
+
+    enum CodingKeys: String, CodingKey {
+        case apiCollectionURL = "self"
+        case apiPhotosInCollectionURL = "photos"
+        case externalCollectionURL = "html"
+    }
+
+    // MARK: - Properties
+
+    /// Collection's location. Accessible only through the API.
+    var apiCollectionURL: URL
+
+    /// Location for the photos contained in the collection. Accessible only through the API.
+    var apiPhotosInCollectionURL: URL
+
+    /// Collection's public url.
+    var externalCollectionURL: URL
 }

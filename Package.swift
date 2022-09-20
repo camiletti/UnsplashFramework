@@ -2,10 +2,9 @@
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 //
-//  Package.swift
 //  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal

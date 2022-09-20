@@ -1,8 +1,7 @@
 //
-//  UNPhotoAPILocations.swift
 //  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,31 +21,16 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
-
-/// Holds the API URLs for a photo.
-public struct UNPhotoAPILocations: Decodable, Equatable {
-
-    // MARK: - Declarations
-
-    enum CodingKeys: String, CodingKey {
-        case apiPhotoURL = "self"
-        case apiDownloadURL = "download_location"
-        case externalPhotoURL = "html"
-        case externalDownloadURL = "download"
-    }
-
-    // MARK: - Properties
-
-    /// Photo URL. Accessible only through the API.
-    public var apiPhotoURL: URL
-
-    /// Download photo URL. Accessible only through the API.
-    public var apiDownloadURL: URL
-
-    /// Public link to the photo.
-    public var externalPhotoURL: URL
-
-    /// Public download link to the photo.
-    public var externalDownloadURL: URL
+/// Available sorting options for a query.
+public enum UNSort: String {
+    /// Ordered by date from the latest to the oldest.
+    case latest
+    /// Ordered by date from the oldest to the latest.
+    case oldest
+    /// Ordered by popularity
+    case popular
+    /// Ordered by views
+    case views
+    /// Order by downloads
+    case downloads
 }

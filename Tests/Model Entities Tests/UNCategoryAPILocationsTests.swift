@@ -1,8 +1,7 @@
 //
-//  UNSearchResult.swift
 //  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +21,32 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-/// Holds the result returned from Unsplash for a given search.
-public struct UNSearchResult<Element: Decodable>: Decodable {
+@testable import UnsplashFramework
+import XCTest
 
-    // MARK: - Declarations
+final class UNCategoryAPILocationsTests: XCTestCase {
 
-    enum CodingKeys: String, CodingKey {
-        case totalElements = "total"
-        case totalPages = "total_pages"
-        case elements = "results"
+    func testEquality() {
+        var categoryLocationA = DemoData.invalidCategoryAPILocations
+        var categoryLocationB = categoryLocationA
+
+        XCTAssert(categoryLocationA == categoryLocationB)
+
+        categoryLocationA.apiCategoryURL = URL(string: "http://api.unsplash.com/1")!
+        categoryLocationB.apiCategoryURL = URL(string: "http://api.unsplash.com/2")!
+
+        XCTAssert((categoryLocationA == categoryLocationB) == false)
     }
 
-    // MARK: - Properties
+    func testInequality() {
+        var categoryLocationA = DemoData.invalidCategoryAPILocations
+        var categoryLocationB = categoryLocationA
 
-    /// The total amount of elements found for the given search.
-    public let totalElements: Int
+        XCTAssert((categoryLocationA != categoryLocationB) == false)
 
-    /// The total number of pages of elements found for the given search.
-    public let totalPages: Int
+        categoryLocationA.apiCategoryURL = URL(string: "http://api.unsplash.com/1")!
+        categoryLocationB.apiCategoryURL = URL(string: "http://api.unsplash.com/2")!
 
-    /// The elements contained in the requested page.
-    public let elements: [Element]
+        XCTAssert(categoryLocationA != categoryLocationB)
+    }
 }

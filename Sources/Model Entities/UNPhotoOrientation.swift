@@ -1,8 +1,7 @@
 //
-//  UNCollectionAPILocations.swift
 //  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,27 +21,12 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
-
-/// Holds the API URLs for a collection.
-struct UNCollectionAPILocations: Decodable, Equatable {
-
-    // MARK: - Declarations
-
-    enum CodingKeys: String, CodingKey {
-        case apiCollectionURL = "self"
-        case apiPhotosInCollectionURL = "photos"
-        case externalCollectionURL = "html"
-    }
-
-    // MARK: - Properties
-
-    /// Collection's location. Accessible only through the API.
-    var apiCollectionURL: URL
-
-    /// Location for the photos contained in the collection. Accessible only through the API.
-    var apiPhotosInCollectionURL: URL
-
-    /// Collection's public url.
-    var externalCollectionURL: URL
+/// Available orientations.
+public enum UNPhotoOrientation: String {
+    /// Landscape orientation
+    case landscape
+    /// Portrait orientation
+    case portrait
+    /// Squarish orientation
+    case squarish
 }

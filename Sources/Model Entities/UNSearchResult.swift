@@ -1,8 +1,7 @@
 //
-//  UNPhotoAPILocationsTests.swift
 //  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,32 +21,25 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-@testable import UnsplashFramework
-import XCTest
+/// Holds the result returned from Unsplash for a given search.
+public struct UNSearchResult<Element: Decodable>: Decodable {
 
-final class UNPhotoAPILocationsTests: XCTestCase {
+    // MARK: - Declarations
 
-    func testEquality() {
-        var photoAPILocationsA = DemoData.invalidPhotoAPILocations
-        var photoAPILocationsB = photoAPILocationsA
-
-        XCTAssert(photoAPILocationsA == photoAPILocationsB)
-
-        photoAPILocationsA.apiDownloadURL = URL(string: "http://api.unsplash.com/1")!
-        photoAPILocationsB.apiDownloadURL = URL(string: "http://api.unsplash.com/2")!
-
-        XCTAssert((photoAPILocationsA == photoAPILocationsB) == false)
+    enum CodingKeys: String, CodingKey {
+        case totalElements = "total"
+        case totalPages = "total_pages"
+        case elements = "results"
     }
 
-    func testInequality() {
-        var photoAPILocationsA = DemoData.invalidPhotoAPILocations
-        var photoAPILocationsB = photoAPILocationsA
+    // MARK: - Properties
 
-        XCTAssert((photoAPILocationsA != photoAPILocationsB) == false)
+    /// The total amount of elements found for the given search.
+    public let totalElements: Int
 
-        photoAPILocationsA.apiDownloadURL = URL(string: "http://api.unsplash.com/1")!
-        photoAPILocationsB.apiDownloadURL = URL(string: "http://api.unsplash.com/2")!
+    /// The total number of pages of elements found for the given search.
+    public let totalPages: Int
 
-        XCTAssert(photoAPILocationsA != photoAPILocationsB)
-    }
+    /// The elements contained in the requested page.
+    public let elements: [Element]
 }

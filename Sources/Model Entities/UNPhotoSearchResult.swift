@@ -1,8 +1,7 @@
 //
-//  UNPhotoOrientation.swift
 //  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,12 +21,21 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-/// Available orientations.
-public enum UNPhotoOrientation: String {
-    /// Landscape orientation
-    case landscape
-    /// Portrait orientation
-    case portrait
-    /// Squarish orientation
-    case squarish
+public struct UNPhotoSearchResult: Decodable {
+
+    // MARK: - Declarations
+
+    enum CodingKeys: String, CodingKey {
+        case totalPhotos = "total"
+        case totalPages = "total_pages"
+        case photos = "results"
+    }
+
+    // MARK: - Properties
+
+    public let totalPhotos: Int
+
+    public let totalPages: Int
+
+    public let photos: [UNPhoto]
 }

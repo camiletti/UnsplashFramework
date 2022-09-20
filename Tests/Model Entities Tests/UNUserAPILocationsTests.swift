@@ -1,8 +1,7 @@
 //
-//  UNCategoryAPILocations.swift
 //  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,23 +21,32 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
+@testable import UnsplashFramework
+import XCTest
 
-/// Holds the API URLs for a category.
-public struct UNCategoryAPILocations: Decodable, Equatable {
+final class UNUserAPILocationsTests: XCTestCase {
 
-    // MARK: - Declarations
+    func testEquality() {
+        var userLocationA = DemoData.invalidUserAPILocations
+        var userLocationB = userLocationA
 
-    enum CodingKeys: String, CodingKey {
-        case apiCategoryURL = "self"
-        case apiPhotosInCategoryURL = "photos"
+        XCTAssert(userLocationA == userLocationB)
+
+        userLocationA.apiFollowersURL = URL(string: "http://api.unsplash.com/1")!
+        userLocationB.apiFollowersURL = URL(string: "http://api.unsplash.com/2")!
+
+        XCTAssert((userLocationA == userLocationB) == false)
     }
 
-    // MARK: - Properties
+    func testInequality() {
+        var userLocationA = DemoData.invalidUserAPILocations
+        var userLocationB = userLocationA
 
-    /// Category's location. Accessible only through the API.
-    public var apiCategoryURL: URL
+        XCTAssert((userLocationA != userLocationB) == false)
 
-    /// Location for the photos associated to the category. Accessible only through the API.
-    public var apiPhotosInCategoryURL: URL
+        userLocationA.apiFollowersURL = URL(string: "http://api.unsplash.com/1")!
+        userLocationB.apiFollowersURL = URL(string: "http://api.unsplash.com/2")!
+
+        XCTAssert(userLocationA != userLocationB)
+    }
 }

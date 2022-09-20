@@ -1,8 +1,7 @@
 //
-//  UNUserAPILocationsTests.swift
 //  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,29 +24,29 @@
 @testable import UnsplashFramework
 import XCTest
 
-final class UNUserAPILocationsTests: XCTestCase {
+final class UNPhotoAPILocationsTests: XCTestCase {
 
     func testEquality() {
-        var userLocationA = DemoData.invalidUserAPILocations
-        var userLocationB = userLocationA
+        var photoAPILocationsA = DemoData.invalidPhotoAPILocations
+        var photoAPILocationsB = photoAPILocationsA
 
-        XCTAssert(userLocationA == userLocationB)
+        XCTAssert(photoAPILocationsA == photoAPILocationsB)
 
-        userLocationA.apiFollowersURL = URL(string: "http://api.unsplash.com/1")!
-        userLocationB.apiFollowersURL = URL(string: "http://api.unsplash.com/2")!
+        photoAPILocationsA.apiDownloadURL = URL(string: "http://api.unsplash.com/1")!
+        photoAPILocationsB.apiDownloadURL = URL(string: "http://api.unsplash.com/2")!
 
-        XCTAssert((userLocationA == userLocationB) == false)
+        XCTAssert((photoAPILocationsA == photoAPILocationsB) == false)
     }
 
     func testInequality() {
-        var userLocationA = DemoData.invalidUserAPILocations
-        var userLocationB = userLocationA
+        var photoAPILocationsA = DemoData.invalidPhotoAPILocations
+        var photoAPILocationsB = photoAPILocationsA
 
-        XCTAssert((userLocationA != userLocationB) == false)
+        XCTAssert((photoAPILocationsA != photoAPILocationsB) == false)
 
-        userLocationA.apiFollowersURL = URL(string: "http://api.unsplash.com/1")!
-        userLocationB.apiFollowersURL = URL(string: "http://api.unsplash.com/2")!
+        photoAPILocationsA.apiDownloadURL = URL(string: "http://api.unsplash.com/1")!
+        photoAPILocationsB.apiDownloadURL = URL(string: "http://api.unsplash.com/2")!
 
-        XCTAssert(userLocationA != userLocationB)
+        XCTAssert(photoAPILocationsA != photoAPILocationsB)
     }
 }

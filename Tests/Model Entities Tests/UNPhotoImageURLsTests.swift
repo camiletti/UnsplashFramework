@@ -1,8 +1,7 @@
 //
-//  UNPhotoImageSizeTests.swift
-//  UNPhotoImageSizeTests
+//  UnsplashFramework
 //
-//  Copyright 2021 Pablo Camiletti
+//  Copyright Pablo Camiletti
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +24,7 @@
 @testable import UnsplashFramework
 import XCTest
 
-final class UNPhotoImageSizeTests: XCTestCase {
+final class UNPhotoImageURLsTests: XCTestCase {
 
     func testURLForSize() {
         let rawURL = URL(string: "https://api.unsplash.com/rawURL")!
