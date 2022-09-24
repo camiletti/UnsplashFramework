@@ -72,7 +72,7 @@ enum Endpoint {
 
     /// Get a single page from the list of all collections.
     /// Also used to create a new collection. This requires the `write_collections` scope.
-    case collectionsList
+    case collections
     /// Retrieve a single collection. To view a user’s private collections, the `read_collections` scope is required.
     /// Also used to update an existing collection.
     /// Also used to delete an existing collection.
@@ -152,7 +152,7 @@ enum Endpoint {
         case .userSearch:
             return "/search/users"
 
-        case .collectionsList:
+        case .collections:
             return "/collections"
 
         case .collection(let id):

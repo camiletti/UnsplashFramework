@@ -47,7 +47,7 @@ The plan is to achieve feature parity with Unsplash REST API
 - [x] Get a collection
 - [x] Get a collection’s photos
 - [x] List a collection’s related collections
-- [ ] Create a new collection
+- [x] Create a new collection
 - [ ] Update an existing collection
 - [ ] Delete a collection
 - [ ] Add a photo to a collection

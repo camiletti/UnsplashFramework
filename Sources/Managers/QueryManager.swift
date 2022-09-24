@@ -141,7 +141,7 @@ class QueryManager {
 
     func collectionList(parameters: UNCollectionListParameters) async throws -> [UNCollection] {
         try await api.request(.get,
-                              endpoint: .collectionsList,
+                              endpoint: .collections,
                               parameters: parameters)
     }
 
@@ -161,5 +161,11 @@ class QueryManager {
         try await api.request(.get,
                               endpoint: .relatedCollections(id: collectionID),
                               parameters: nil)
+    }
+
+    func createNewCollection(parameters: UNNewCollectionParameters) async throws -> UNCollection {
+        try await api.request(.post,
+                              endpoint: .collections,
+                              parameters: parameters)
     }
 }

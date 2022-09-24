@@ -56,7 +56,7 @@ final class URLSessionExtensionsTests: XCTestCase {
                                      .photoSearch,
                                      .collectionSearch,
                                      .userSearch,
-                                     .collectionsList,
+                                     .collections,
                                      .collection(id: id),
                                      .photosInCollection(id: id),
                                      .relatedCollections(id: id),

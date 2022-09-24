@@ -411,4 +411,19 @@ public final class UNClient {
     public func relatedCollections(toCollectionWithID collectionID: String) async throws -> [UNCollection] {
         try await queryManager.relatedCollections(toCollectionWithID: collectionID)
     }
+
+    /// Create a new collection. This requires the `write_collections` scope.
+    /// - Parameters:
+    ///   - title: The title of the collection.
+    ///   - description: The collection’s description.
+    ///   - isPrivate: Whether to make this collection private.
+    /// - Returns: Responds with the new collection.
+    @discardableResult
+    public func createNewCollection(title: String,
+                                    description: String? = nil,
+                                    isPrivate: Bool = false) async throws -> UNCollection {
+        let parameters = UNNewCollectionParameters(title: title, description: description, isPrivate: isPrivate)
+
+        return try await queryManager.createNewCollection(parameters: parameters)
+    }
 }

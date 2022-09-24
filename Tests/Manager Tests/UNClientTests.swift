@@ -468,7 +468,7 @@ final class UNClientTests: XCTestCase {
     // MARK: - Collections
 
     func testListingCollections() async throws {
-        let endpoint = Endpoint.collectionsList
+        let endpoint = Endpoint.collections
         let parameters = UNCollectionListParameters(pageNumber: 2,
                                                     collectionsPerPage: 4)
         let queryManager = QueryManager.mock(data: DemoData.standardCollectionListResponse,
@@ -545,5 +545,24 @@ final class UNClientTests: XCTestCase {
         let client = UNClient(queryManager: queryManager)
 
         let _ = try await client.relatedCollections(toCollectionWithID: collectionID)
+    }
+
+    func testCreateNewCollection() async throws {
+        let endpoint = Endpoint.collections
+        let parameters = UNNewCollectionParameters(title: "A Title", description: "Some description", isPrivate: true)
+        let queryManager = QueryManager.mock(data: DemoData.standardCollectionAResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .post,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
+        let client = UNClient(queryManager: queryManager)
+
+        let _ = try await client.createNewCollection(title: parameters.title,
+                                                     description: parameters.description,
+                                                     isPrivate: parameters.isPrivate!)
     }
 }
