@@ -183,6 +183,13 @@ enum DemoData {
         dataFromJSONFile(named: "PhotosInCollection")
     }
 
+    /// Returns a sample of related collections.
+    ///
+    /// - Returns: JSON Data of related collections.
+    static var standardRelatedCollectionsResponse: Data {
+        dataFromJSONFile(named: "RelatedCollections")
+    }
+
     // MARK: - General purpose models
 
     /// Returns a sample of a CLLocationCoordinates2D.

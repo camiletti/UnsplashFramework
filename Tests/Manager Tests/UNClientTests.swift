@@ -489,8 +489,8 @@ final class UNClientTests: XCTestCase {
     }
 
     func testFetchingACollection() async throws {
-        let photoID = "123"
-        let endpoint = Endpoint.collection(id: photoID)
+        let collectionID = "123"
+        let endpoint = Endpoint.collection(id: collectionID)
         let queryManager = QueryManager.mock(data: DemoData.standardCollectionAResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
                                                                        parameters: nil),
@@ -502,7 +502,7 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: nil)
         let client = UNClient(queryManager: queryManager)
 
-        let _ = try await client.collection(withID: photoID)
+        let _ = try await client.collection(withID: collectionID)
     }
 
     func testPhotosInCollection() async throws {
@@ -528,5 +528,22 @@ final class UNClientTests: XCTestCase {
                                                          orientation: parameters.orientation!)
 
         XCTAssertFalse(photos.isEmpty)
+    }
+
+    func testFetchingRelatedCollections() async throws {
+        let collectionID = "123"
+        let endpoint = Endpoint.relatedCollections(id: collectionID)
+        let queryManager = QueryManager.mock(data: DemoData.standardRelatedCollectionsResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: nil),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: nil)
+        let client = UNClient(queryManager: queryManager)
+
+        let _ = try await client.relatedCollections(toCollectionWithID: collectionID)
     }
 }

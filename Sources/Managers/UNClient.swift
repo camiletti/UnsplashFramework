@@ -404,4 +404,11 @@ public final class UNClient {
 
         return try await queryManager.photosInCollection(withID: collectionID, parameters: parameters)
     }
+
+    /// Retrieve a list of collections related to this one.
+    /// - Parameter collectionID: The collection’s ID.
+    /// - Returns: A list of collections related to this one.
+    public func relatedCollections(toCollectionWithID collectionID: String) async throws -> [UNCollection] {
+        try await queryManager.relatedCollections(toCollectionWithID: collectionID)
+    }
 }

@@ -46,7 +46,7 @@ The plan is to achieve feature parity with Unsplash REST API
 - [x] List collections
 - [x] Get a collection
 - [x] Get a collection’s photos
-- [ ] List a collection’s related collections
+- [x] List a collection’s related collections
 - [ ] Create a new collection
 - [ ] Update an existing collection
 - [ ] Delete a collection
@@ -62,12 +62,17 @@ The plan is to achieve feature parity with Unsplash REST API
 - [ ] Totals
 - [ ] Month
 
+### Authentication
+- [x] Public authentication
+- [ ] User authentication
+- [ ] Dynamic authentication
+
 
 ## Requirement
 
 - iOS 15.0+
 - Swift 5.7+
-- Xcode 13.0+
+- Xcode 14.0+
 
 
 ## ⬇️ Installation
@@ -153,7 +158,7 @@ let users = try await client.searchUsers(query: "camiletti",
 UnsplashFramework is under MIT license.
 
 ```
-Copyright 2021 Pablo Camiletti
+Copyright 2022 Pablo Camiletti
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
