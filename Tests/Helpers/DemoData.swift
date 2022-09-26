@@ -190,6 +190,13 @@ enum DemoData {
         dataFromJSONFile(named: "RelatedCollections")
     }
 
+    /// Returns a sample respond after adding or deleting a photo from a collection.
+    ///
+    /// - Returns: JSON Data of related collections.
+    static var standardAddRemoveCollectionsResponse: Data {
+        dataFromJSONFile(named: "AddRemovePhotoInCollection")
+    }
+
     // MARK: - General purpose models
 
     /// Returns a sample of a CLLocationCoordinates2D.

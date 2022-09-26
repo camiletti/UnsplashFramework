@@ -450,4 +450,22 @@ public final class UNClient {
     public func deleteCollection(withID collectionID: String) async throws {
         try await queryManager.deleteCollection(withID: collectionID)
     }
+
+    /// Add a photo to one of the logged-in user’s collections. Requires the `write_collections` scope.
+    ///
+    /// Note: If the photo is already in the collection, this action has no effect.
+    ///
+    /// - Parameters:
+    ///   - photoID: The collection’s ID.
+    ///   - collectionID: The photo’s ID.
+    /// - Returns: The photo that was added.
+    @discardableResult
+    public func addPhoto(withID photoID: String, toCollectionWithID collectionID: String) async throws -> (UNPhoto, UNCollection) {
+        let parameters = UNModifyPhotoToCollectionParameters(photoID: photoID)
+
+        let response = try await queryManager.addPhotoToCollection(withID: collectionID,
+                                                                   parameters: parameters)
+
+        return (response.photo, response.collection)
+    }
 }

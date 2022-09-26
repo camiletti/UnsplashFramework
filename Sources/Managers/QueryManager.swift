@@ -180,4 +180,10 @@ class QueryManager {
                               endpoint: .collection(id: collectionID),
                               parameters: nil)
     }
+
+    func addPhotoToCollection(withID collectionID: String, parameters: UNModifyPhotoToCollectionParameters) async throws -> UNModifyPhotoInCollectionResponse {
+        try await api.request(.post,
+                              endpoint: .addPhotoToCollection(collectionID: collectionID),
+                              parameters: parameters)
+    }
 }
