@@ -547,7 +547,7 @@ final class UNClientTests: XCTestCase {
         let _ = try await client.relatedCollections(toCollectionWithID: collectionID)
     }
 
-    func testCreateNewCollection() async throws {
+    func testCreatingNewCollection() async throws {
         let endpoint = Endpoint.collections
         let parameters = UNNewCollectionParameters(title: "A Title", description: "Some description", isPrivate: true)
         let queryManager = QueryManager.mock(data: DemoData.standardCollectionAResponse,
@@ -566,7 +566,7 @@ final class UNClientTests: XCTestCase {
                                                      isPrivate: parameters.isPrivate!)
     }
 
-    func testUpdateCollection() async throws {
+    func testUpdatingCollection() async throws {
         let collectionID = "123"
         let endpoint = Endpoint.collection(id: collectionID)
         let parameters = UNUpdateCollectionParameters(title: "A Title", description: "Some description", isPrivate: true)
@@ -585,5 +585,22 @@ final class UNClientTests: XCTestCase {
                                                   title: parameters.title,
                                                   description: parameters.description,
                                                   isPrivate: parameters.isPrivate!)
+    }
+
+    func testDeletingCollection() async throws {
+        let collectionID = "123"
+        let endpoint = Endpoint.collection(id: collectionID)
+        let queryManager = QueryManager.mock(data: Data(),
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: nil),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .delete,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: nil)
+        let client = UNClient(queryManager: queryManager)
+
+        let _ = try await client.deleteCollection(withID: collectionID)
     }
 }

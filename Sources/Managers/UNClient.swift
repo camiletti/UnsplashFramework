@@ -443,4 +443,11 @@ public final class UNClient {
 
         return try await queryManager.updateCollection(withID: collectionID,  parameters: parameters)
     }
+
+    /// Delete a collection belonging to the logged-in user. This requires the `write_collections` scope.
+    /// - Parameters:
+    ///   - collectionID: The collection’s ID.
+    public func deleteCollection(withID collectionID: String) async throws {
+        try await queryManager.deleteCollection(withID: collectionID)
+    }
 }

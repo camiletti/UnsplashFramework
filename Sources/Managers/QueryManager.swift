@@ -174,4 +174,10 @@ class QueryManager {
                               endpoint: .collection(id: collectionID),
                               parameters: parameters)
     }
+
+    func deleteCollection(withID collectionID: String) async throws {
+        try await api.request(.delete,
+                              endpoint: .collection(id: collectionID),
+                              parameters: nil)
+    }
 }

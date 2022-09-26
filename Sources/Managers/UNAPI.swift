@@ -78,6 +78,10 @@ open class UNAPI {
 
     private let urlSession: URLSession
 
+    private var defaultHeaders: [Header] {
+        [.acceptVersion, .authorization(accessKey: credentials.accessKey)]
+    }
+
     // MARK: - Life Cycle
 
     init(credentials: UNCredentials, urlSession: URLSession = URLSession(configuration: .default)) {
@@ -99,9 +103,7 @@ open class UNAPI {
                                endpoint: Endpoint,
                                parameters: ParametersURLRepresentable?) async throws -> T {
 
-        // Add additional headers if needed
-        let headers: [Header] = [.acceptVersion, .authorization(accessKey: credentials.accessKey)]
-        let request = URLRequest.publicRequest(method, forEndpoint: endpoint, parameters: parameters, headers: headers)
+        let request = URLRequest.publicRequest(method, forEndpoint: endpoint, parameters: parameters, headers: defaultHeaders)
 
         let (data, response) = try await urlSession.data(for: request)
 
@@ -115,5 +117,28 @@ open class UNAPI {
 
         let decoder = JSONDecoder.unsplashDecoder
         return try decoder.decode(T.self, from: data)
+    }
+
+    /// Makes a REST request that expects no returned value
+    ///
+    /// - Parameters:
+    ///   - method: The HTTP method to use.
+    ///   - endpoint: The endpoint to call.
+    ///   - parameters: The parameters to use for the request.
+    func request(_ method: HTTPMethod,
+                 endpoint: Endpoint,
+                 parameters: ParametersURLRepresentable?) async throws {
+
+        let request = URLRequest.publicRequest(method, forEndpoint: endpoint, parameters: parameters, headers: defaultHeaders)
+
+        let (_, response) = try await urlSession.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw UNError(reason: .unknownServerResponse)
+        }
+
+        if ResponseStatusCode.isError(code: httpResponse.statusCode) {
+            throw UNError(reason: .serverError(ResponseStatusCode(rawValue: httpResponse.statusCode)))
+        }
     }
 }
