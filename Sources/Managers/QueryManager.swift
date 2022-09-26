@@ -186,4 +186,10 @@ class QueryManager {
                               endpoint: .addPhotoToCollection(collectionID: collectionID),
                               parameters: parameters)
     }
+
+    func removePhotoFromCollection(withID collectionID: String, parameters: UNModifyPhotoToCollectionParameters) async throws -> UNModifyPhotoInCollectionResponse {
+        try await api.request(.delete,
+                              endpoint: .removePhotoToCollection(collectionID: collectionID),
+                              parameters: parameters)
+    }
 }

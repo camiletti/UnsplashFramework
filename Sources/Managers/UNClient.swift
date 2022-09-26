@@ -458,13 +458,28 @@ public final class UNClient {
     /// - Parameters:
     ///   - photoID: The collection’s ID.
     ///   - collectionID: The photo’s ID.
-    /// - Returns: The photo that was added.
+    /// - Returns: The photo that was added and the collection.
     @discardableResult
     public func addPhoto(withID photoID: String, toCollectionWithID collectionID: String) async throws -> (UNPhoto, UNCollection) {
         let parameters = UNModifyPhotoToCollectionParameters(photoID: photoID)
 
         let response = try await queryManager.addPhotoToCollection(withID: collectionID,
                                                                    parameters: parameters)
+
+        return (response.photo, response.collection)
+    }
+
+    /// Remove a photo to one of the logged-in user’s collections. Requires the `write_collections` scope.
+    /// - Parameters:
+    ///   - photoID: The collection’s ID.
+    ///   - collectionID: The photo’s ID.
+    /// - Returns: The photo that was removed and its collection.
+    @discardableResult
+    public func removePhoto(withID photoID: String, fromCollectionWithID collectionID: String) async throws -> (UNPhoto, UNCollection) {
+        let parameters = UNModifyPhotoToCollectionParameters(photoID: photoID)
+
+        let response = try await queryManager.removePhotoFromCollection(withID: collectionID,
+                                                                        parameters: parameters)
 
         return (response.photo, response.collection)
     }

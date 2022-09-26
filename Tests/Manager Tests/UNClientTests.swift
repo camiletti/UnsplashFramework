@@ -621,4 +621,22 @@ final class UNClientTests: XCTestCase {
 
         let _ = try await client.addPhoto(withID: parameters.photoID, toCollectionWithID: collectionID)
     }
+
+    func testRemovingPhotoFromCollection() async throws {
+        let collectionID = "123"
+        let endpoint = Endpoint.removePhotoToCollection(collectionID: collectionID)
+        let parameters = UNModifyPhotoToCollectionParameters(photoID: "ABC")
+        let queryManager = QueryManager.mock(data: DemoData.standardAddRemoveCollectionsResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .delete,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
+        let client = UNClient(queryManager: queryManager)
+
+        let _ = try await client.removePhoto(withID: parameters.photoID, fromCollectionWithID: collectionID)
+    }
 }
