@@ -426,4 +426,21 @@ public final class UNClient {
 
         return try await queryManager.createNewCollection(parameters: parameters)
     }
+
+    /// Update an existing collection belonging to the logged-in user. This requires the `write_collections` scope.
+    /// - Parameters:
+    ///   - collectionID: The collection’s ID.
+    ///   - title: The title of the collection.
+    ///   - description: The collection’s description.
+    ///   - isPrivate: Whether to make this collection private.
+    /// - Returns: Responds with the updated collection.
+    @discardableResult
+    public func updateCollection(withID collectionID: String,
+                                 title: String? = nil,
+                                 description: String? = nil,
+                                 isPrivate: Bool? = nil) async throws -> UNCollection {
+        let parameters = UNUpdateCollectionParameters(title: title, description: description, isPrivate: isPrivate)
+
+        return try await queryManager.updateCollection(withID: collectionID,  parameters: parameters)
+    }
 }

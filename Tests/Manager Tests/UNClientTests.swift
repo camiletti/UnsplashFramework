@@ -565,4 +565,25 @@ final class UNClientTests: XCTestCase {
                                                      description: parameters.description,
                                                      isPrivate: parameters.isPrivate!)
     }
+
+    func testUpdateCollection() async throws {
+        let collectionID = "123"
+        let endpoint = Endpoint.collection(id: collectionID)
+        let parameters = UNUpdateCollectionParameters(title: "A Title", description: "Some description", isPrivate: true)
+        let queryManager = QueryManager.mock(data: DemoData.standardCollectionAResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .put,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
+        let client = UNClient(queryManager: queryManager)
+
+        let _ = try await client.updateCollection(withID: collectionID,
+                                                  title: parameters.title,
+                                                  description: parameters.description,
+                                                  isPrivate: parameters.isPrivate!)
+    }
 }

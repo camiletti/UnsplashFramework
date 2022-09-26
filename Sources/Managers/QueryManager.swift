@@ -168,4 +168,10 @@ class QueryManager {
                               endpoint: .collections,
                               parameters: parameters)
     }
+
+    func updateCollection(withID collectionID: String, parameters: UNUpdateCollectionParameters) async throws -> UNCollection {
+        try await api.request(.put,
+                              endpoint: .collection(id: collectionID),
+                              parameters: parameters)
+    }
 }
