@@ -35,16 +35,24 @@ final class UNAPITester: UNAPI {
 
     let expectedParameters: ParametersURLRepresentable?
 
+    let file: StaticString
+
+    let line: UInt
+
     // MARK: - Life Cycle
 
     init(credentials: UNCredentials,
          urlSession: URLSession,
          expectedMethod: UNAPI.HTTPMethod,
          expectedEndpoint: Endpoint,
-         expectedParameters: ParametersURLRepresentable?) {
+         expectedParameters: ParametersURLRepresentable?,
+         file: StaticString,
+         line: UInt) {
         self.expectedMethod = expectedMethod
         self.expectedEndpoint = expectedEndpoint
         self.expectedParameters = expectedParameters
+        self.file = file
+        self.line = line
         super.init(credentials: credentials, urlSession: urlSession)
     }
 
@@ -57,9 +65,9 @@ final class UNAPITester: UNAPI {
     override func request<T>(_ method: UNAPI.HTTPMethod,
                              endpoint: Endpoint,
                              parameters: ParametersURLRepresentable?) async throws -> T where T : Decodable {
-        XCTAssertEqual(method, expectedMethod)
-        XCTAssertEqual(endpoint.path, expectedEndpoint.path)
-        XCTAssertEqual(parameters?.asQueryItems(), expectedParameters?.asQueryItems())
+        XCTAssertEqual(method, expectedMethod, file: file, line: line)
+        XCTAssertEqual(endpoint.path, expectedEndpoint.path, file: file, line: line)
+        XCTAssertEqual(parameters?.asQueryItems(), expectedParameters?.asQueryItems(), file: file, line: line)
         return try await super.request(method, endpoint: endpoint, parameters: parameters)
     }
 }

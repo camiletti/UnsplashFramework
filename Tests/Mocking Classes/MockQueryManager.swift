@@ -33,7 +33,9 @@ extension QueryManager {
                      deadline: TimeInterval,
                      expectedMethod: UNAPI.HTTPMethod,
                      expectedEndpoint: Endpoint,
-                     expectedParameters: ParametersURLRepresentable?) -> QueryManager {
+                     expectedParameters: ParametersURLRepresentable?,
+                     file: StaticString = #filePath,
+                     line: UInt = #line) -> QueryManager {
         let urlSession = URLSession.mocking(data: data,
                                             response: response,
                                             error: error,
@@ -42,7 +44,9 @@ extension QueryManager {
                               urlSession: urlSession,
                               expectedMethod: expectedMethod,
                               expectedEndpoint: expectedEndpoint,
-                              expectedParameters: expectedParameters)
+                              expectedParameters: expectedParameters,
+                              file: file,
+                              line: line)
         return QueryManager(api: api)
     }
 }
