@@ -1,3 +1,41 @@
+# [0.4.0](https://github.com/camiletti/UnsplashFramework/releases/tag/0.4.0)
+_1 Oct 2022_
+
+## ✨ Added
+
+- **All photo related functionality**
+  - List editorial photos
+  - Get a photo
+  - Get a random photo
+  - Get a photo’s statistics
+  - Track a photo download
+  - Update a photo
+  - Like a photo
+  - Unlike a photo
+  
+- **All collection related functionality**
+  - List collections
+  - Get a collection
+  - Get a collection’s photos
+  - List a collection’s related collections
+  - Create a new collection
+  - Update an existing collection
+  - Delete a collection
+  - Add a photo to a collection
+  - Remove a photo from a collection
+  
+- **All topic related functionality**
+  - List topics
+  - Get a topic
+  - Get a topic’s photos
+
+## ♻️ Updated
+
+- **All search related functionality**
+  - Search photos
+  - Search collections
+  - Search user
+
 # [0.3.0](https://github.com/camiletti/UnsplashFramework/releases/tag/0.3.0)
 _14 Aug 2022_
 
