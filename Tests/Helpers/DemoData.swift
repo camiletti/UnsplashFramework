@@ -213,6 +213,13 @@ enum DemoData {
         dataFromJSONFile(named: "Topic")
     }
 
+    /// Returns a sample respond of photos belonging to a topic.
+    ///
+    /// - Returns: JSON Data of photos belonging to a topic.
+    static var standardPhotosOfTopicResponse: Data {
+        dataFromJSONFile(named: "PhotosOfTopic")
+    }
+
     // MARK: - General purpose models
 
     /// Returns a sample of a CLLocationCoordinates2D.

@@ -511,5 +511,26 @@ public final class UNClient {
     public func topic(withIDOrSlug idOrSlug: String) async throws -> UNTopic {
         try await queryManager.topic(withIDOrSlug: idOrSlug)
     }
+
+    /// Retrieve a topic’s photos.
+    /// - Parameters:
+    ///   - idOrSlug: The topics’s ID or slug.
+    ///   - pageNumber: Page number to retrieve.
+    ///   - photosPerPage: Number of items per page.
+    ///   - orientation: Filter by photo orientation.
+    ///   - sortOrder: How to sort the photos.
+    /// - Returns: A topic’s photos.
+    public func photosOfTopic(idOrSlug: String,
+                              pageNumber: Int = 1,
+                              photosPerPage: Int = 10,
+                              orientation: UNPhotoOrientation? = nil,
+                              sortingBy sortOrder: UNSort = .latest) async throws -> [UNPhoto] {
+        let parameters = UNTopicPhotosParameters(pageNumber: pageNumber,
+                                                 photosPerPage: photosPerPage,
+                                                 orientation: orientation,
+                                                 order: sortOrder)
+
+        return try await queryManager.photosOfTopic(idOrSlug: idOrSlug, parameters: parameters)
+    }
 }
 

@@ -206,4 +206,10 @@ class QueryManager {
                               endpoint: .topic(idOrSlug: idOrSlug),
                               parameters: nil)
     }
+
+    func photosOfTopic(idOrSlug: String, parameters: UNTopicPhotosParameters) async throws -> [UNPhoto] {
+        try await api.request(.get,
+                              endpoint: .photosOfTopic(idOrSlug: idOrSlug),
+                              parameters: parameters)
+    }
 }

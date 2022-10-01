@@ -544,7 +544,9 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: nil)
         let client = UNClient(queryManager: queryManager)
 
-        let _ = try await client.relatedCollections(toCollectionWithID: collectionID)
+        let collections = try await client.relatedCollections(toCollectionWithID: collectionID)
+
+        XCTAssertFalse(collections.isEmpty)
     }
 
     func testCreatingNewCollection() async throws {
@@ -659,10 +661,12 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
-        let _ = try await client.topicList(idsOrSlugs: parameters.idsOrSlugs,
-                                           pageNumber: parameters.pageNumber!,
-                                           topicsPerPage: parameters.topicsPerPage!,
-                                           sortingBy: parameters.sorting!)
+        let topics = try await client.topicList(idsOrSlugs: parameters.idsOrSlugs,
+                                                pageNumber: parameters.pageNumber!,
+                                                topicsPerPage: parameters.topicsPerPage!,
+                                                sortingBy: parameters.sorting!)
+
+        XCTAssertFalse(topics.isEmpty)
     }
 
     func testFetchingATopic() async throws {
@@ -680,5 +684,32 @@ final class UNClientTests: XCTestCase {
         let client = UNClient(queryManager: queryManager)
 
         let _ = try await client.topic(withIDOrSlug: topicSlug)
+    }
+
+    func testPhotosOfTopics() async throws {
+        let topicSlug = "Nature"
+        let endpoint = Endpoint.photosOfTopic(idOrSlug: topicSlug)
+        let parameters = UNTopicPhotosParameters(pageNumber: 3,
+                                                 photosPerPage: 7,
+                                                 orientation: .landscape,
+                                                 order: .oldest)
+        let queryManager = QueryManager.mock(data: DemoData.standardPhotosOfTopicResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
+        let client = UNClient(queryManager: queryManager)
+
+        let photos = try await client.photosOfTopic(idOrSlug: topicSlug,
+                                                    pageNumber: parameters.pageNumber!,
+                                                    photosPerPage: parameters.photosPerPage!,
+                                                    orientation: parameters.orientation!,
+                                                    sortingBy: parameters.order!)
+
+        XCTAssertFalse(photos.isEmpty)
     }
 }
