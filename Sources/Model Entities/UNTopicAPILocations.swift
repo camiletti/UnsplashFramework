@@ -23,27 +23,25 @@
 
 import Foundation
 
-public struct UNBadge: Codable, Equatable {
+/// Holds the API URLs for a topic.
+public struct UNTopicAPILocations: Codable, Equatable {
+
     // MARK: - Declarations
 
     enum CodingKeys: String, CodingKey {
-        case title
-        case isPrimary = "primary"
-        case slug
-        case link
+        case apiTopicURL = "self"
+        case apiPhotosURL = "photos"
+        case externalTopicURL = "html"
     }
 
     // MARK: - Properties
 
-    /// The title of the badge.
-    public let title: String
+    /// Topic URL. Accessible only through the API.
+    public var apiTopicURL: URL
 
-    /// Whether the badge is the user's primary badge.
-    public let isPrimary: Bool
+    /// Photos of the topic URL. Accessible only through the API.
+    public var apiPhotosURL: URL
 
-    /// The slug name of the badge.
-    public let slug: String
-
-    /// The main page URL for what the badge represents.
-    public let link: URL
+    /// Public link to the topic.
+    public var externalTopicURL: URL
 }

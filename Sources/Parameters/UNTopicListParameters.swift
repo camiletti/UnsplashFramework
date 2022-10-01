@@ -24,45 +24,55 @@
 import Foundation
 
 /// The parameters' names and values that can be passed to Unsplash in a query.
-struct UNPhotoListParameters {
+struct UNTopicListParameters {
 
     // MARK: - Declarations
 
     enum QueryParameterName {
+        /// Limit to only matching topic ids or slugs. (Optional; Comma separated string)
+        static let idsOrSlugs = "ids"
         /// Page number to retrieve.
         static let pageNumber = "page"
         /// Number of items per page.
-        static let photosPerPage = "per_page"
-        /// How to sort the photos.
+        static let topicsPerPage = "per_page"
+        /// How to sort the topics.
         static let sorting = "order_by"
     }
 
     // MARK: - Properties
 
+    /// Limit to only matching topic ids or slugs. (Optional; Comma separated string)
+    let idsOrSlugs: [String]?
+
     /// Page number to retrieve. (Optional; default: 1).
     let pageNumber: Int?
 
     /// Number of items per page. (Optional; default: 10).
-    let photosPerPage: Int?
+    let topicsPerPage: Int?
 
-    /// How to sort the photos. (Optional; default: latest)
-    let sorting: UNSort?
+    /// How to sort the topics. (Optional; default: position)
+    let sorting: UNTopicSort?
 }
 
 // MARK: - ParametersURLRepresentable
-extension UNPhotoListParameters: ParametersURLRepresentable {
+extension UNTopicListParameters: ParametersURLRepresentable {
 
     func asQueryItems() -> [URLQueryItem] {
         var queryItems = [URLQueryItem]()
+
+        if let idsOrSlugs = idsOrSlugs {
+            queryItems.append(URLQueryItem(name: QueryParameterName.idsOrSlugs,
+                                           value: idsOrSlugs.joined(separator: ",")))
+        }
 
         if let pageNumber = pageNumber {
             queryItems.append(URLQueryItem(name: QueryParameterName.pageNumber,
                                            value: "\(pageNumber)"))
         }
 
-        if let photosPerPage = photosPerPage {
-            queryItems.append(URLQueryItem(name: QueryParameterName.photosPerPage,
-                                           value: "\(photosPerPage)"))
+        if let topicsPerPage = topicsPerPage {
+            queryItems.append(URLQueryItem(name: QueryParameterName.topicsPerPage,
+                                           value: "\(topicsPerPage)"))
         }
 
         if let sorting = sorting {

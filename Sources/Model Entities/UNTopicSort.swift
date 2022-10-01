@@ -21,29 +21,14 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
-
-public struct UNBadge: Codable, Equatable {
-    // MARK: - Declarations
-
-    enum CodingKeys: String, CodingKey {
-        case title
-        case isPrimary = "primary"
-        case slug
-        case link
-    }
-
-    // MARK: - Properties
-
-    /// The title of the badge.
-    public let title: String
-
-    /// Whether the badge is the user's primary badge.
-    public let isPrimary: Bool
-
-    /// The slug name of the badge.
-    public let slug: String
-
-    /// The main page URL for what the badge represents.
-    public let link: URL
+/// Available sorting options for a query.
+public enum UNTopicSort: String {
+    /// Ordered by date from the latest to the oldest.
+    case latest
+    /// Ordered by date from the oldest to the latest.
+    case oldest
+    /// Ordered by featured.
+    case featured
+    /// Ordered by position.
+    case position
 }

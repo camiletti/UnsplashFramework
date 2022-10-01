@@ -192,4 +192,12 @@ class QueryManager {
                               endpoint: .removePhotoToCollection(collectionID: collectionID),
                               parameters: parameters)
     }
+
+    // MARK: - Topics
+
+    func topicList(parameters: UNTopicListParameters) async throws -> [UNTopic] {
+        try await api.request(.get,
+                              endpoint: .topicsList,
+                              parameters: parameters)
+    }
 }

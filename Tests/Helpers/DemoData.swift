@@ -197,6 +197,15 @@ enum DemoData {
         dataFromJSONFile(named: "AddRemovePhotoInCollection")
     }
 
+    // MARK: - Topics
+
+    /// Returns a sample respond of a list of topics.
+    ///
+    /// - Returns: JSON Data of related collections.
+    static var standardTopicList: Data {
+        dataFromJSONFile(named: "StandardTopicList")
+    }
+
     // MARK: - General purpose models
 
     /// Returns a sample of a CLLocationCoordinates2D.

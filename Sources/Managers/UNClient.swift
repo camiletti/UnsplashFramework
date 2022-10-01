@@ -483,4 +483,26 @@ public final class UNClient {
 
         return (response.photo, response.collection)
     }
+
+    // MARK: - Topics
+
+    /// Get a single page from the list of all topics.
+    /// - Parameters:
+    ///   - idsOrSlugs: Limit to only matching topic ids or slugs
+    ///   - pageNumber: Page number to retrieve.
+    ///   - topicsPerPage: Number of items per page.
+    ///   - sortOrder: How to sort the topics.
+    /// - Returns: A single page from the list of all topics.
+    public func topicList(idsOrSlugs: [String]?,
+                          pageNumber: Int = 1,
+                          topicsPerPage: Int = 10,
+                          sortingBy sortOrder: UNTopicSort = .position) async throws -> [UNTopic] {
+        let parameters = UNTopicListParameters(idsOrSlugs: idsOrSlugs,
+                                               pageNumber: pageNumber,
+                                               topicsPerPage: topicsPerPage,
+                                               sorting: sortOrder)
+
+        return try await queryManager.topicList(parameters: parameters)
+    }
 }
+

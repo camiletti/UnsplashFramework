@@ -639,4 +639,29 @@ final class UNClientTests: XCTestCase {
 
         let _ = try await client.removePhoto(withID: parameters.photoID, fromCollectionWithID: collectionID)
     }
+
+    // MARK: - Topics
+
+    func testListingTopics() async throws {
+        let endpoint = Endpoint.topicsList
+        let parameters = UNTopicListParameters(idsOrSlugs: ["1", "2"],
+                                               pageNumber: 3,
+                                               topicsPerPage: 7,
+                                               sorting: .oldest)
+        let queryManager = QueryManager.mock(data: DemoData.standardTopicList,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
+        let client = UNClient(queryManager: queryManager)
+
+        let _ = try await client.topicList(idsOrSlugs: parameters.idsOrSlugs,
+                                           pageNumber: parameters.pageNumber!,
+                                           topicsPerPage: parameters.topicsPerPage!,
+                                           sortingBy: parameters.sorting!)
+    }
 }

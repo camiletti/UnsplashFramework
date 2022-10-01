@@ -27,10 +27,10 @@ public enum UNSort: String {
     case latest
     /// Ordered by date from the oldest to the latest.
     case oldest
-    /// Ordered by popularity
+    /// Ordered by popularity.
     case popular
-    /// Ordered by views
+    /// Ordered by views.
     case views
-    /// Order by downloads
+    /// Order by downloads.
     case downloads
 }
