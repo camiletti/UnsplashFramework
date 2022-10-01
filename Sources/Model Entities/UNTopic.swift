@@ -43,6 +43,7 @@ public struct UNTopic: Decodable {
         case apiLocations = "links"
         case status
         case owners
+        case topContributors = "top_contributors"
         case coverPhoto = "cover_photo"
         case previewPhotos = "preview_photos"
 
@@ -106,6 +107,9 @@ public struct UNTopic: Decodable {
 
     /// The users that own the topic.
     public let owners: [UNUser]
+
+    /// The users who contributed the most.
+    public let topContributors: [UNUser]?
 
     /// The cover photo representing the topic.
     public let coverPhoto: UNPhoto

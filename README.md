@@ -55,7 +55,7 @@ The plan is to achieve feature parity with Unsplash REST API
 
 ### Topics
 - [x] List topics
-- [ ] Get a topic
+- [x] Get a topic
 - [ ] Get a topic’s photos
 
 ### Stats

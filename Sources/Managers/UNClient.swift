@@ -504,5 +504,12 @@ public final class UNClient {
 
         return try await queryManager.topicList(parameters: parameters)
     }
+
+    /// Get a topic
+    /// - Parameter idOrSlug: The topics’s ID or slug.
+    /// - Returns: A single topic
+    public func topic(withIDOrSlug idOrSlug: String) async throws -> UNTopic {
+        try await queryManager.topic(withIDOrSlug: idOrSlug)
+    }
 }
 

@@ -201,9 +201,16 @@ enum DemoData {
 
     /// Returns a sample respond of a list of topics.
     ///
-    /// - Returns: JSON Data of related collections.
+    /// - Returns: JSON Data of a list of topics.
     static var standardTopicList: Data {
         dataFromJSONFile(named: "StandardTopicList")
+    }
+
+    /// Returns a sample respond of a topic.
+    ///
+    /// - Returns: JSON Data of a topic.
+    static var standardTopicResponse: Data {
+        dataFromJSONFile(named: "Topic")
     }
 
     // MARK: - General purpose models

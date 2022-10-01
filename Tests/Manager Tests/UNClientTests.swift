@@ -664,4 +664,21 @@ final class UNClientTests: XCTestCase {
                                            topicsPerPage: parameters.topicsPerPage!,
                                            sortingBy: parameters.sorting!)
     }
+
+    func testFetchingATopic() async throws {
+        let topicSlug = "Nature"
+        let endpoint = Endpoint.topic(idOrSlug: topicSlug)
+        let queryManager = QueryManager.mock(data: DemoData.standardTopicResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: nil),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: nil)
+        let client = UNClient(queryManager: queryManager)
+
+        let _ = try await client.topic(withIDOrSlug: topicSlug)
+    }
 }

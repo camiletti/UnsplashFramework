@@ -200,4 +200,10 @@ class QueryManager {
                               endpoint: .topicsList,
                               parameters: parameters)
     }
+
+    func topic(withIDOrSlug idOrSlug: String) async throws -> UNTopic {
+        try await api.request(.get,
+                              endpoint: .topic(idOrSlug: idOrSlug),
+                              parameters: nil)
+    }
 }
