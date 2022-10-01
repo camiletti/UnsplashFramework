@@ -31,7 +31,7 @@ public class UNFullPhoto: UNPhoto {
         case cameraDetails = "exif"
         case location
         case isPublicDomain = "public_domain"
-        case topics = "tags"
+        case tags
         case relatedCollections = "related_collections"
         case numberOfViews = "views"
         case numberOfDownloads = "downloads"
@@ -52,8 +52,8 @@ public class UNFullPhoto: UNPhoto {
     /// Whether the photo is of public domain
     public let isPublicDomain: Bool?
 
-    /// The topics that the photos is about.
-    public let topics: [UNTopic]?
+    /// The tags that the photos is about.
+    public let tags: [UNTag]?
 
     /// Suggested collections that are related to the photo
     public let relatedCollections: [UNCollection]?
@@ -76,7 +76,7 @@ public class UNFullPhoto: UNPhoto {
         cameraDetails = try? container.decode(UNCameraDetails.self, forKey: .cameraDetails)
         location  = try? container.decode(UNLocation.self, forKey: .location)
         isPublicDomain = try? container.decode(Bool.self, forKey: .isPublicDomain)
-        topics = try? container.decode([UNTopic].self, forKey: .topics)
+        tags = try? container.decode([UNTag].self, forKey: .tags)
         numberOfViews = try container.decode(Int.self, forKey: .numberOfViews)
         numberOfDownloads = try container.decode(Int.self, forKey: .numberOfDownloads)
 

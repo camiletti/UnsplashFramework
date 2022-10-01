@@ -23,7 +23,7 @@
 
 import Foundation
 
-public struct UNTopic: Codable, Equatable {
+public struct UNTag: Codable, Equatable {
 
     public let type: String
 

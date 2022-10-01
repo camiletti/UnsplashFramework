@@ -42,7 +42,7 @@ final class UNCollectionTests: XCTestCase {
         XCTAssertTrue(collection.isPrivate)
         XCTAssertEqual(collection.totalAmountOfPhotos, 13)
         XCTAssertEqual(collection.shareKey, "09491bebece24560a48da4773e7fa2e2")
-        XCTAssertEqual(collection.topics.count, 6)
+        XCTAssertEqual(collection.tags.count, 6)
         XCTAssertNotNil(collection.user)
         XCTAssertNotNil(collection.coverPhoto)
         XCTAssertEqual(collection.previewPhotos.count, 4)

@@ -49,7 +49,7 @@ public struct UNUserPublicProfile: Codable, Equatable {
         case socialProfiles = "social"
         case profileImageLinks = "profile_image"
         case badge
-        case topicsTitlesOfInterest = "tags"
+        case tagsTitlesOfInterest = "tags"
         case profileLinks = "links"
     }
 
@@ -115,8 +115,8 @@ public struct UNUserPublicProfile: Codable, Equatable {
     /// Main badge awarded to the user.
     public let badge: UNBadge?
 
-    /// Titles of topics that the user's is interested in.
-    public let topicsTitlesOfInterest: UNUserInterests
+    /// Titles of tags that the user's is interested in.
+    public let tagsTitlesOfInterest: UNUserInterests
 
     /// Links to the user's profile.
     public let profileLinks: UNUserProfileLinks

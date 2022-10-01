@@ -34,7 +34,7 @@ final class UNFullPhotoTests: XCTestCase {
         XCTAssertNotNil(photo.cameraDetails)
         XCTAssertNotNil(photo.location)
         XCTAssertTrue(photo.isPublicDomain!)
-        XCTAssertEqual(photo.topics!.count, 8)
+        XCTAssertEqual(photo.tags!.count, 8)
         XCTAssertEqual(photo.relatedCollections!.count, 3)
         XCTAssertEqual(photo.numberOfViews, 2184)
         XCTAssertEqual(photo.numberOfDownloads, 25)

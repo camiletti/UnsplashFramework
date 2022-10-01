@@ -28,15 +28,15 @@ public struct UNUserInterests: Codable, Equatable {
     // MARK: - Declarations
 
     enum CodingKeys: String, CodingKey {
-        case manuallySpecifiedTopics = "custom"
-        case inferredTopics = "aggregated"
+        case manuallySpecifiedTags = "custom"
+        case inferredTags = "aggregated"
     }
 
     // MARK: - Properties
 
-    /// Titles of topics that the user has manually specified in their profile page.
-    public let manuallySpecifiedTopics: [UNTopic]
+    /// Titles of tags that the user has manually specified in their profile page.
+    public let manuallySpecifiedTags: [UNTag]
 
-    /// Titles of topics that Unsplash has inferred based on user activity.
-    public let inferredTopics: [UNTopic]
+    /// Titles of tags that Unsplash has inferred based on user activity.
+    public let inferredTags: [UNTag]
 }

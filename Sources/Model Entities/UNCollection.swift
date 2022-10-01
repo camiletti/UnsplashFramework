@@ -41,7 +41,7 @@ public struct UNCollection: Decodable, Identifiable {
         case totalAmountOfPhotos = "total_photos"
         case coverPhoto = "cover_photo"
         case previewPhotos = "preview_photos"
-        case topics = "tags"
+        case tags
         case user
         case apiLocations = "links"
         case shareKey = "share_key"
@@ -86,8 +86,8 @@ public struct UNCollection: Decodable, Identifiable {
     /// Normally a maximum 4.
     public let previewPhotos: [UNBasicPhoto]
 
-    /// The topics that the collection is about or contains.
-    public let topics: [UNTopic]
+    /// The tags that the collection is about or contains.
+    public let tags: [UNTag]
 
     /// User that owns the collection.
     public let user: UNUser?
@@ -111,7 +111,7 @@ public struct UNCollection: Decodable, Identifiable {
          totalAmountOfPhotos: Int,
          coverPhoto: UNPhoto?,
          previewPhotos: [UNPhoto],
-         topics: [UNTopic],
+         tags: [UNTag],
          user: UNUser?,
          shareKey: String,
          apiLocations: UNCollectionAPILocations) {
@@ -127,7 +127,7 @@ public struct UNCollection: Decodable, Identifiable {
         self.totalAmountOfPhotos = totalAmountOfPhotos
         self.coverPhoto = coverPhoto
         self.previewPhotos = previewPhotos
-        self.topics = topics
+        self.tags = tags
         self.user = user
         self.shareKey = shareKey
         self.apiLocations = apiLocations
@@ -151,7 +151,7 @@ public struct UNCollection: Decodable, Identifiable {
         totalAmountOfPhotos = try values.decode(Int.self, forKey: .totalAmountOfPhotos)
         coverPhoto = try? values.decode(UNPhoto.self, forKey: .coverPhoto)
         previewPhotos = (try? values.decode([UNBasicPhoto].self, forKey: .previewPhotos)) ?? []
-        topics = try values.decode([UNTopic].self, forKey: .topics)
+        tags = try values.decode([UNTag].self, forKey: .tags)
         user = try? values.decode(UNUser.self, forKey: .user)
         shareKey = try values.decode(String.self, forKey: .shareKey)
         apiLocations = try values.decode(UNCollectionAPILocations.self, forKey: .apiLocations)
