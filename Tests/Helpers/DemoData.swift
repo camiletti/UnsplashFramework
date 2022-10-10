@@ -220,6 +220,15 @@ enum DemoData {
         dataFromJSONFile(named: "PhotosOfTopic")
     }
 
+    // MARK: - Stats
+
+    /// Returns a sample respond of total Unsplash stats.
+    ///
+    /// - Returns: JSON Data of total Unsplash stats.
+    static var standardTotalStatsResponse: Data {
+        dataFromJSONFile(named: "TotalStats")
+    }
+
     // MARK: - General purpose models
 
     /// Returns a sample of a CLLocationCoordinates2D.

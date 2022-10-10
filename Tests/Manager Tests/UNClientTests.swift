@@ -712,4 +712,20 @@ final class UNClientTests: XCTestCase {
 
         XCTAssertFalse(photos.isEmpty)
     }
+
+    func testFetchingTotalUnsplashStats() async throws {
+        let endpoint = Endpoint.unsplashTotalStats
+        let queryManager = QueryManager.mock(data: DemoData.standardTotalStatsResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: nil),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: nil)
+        let client = UNClient(queryManager: queryManager)
+
+        let _ = try await client.unsplashTotalStats()
+    }
 }

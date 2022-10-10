@@ -532,5 +532,12 @@ public final class UNClient {
 
         return try await queryManager.photosOfTopic(idOrSlug: idOrSlug, parameters: parameters)
     }
+
+    // MARK: - Stats
+
+    /// Get a list of counts for all of Unsplash.
+    public func unsplashTotalStats() async throws -> UNUnsplashTotalStats {
+        try await queryManager.unsplashTotalStats()
+    }
 }
 

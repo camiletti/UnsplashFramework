@@ -13,7 +13,7 @@
 The idea behind this project is to make an easy-to-use, well tested and well documented client framework for Unsplash.
 Please read Unsplash's [Guidelines & Credition](https://unsplash.com/documentation#guidelines--crediting) before using it.
 
-> Currently in early development stage 🍼
+> Currently in development stage
 
 
 ## 🛠 Features
@@ -59,7 +59,7 @@ The plan is to achieve feature parity with Unsplash REST API
 - [x] Get a topic’s photos
 
 ### Stats
-- [ ] Totals
+- [x] Totals
 - [ ] Month
 
 ### Authentication
@@ -83,7 +83,7 @@ Add the following to your `Package` file:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/camiletti/UnsplashFramework.git", .branch("master"))
+    .package(url: "https://github.com/camiletti/UnsplashFramework.git", from: "0.4.0")
 ]
 ```
 
@@ -145,7 +145,7 @@ let users = try await client.searchUsers(query: "camiletti",
 
 ## 📖 Documentation
 
-[Full documentation here](https://swiftpackageindex.com/camiletti/UnsplashFramework/0.2.0/documentation/unsplashframework)
+[Full documentation here](https://swiftpackageindex.com/camiletti/UnsplashFramework/0.4.0/documentation/unsplashframework)
 
 
 ## 🐦 Contact

@@ -212,4 +212,12 @@ class QueryManager {
                               endpoint: .photosOfTopic(idOrSlug: idOrSlug),
                               parameters: parameters)
     }
+
+    // MARK: - Stats
+
+    func unsplashTotalStats() async throws -> UNUnsplashTotalStats {
+        try await api.request(.get,
+                              endpoint: .unsplashTotalStats,
+                              parameters: nil)
+    }
 }
