@@ -32,6 +32,10 @@ final class UNClientTests: XCTestCase {
     private enum Constant {
         static let requestDeadline = 0.2
         static let credentials = UNCredentials(accessKey: "123", secret: "789")
+        static let requestsLimit = 50
+        static let requestRemaining = 25
+        static let responseHeaders = [ResponseHeader.Key.requestLimit.rawValue: "\(requestsLimit)",
+                                      ResponseHeader.Key.requestsRemaining.rawValue: "\(requestRemaining)"]
     }
 
     // MARK: - Users
@@ -43,7 +47,8 @@ final class UNClientTests: XCTestCase {
         let parameters = UNUserPublicProfileParameters(username: username)
         let queryManager = QueryManager.mock(data: DemoData.userPublicProfileResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -52,7 +57,13 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let _ = try await client.publicProfile(forUsername: username)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testUserPortfolio() async throws {
@@ -61,7 +72,8 @@ final class UNClientTests: XCTestCase {
         let parameters = UNUserPublicProfileParameters(username: username)
         let queryManager = QueryManager.mock(data: DemoData.userPortfolioResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -70,7 +82,13 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let _ = try await client.portfolioLink(forUsername: username)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testUserPhotos() async throws {
@@ -85,7 +103,8 @@ final class UNClientTests: XCTestCase {
         let endpoint = Endpoint.userPhotos(username: parameters.username)
         let queryManager = QueryManager.mock(data: DemoData.userPhotosResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -93,6 +112,9 @@ final class UNClientTests: XCTestCase {
                                              expectedEndpoint: endpoint,
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
+
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
 
         let photos = try await client.photos(fromUsername: parameters.username,
                                         pageNumber: parameters.pageNumber!,
@@ -103,6 +125,9 @@ final class UNClientTests: XCTestCase {
                                         orientationFilter: parameters.orientationFilter)
 
         XCTAssertFalse(photos.isEmpty)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testPhotosLikedByUser() async throws {
@@ -114,7 +139,8 @@ final class UNClientTests: XCTestCase {
         let endpoint = Endpoint.userLikedPhotos(username: parameters.username)
         let queryManager = QueryManager.mock(data: DemoData.userLikesResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -123,6 +149,9 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let photos = try await client.photosLiked(byUsername: parameters.username,
                                                   pageNumber: parameters.pageNumber!,
                                                   photosPerPage: parameters.photosPerPage!,
@@ -130,6 +159,9 @@ final class UNClientTests: XCTestCase {
                                                   orientationFilter: parameters.orientationFilter)
 
         XCTAssertFalse(photos.isEmpty)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testCollectionsByUser() async throws {
@@ -139,7 +171,8 @@ final class UNClientTests: XCTestCase {
         let endpoint = Endpoint.userCollections(username: parameters.username)
         let queryManager = QueryManager.mock(data: DemoData.userCollectionsResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -148,11 +181,17 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let collections = try await client.collections(byUsername: parameters.username,
                                                        pageNumber: parameters.pageNumber!,
                                                        collectionsPerPage: parameters.collectionsPerPage!)
 
         XCTAssertFalse(collections.isEmpty)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testStatisticsByUser() async throws {
@@ -162,7 +201,8 @@ final class UNClientTests: XCTestCase {
         let endpoint = Endpoint.userStatistics(username: username)
         let queryManager = QueryManager.mock(data: DemoData.userStatisticsResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -171,9 +211,15 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let _ = try await client.statistics(forUsername: username,
                                             interval: parameters.interval!,
                                             quantity: parameters.quantity!)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     // MARK: - Photos
@@ -185,7 +231,8 @@ final class UNClientTests: XCTestCase {
                                                sorting: .latest)
         let queryManager = QueryManager.mock(data: DemoData.standardPhotoListResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -194,10 +241,16 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let photos = try await client.editorialPhotosList(pageNumber: parameters.pageNumber!,
                                                           photosPerPage: parameters.photosPerPage!,
                                                           sortingBy: parameters.sorting!)
         XCTAssertFalse(photos.isEmpty)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testFetchingAPhoto() async throws {
@@ -205,7 +258,8 @@ final class UNClientTests: XCTestCase {
         let endpoint = Endpoint.photo(id: photoID)
         let queryManager = QueryManager.mock(data: DemoData.standardPhotoAResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: nil),
+                                                                       parameters: nil,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -214,7 +268,13 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: nil)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let _ = try await client.photo(withID: photoID)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testFetchingRandomPhotoWithSearchQuery() async throws {
@@ -228,7 +288,8 @@ final class UNClientTests: XCTestCase {
                                                  amountOfRandomPhotos: 2)
         let queryManager = QueryManager.mock(data: DemoData.standardRandomPhotosWithQueryResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -237,6 +298,9 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let photos = try await client.randomPhotos(usingQuery: parameters.searchQuery,
                                                    fromUsername: parameters.username,
                                                    oriented: parameters.orientationFilter,
@@ -244,6 +308,9 @@ final class UNClientTests: XCTestCase {
                                                    returningAmount: parameters.amountOfRandomPhotos)
 
         XCTAssertEqual(photos.count, 2)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testFetchingRandomPhotoWithCollectionsAndTopics() async throws {
@@ -257,7 +324,8 @@ final class UNClientTests: XCTestCase {
                                                  amountOfRandomPhotos: 2)
         let queryManager = QueryManager.mock(data: DemoData.standardRandomPhotosWithQueryResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -265,6 +333,9 @@ final class UNClientTests: XCTestCase {
                                              expectedEndpoint: endpoint,
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
+
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
 
         let photos = try await client.randomPhotos(fromCollectionWithIDs: parameters.collectionIDs,
                                                    ofTopicWithIDs: parameters.topicIDs,
@@ -274,6 +345,9 @@ final class UNClientTests: XCTestCase {
                                                    returningAmount: parameters.amountOfRandomPhotos)
 
         XCTAssertEqual(photos.count, 2)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testStatisticsOfPhoto() async throws {
@@ -283,7 +357,8 @@ final class UNClientTests: XCTestCase {
         let endpoint = Endpoint.photoStatistics(id: photoID)
         let queryManager = QueryManager.mock(data: DemoData.photoStatisticsResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -292,9 +367,15 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let _ = try await client.statistics(forPhotoWithID: photoID,
                                             interval: parameters.interval!,
                                             quantity: parameters.quantity!)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testTrackingDownloadOfPhoto() async throws {
@@ -302,7 +383,8 @@ final class UNClientTests: XCTestCase {
         let endpoint = Endpoint.trackPhotoDownload(id: photoID)
         let queryManager = QueryManager.mock(data: DemoData.standardTrackPhotoDownload,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: nil),
+                                                                       parameters: nil,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -311,9 +393,15 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: nil)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let url = try await client.trackPhotoDownloaded(withID: photoID)
 
         XCTAssertNotNil(url)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testUpdatingPhotoInfo() async throws {
@@ -326,7 +414,8 @@ final class UNClientTests: XCTestCase {
                                                      cameraDetails: DemoData.cameraDetails)
         let queryManager = QueryManager.mock(data: DemoData.standardPhotoAResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -336,6 +425,9 @@ final class UNClientTests: XCTestCase {
 
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let photo = try await client.updatePhotoInfo(withID: photoID,
                                                      changingDescription: parameters.description,
                                                      showsOnProfile: parameters.showsOnProfile,
@@ -344,6 +436,9 @@ final class UNClientTests: XCTestCase {
                                                      cameraDetails: parameters.cameraDetails)
 
         XCTAssertNotNil(photo)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testLikingAPhoto() async throws {
@@ -351,7 +446,8 @@ final class UNClientTests: XCTestCase {
         let endpoint = Endpoint.likePhoto(id: photoID)
         let queryManager = QueryManager.mock(data: DemoData.standardPhotoAResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: nil),
+                                                                       parameters: nil,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -360,9 +456,15 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: nil)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let photo = try await client.likePhoto(withID: photoID)
 
         XCTAssertNotNil(photo)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testUnlikingAPhoto() async throws {
@@ -370,7 +472,8 @@ final class UNClientTests: XCTestCase {
         let endpoint = Endpoint.likePhoto(id: photoID)
         let queryManager = QueryManager.mock(data: DemoData.standardPhotoAResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: nil),
+                                                                       parameters: nil,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -379,9 +482,15 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: nil)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let photo = try await client.unlikePhoto(withID: photoID)
 
         XCTAssertNotNil(photo)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     // MARK: - Search
@@ -398,7 +507,8 @@ final class UNClientTests: XCTestCase {
                                                  orientation: .landscape)
         let queryManager = QueryManager.mock(data: DemoData.standardPhotoSearchResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -406,6 +516,9 @@ final class UNClientTests: XCTestCase {
                                              expectedEndpoint: endpoint,
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
+
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
 
         let photosSearchResult = try await client.searchPhotos(query: parameters.query,
                                                                pageNumber: parameters.pageNumber!,
@@ -417,6 +530,9 @@ final class UNClientTests: XCTestCase {
                                                                orientation: parameters.orientation!)
 
         XCTAssertFalse(photosSearchResult.elements.isEmpty)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testSearchCollection() async throws {
@@ -426,7 +542,8 @@ final class UNClientTests: XCTestCase {
                                                       collectionsPerPage: 4)
         let queryManager = QueryManager.mock(data: DemoData.standardCollectionSearchResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: nil),
+                                                                       parameters: nil,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -435,11 +552,17 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let collectionsSearchResult = try await client.searchCollections(query: parameters.query,
                                                                          page: parameters.pageNumber!,
                                                                          collectionsPerPage: parameters.collectionsPerPage!)
 
         XCTAssertFalse(collectionsSearchResult.elements.isEmpty)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testSearchUsers() async throws {
@@ -449,7 +572,8 @@ final class UNClientTests: XCTestCase {
                                                 usersPerPage: 4)
         let queryManager = QueryManager.mock(data: DemoData.standardUserSearchResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -458,11 +582,17 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let usersSearchResult = try await client.searchUsers(query: parameters.query,
                                                              page: parameters.pageNumber!,
                                                              usersPerPage: parameters.usersPerPage!)
 
         XCTAssertFalse(usersSearchResult.elements.isEmpty)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     // MARK: - Collections
@@ -473,7 +603,8 @@ final class UNClientTests: XCTestCase {
                                                     collectionsPerPage: 4)
         let queryManager = QueryManager.mock(data: DemoData.standardCollectionListResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -482,10 +613,16 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let collections = try await client.collectionList(pageNumber: parameters.pageNumber!,
                                                           collectionsPerPage: parameters.collectionsPerPage!)
 
         XCTAssertFalse(collections.isEmpty)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testFetchingACollection() async throws {
@@ -493,7 +630,8 @@ final class UNClientTests: XCTestCase {
         let endpoint = Endpoint.collection(id: collectionID)
         let queryManager = QueryManager.mock(data: DemoData.standardCollectionAResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: nil),
+                                                                       parameters: nil,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -502,7 +640,13 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: nil)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let _ = try await client.collection(withID: collectionID)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testPhotosInCollection() async throws {
@@ -513,7 +657,8 @@ final class UNClientTests: XCTestCase {
                                                       orientation: .landscape)
         let queryManager = QueryManager.mock(data: DemoData.standardPhotosInCollectionResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -522,12 +667,18 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let photos = try await client.photosInCollection(withID: collectionID,
                                                          page: parameters.pageNumber!,
                                                          photosPerPage: parameters.photosPerPage!,
                                                          orientation: parameters.orientation!)
 
         XCTAssertFalse(photos.isEmpty)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testFetchingRelatedCollections() async throws {
@@ -535,7 +686,8 @@ final class UNClientTests: XCTestCase {
         let endpoint = Endpoint.relatedCollections(id: collectionID)
         let queryManager = QueryManager.mock(data: DemoData.standardRelatedCollectionsResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: nil),
+                                                                       parameters: nil,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -544,9 +696,15 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: nil)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let collections = try await client.relatedCollections(toCollectionWithID: collectionID)
 
         XCTAssertFalse(collections.isEmpty)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testCreatingNewCollection() async throws {
@@ -554,7 +712,8 @@ final class UNClientTests: XCTestCase {
         let parameters = UNNewCollectionParameters(title: "A Title", description: "Some description", isPrivate: true)
         let queryManager = QueryManager.mock(data: DemoData.standardCollectionAResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -563,9 +722,15 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let _ = try await client.createNewCollection(title: parameters.title,
                                                      description: parameters.description,
                                                      isPrivate: parameters.isPrivate!)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testUpdatingCollection() async throws {
@@ -574,7 +739,8 @@ final class UNClientTests: XCTestCase {
         let parameters = UNUpdateCollectionParameters(title: "A Title", description: "Some description", isPrivate: true)
         let queryManager = QueryManager.mock(data: DemoData.standardCollectionAResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -583,10 +749,16 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let _ = try await client.updateCollection(withID: collectionID,
                                                   title: parameters.title,
                                                   description: parameters.description,
                                                   isPrivate: parameters.isPrivate!)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testDeletingCollection() async throws {
@@ -594,7 +766,8 @@ final class UNClientTests: XCTestCase {
         let endpoint = Endpoint.collection(id: collectionID)
         let queryManager = QueryManager.mock(data: Data(),
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: nil),
+                                                                       parameters: nil,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -603,7 +776,13 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: nil)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let _ = try await client.deleteCollection(withID: collectionID)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testAddingPhotoToCollection() async throws {
@@ -612,7 +791,8 @@ final class UNClientTests: XCTestCase {
         let parameters = UNModifyPhotoToCollectionParameters(photoID: "ABC")
         let queryManager = QueryManager.mock(data: DemoData.standardAddRemoveCollectionsResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -621,7 +801,13 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let _ = try await client.addPhoto(withID: parameters.photoID, toCollectionWithID: collectionID)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testRemovingPhotoFromCollection() async throws {
@@ -630,7 +816,8 @@ final class UNClientTests: XCTestCase {
         let parameters = UNModifyPhotoToCollectionParameters(photoID: "ABC")
         let queryManager = QueryManager.mock(data: DemoData.standardAddRemoveCollectionsResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -639,7 +826,13 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let _ = try await client.removePhoto(withID: parameters.photoID, fromCollectionWithID: collectionID)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     // MARK: - Topics
@@ -652,7 +845,8 @@ final class UNClientTests: XCTestCase {
                                                sorting: .oldest)
         let queryManager = QueryManager.mock(data: DemoData.standardTopicList,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -661,12 +855,18 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let topics = try await client.topicList(idsOrSlugs: parameters.idsOrSlugs,
                                                 pageNumber: parameters.pageNumber!,
                                                 topicsPerPage: parameters.topicsPerPage!,
                                                 sortingBy: parameters.sorting!)
 
         XCTAssertFalse(topics.isEmpty)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testFetchingATopic() async throws {
@@ -674,7 +874,8 @@ final class UNClientTests: XCTestCase {
         let endpoint = Endpoint.topic(idOrSlug: topicSlug)
         let queryManager = QueryManager.mock(data: DemoData.standardTopicResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: nil),
+                                                                       parameters: nil,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -683,7 +884,13 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: nil)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let _ = try await client.topic(withIDOrSlug: topicSlug)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     func testPhotosOfTopics() async throws {
@@ -695,7 +902,8 @@ final class UNClientTests: XCTestCase {
                                                  order: .oldest)
         let queryManager = QueryManager.mock(data: DemoData.standardPhotosOfTopicResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: parameters),
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -704,6 +912,9 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: parameters)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let photos = try await client.photosOfTopic(idOrSlug: topicSlug,
                                                     pageNumber: parameters.pageNumber!,
                                                     photosPerPage: parameters.photosPerPage!,
@@ -711,6 +922,9 @@ final class UNClientTests: XCTestCase {
                                                     sortingBy: parameters.order!)
 
         XCTAssertFalse(photos.isEmpty)
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 
     // MARK: - Stats
@@ -719,7 +933,8 @@ final class UNClientTests: XCTestCase {
         let endpoint = Endpoint.unsplashTotalStats
         let queryManager = QueryManager.mock(data: DemoData.standardTotalStatsResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: nil),
+                                                                       parameters: nil,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -727,6 +942,9 @@ final class UNClientTests: XCTestCase {
                                              expectedEndpoint: endpoint,
                                              expectedParameters: nil)
         let client = UNClient(queryManager: queryManager)
+
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
 
         let _ = try await client.unsplashTotalStats()
     }
@@ -735,7 +953,8 @@ final class UNClientTests: XCTestCase {
         let endpoint = Endpoint.unsplashMonthlyStats
         let queryManager = QueryManager.mock(data: DemoData.standardMonthlyStatsResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
-                                                                       parameters: nil),
+                                                                       parameters: nil,
+                                                                       headers: Constant.responseHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -744,6 +963,12 @@ final class UNClientTests: XCTestCase {
                                              expectedParameters: nil)
         let client = UNClient(queryManager: queryManager)
 
+        XCTAssertNil(client.requestsLimit)
+        XCTAssertNil(client.requestsRemaining)
+
         let _ = try await client.unsplashMonthlyStats()
+
+        XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
+        XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
     }
 }

@@ -42,37 +42,37 @@ class QueryManager {
 
     // MARK: - Users
 
-    func publicProfile(with parameters: UNUserPublicProfileParameters) async throws -> UNUserPublicProfile {
+    func publicProfile(with parameters: UNUserPublicProfileParameters) async throws -> (UNUserPublicProfile, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .userPublicProfile(username: parameters.username),
                               parameters: parameters)
     }
 
-    func portfolioLink(with parameters: UNUserPublicProfileParameters) async throws -> UNURLWrapper {
+    func portfolioLink(with parameters: UNUserPublicProfileParameters) async throws -> (UNURLWrapper, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .userPortfolioLink(username: parameters.username),
                               parameters: parameters)
     }
 
-    func userPhotos(with parameters: UNUserPhotosParameters) async throws -> [UNPhoto] {
+    func userPhotos(with parameters: UNUserPhotosParameters) async throws -> ([UNPhoto], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .userPhotos(username: parameters.username),
                               parameters: parameters)
     }
 
-    func userLikedPhotos(with parameters: UNUserLikesParameters) async throws -> [UNPhoto] {
+    func userLikedPhotos(with parameters: UNUserLikesParameters) async throws -> ([UNPhoto], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .userLikedPhotos(username: parameters.username),
                               parameters: parameters)
     }
 
-    func collections(with parameters: UNUserCollectionsParameters) async throws -> [UNCollection] {
+    func collections(with parameters: UNUserCollectionsParameters) async throws -> ([UNCollection], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .userCollections(username: parameters.username),
                               parameters: parameters)
     }
 
-    func userStatistics(forUsername username: String, with parameters: UNStatisticsParameters) async throws -> UNUserStatistics {
+    func userStatistics(forUsername username: String, with parameters: UNStatisticsParameters) async throws -> (UNUserStatistics, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .userStatistics(username: username),
                               parameters: parameters)
@@ -80,49 +80,49 @@ class QueryManager {
 
     // MARK: - Photos
 
-    func editorialPhotosList(with parameters: UNPhotoListParameters) async throws -> [UNPhoto] {
+    func editorialPhotosList(with parameters: UNPhotoListParameters) async throws -> ([UNPhoto], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .editorialPhotosList,
                               parameters: parameters)
     }
 
-    func photo(withID id: String) async throws -> UNFullPhoto {
+    func photo(withID id: String) async throws -> (UNFullPhoto, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .photo(id: id),
                               parameters: nil)
     }
 
-    func randomPhotos(with parameters: UNRandomPhotoParameters) async throws -> [UNFullPhoto] {
+    func randomPhotos(with parameters: UNRandomPhotoParameters) async throws -> ([UNFullPhoto], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .randomPhoto,
                               parameters: parameters)
     }
 
-    func userStatistics(forPhotoWithID photoID: String, with parameters: UNStatisticsParameters) async throws -> UNPhotoStatistics {
+    func userStatistics(forPhotoWithID photoID: String, with parameters: UNStatisticsParameters) async throws -> (UNPhotoStatistics, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .photoStatistics(id: photoID),
                               parameters: parameters)
     }
 
-    public func trackPhotoDownloaded(withID photoID: String) async throws -> UNURLWrapper {
+    public func trackPhotoDownloaded(withID photoID: String) async throws -> (UNURLWrapper, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .trackPhotoDownload(id: photoID),
                               parameters: nil)
     }
 
-    func updatePhotoInfo(forPhotoWithID photoID: String, with parameters: UNUpdatePhotoInfoParameters) async throws -> UNPhoto {
+    func updatePhotoInfo(forPhotoWithID photoID: String, with parameters: UNUpdatePhotoInfoParameters) async throws -> (UNPhoto, [ResponseHeader]) {
         try await api.request(.put,
                               endpoint: .photo(id: photoID),
                               parameters: parameters)
     }
 
-    func likePhoto(withID photoID: String) async throws -> UNPhoto {
+    func likePhoto(withID photoID: String) async throws -> (UNPhoto, [ResponseHeader]) {
         try await api.request(.post,
                               endpoint: .likePhoto(id: photoID),
                               parameters: nil)
     }
 
-    func unlikePhoto(withID photoID: String) async throws -> UNPhoto {
+    func unlikePhoto(withID photoID: String) async throws -> (UNPhoto, [ResponseHeader]) {
         try await api.request(.delete,
                               endpoint: .likePhoto(id: photoID),
                               parameters: nil)
@@ -131,7 +131,7 @@ class QueryManager {
     // MARK: - Search
 
     func search<T>(_ searchType: SearchType,
-                   with parameters: ParametersURLRepresentable) async throws -> UNSearchResult<T> {
+                   with parameters: ParametersURLRepresentable) async throws -> (UNSearchResult<T>, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: searchType.endpoint,
                               parameters: parameters)
@@ -139,55 +139,55 @@ class QueryManager {
 
     // MARK: - Collections
 
-    func collectionList(parameters: UNCollectionListParameters) async throws -> [UNCollection] {
+    func collectionList(parameters: UNCollectionListParameters) async throws -> ([UNCollection], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .collections,
                               parameters: parameters)
     }
 
-    func collection(withID id: String) async throws -> UNCollection {
+    func collection(withID id: String) async throws -> (UNCollection, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .collection(id: id),
                               parameters: nil)
     }
 
-    func photosInCollection(withID collectionID: String, parameters: UNCollectionPhotosParameters) async throws -> [UNPhoto] {
+    func photosInCollection(withID collectionID: String, parameters: UNCollectionPhotosParameters) async throws -> ([UNPhoto], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .photosInCollection(id: collectionID),
                               parameters: parameters)
     }
 
-    func relatedCollections(toCollectionWithID collectionID: String) async throws -> [UNCollection] {
+    func relatedCollections(toCollectionWithID collectionID: String) async throws -> ([UNCollection], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .relatedCollections(id: collectionID),
                               parameters: nil)
     }
 
-    func createNewCollection(parameters: UNNewCollectionParameters) async throws -> UNCollection {
+    func createNewCollection(parameters: UNNewCollectionParameters) async throws -> (UNCollection, [ResponseHeader]) {
         try await api.request(.post,
                               endpoint: .collections,
                               parameters: parameters)
     }
 
-    func updateCollection(withID collectionID: String, parameters: UNUpdateCollectionParameters) async throws -> UNCollection {
+    func updateCollection(withID collectionID: String, parameters: UNUpdateCollectionParameters) async throws -> (UNCollection, [ResponseHeader]) {
         try await api.request(.put,
                               endpoint: .collection(id: collectionID),
                               parameters: parameters)
     }
 
-    func deleteCollection(withID collectionID: String) async throws {
+    func deleteCollection(withID collectionID: String) async throws -> [ResponseHeader] {
         try await api.request(.delete,
                               endpoint: .collection(id: collectionID),
                               parameters: nil)
     }
 
-    func addPhotoToCollection(withID collectionID: String, parameters: UNModifyPhotoToCollectionParameters) async throws -> UNModifyPhotoInCollectionResponse {
+    func addPhotoToCollection(withID collectionID: String, parameters: UNModifyPhotoToCollectionParameters) async throws -> (UNModifyPhotoInCollectionResponse, [ResponseHeader]) {
         try await api.request(.post,
                               endpoint: .addPhotoToCollection(collectionID: collectionID),
                               parameters: parameters)
     }
 
-    func removePhotoFromCollection(withID collectionID: String, parameters: UNModifyPhotoToCollectionParameters) async throws -> UNModifyPhotoInCollectionResponse {
+    func removePhotoFromCollection(withID collectionID: String, parameters: UNModifyPhotoToCollectionParameters) async throws -> (UNModifyPhotoInCollectionResponse, [ResponseHeader]) {
         try await api.request(.delete,
                               endpoint: .removePhotoToCollection(collectionID: collectionID),
                               parameters: parameters)
@@ -195,19 +195,19 @@ class QueryManager {
 
     // MARK: - Topics
 
-    func topicList(parameters: UNTopicListParameters) async throws -> [UNTopic] {
+    func topicList(parameters: UNTopicListParameters) async throws -> ([UNTopic], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .topicsList,
                               parameters: parameters)
     }
 
-    func topic(withIDOrSlug idOrSlug: String) async throws -> UNTopic {
+    func topic(withIDOrSlug idOrSlug: String) async throws -> (UNTopic, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .topic(idOrSlug: idOrSlug),
                               parameters: nil)
     }
 
-    func photosOfTopic(idOrSlug: String, parameters: UNTopicPhotosParameters) async throws -> [UNPhoto] {
+    func photosOfTopic(idOrSlug: String, parameters: UNTopicPhotosParameters) async throws -> ([UNPhoto], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .photosOfTopic(idOrSlug: idOrSlug),
                               parameters: parameters)
@@ -215,13 +215,13 @@ class QueryManager {
 
     // MARK: - Stats
 
-    func unsplashTotalStats() async throws -> UNUnsplashTotalStats {
+    func unsplashTotalStats() async throws -> (UNUnsplashTotalStats, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .unsplashTotalStats,
                               parameters: nil)
     }
 
-    func unsplashMonthlyStats() async throws -> UNUnsplashMonthlyStats {
+    func unsplashMonthlyStats() async throws -> (UNUnsplashMonthlyStats, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .unsplashMonthlyStats,
                               parameters: nil)

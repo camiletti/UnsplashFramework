@@ -35,27 +35,44 @@ final class UNAPITests: XCTestCase {
 
     // MARK: - Tests
 
-    // Accessing `urlSession.tasks` crashes in Xcode 13 beta 3
-//    func testHeaders() async throws {
-//        let credentials = UNCredentials(appID: "appID",
-//                                        secret: "secret")
-//        let urlSession = MockURLSession.mocking(data: nil,
-//                                                response: nil,
-//                                                error: nil,
-//                                                deadline: Constant.dataTaskMockedDelay)
-//        let api = UNAPI(credentials: credentials, urlSession: urlSession)
-//
-//        let expectedHeaders = [UNAPI.Header.acceptVersion.fieldName: UNAPI.Header.acceptVersion.fieldValue,
-//                               UNAPI.Header.authorization(appID: credentials.appID).fieldName: UNAPI.Header.authorization(appID: credentials.appID).fieldValue]
-//
-//        // None of the parameters passed to the request matter for this test
-//        let _: [UNPhoto] = try await api.request(.get,
-//                                                 endpoint: .photos,
-//                                                 parameters: nil)
-//
-//        let (dataTask, _, _) = await urlSession.tasks
-//        XCTAssertEqual(dataTask.first?.originalRequest?.allHTTPHeaderFields, expectedHeaders)
-//    }
+    func testHeaders() async throws {
+        let credentials = UNCredentials(accessKey: "appID", secret: "secret")
+        let headerCheckExpectation = expectation(description: "Header check should have been executed")
+        let expectedHeaders: [String: Any] = [RequestHeader.acceptVersion.fieldName: RequestHeader.acceptVersion.fieldValue,
+                                              RequestHeader.authorization(accessKey: credentials.accessKey).fieldName: RequestHeader.authorization(accessKey: credentials.accessKey).fieldValue]
+
+        let requestHeaderCheck: ([AnyHashable: Any]) -> Void = { (headers: [AnyHashable: Any]) in
+            guard let headers = headers as? [String: Any] else {
+                XCTFail("Incorrect header type")
+                return
+            }
+
+            XCTAssertEqual(headers.count, expectedHeaders.count)
+
+            for header in headers {
+                // To simplify the test, because at the moment all values are string we'll force cast.
+                // This will need to be reconsider if in the future other types are passed as header values.
+                XCTAssertEqual(header.value as! String, expectedHeaders[header.key] as! String)
+            }
+
+            headerCheckExpectation.fulfill()
+        }
+
+        let urlSession = URLSession.mocking(data: DemoData.standardPhotoSearchResponse,
+                                            response: .mockingSuccess(endpoint: SearchType.photo.endpoint,
+                                                                      parameters: nil,
+                                                                      headers: nil),
+                                            error: nil,
+                                            deadline: Constant.dataTaskMockedDelay,
+                                            requestHeaderCheck: requestHeaderCheck)
+        let api = UNAPI(credentials: credentials, urlSession: urlSession)
+
+        let _: (UNSearchResult<UNPhoto>, _) = try await api.request(.get,
+                                                                    endpoint: SearchType.photo.endpoint,
+                                                                    parameters: nil)
+
+        wait(for: [headerCheckExpectation], timeout: 0.1)
+    }
 
     func testResultIsFailureWhenAnErrorIsReceived() async throws {
         let expectedError = UNError(reason: .serverNotReached)
@@ -68,9 +85,9 @@ final class UNAPITests: XCTestCase {
         let api = UNAPI(credentials: credentials, urlSession: urlSession)
 
         do {
-            let _: UNSearchResult<UNPhoto> = try await api.request(.get,
-                                                                   endpoint: SearchType.photo.endpoint,
-                                                                   parameters: nil)
+            let _: (UNSearchResult<UNPhoto>, _) = try await api.request(.get,
+                                                                        endpoint: SearchType.photo.endpoint,
+                                                                        parameters: nil)
             XCTFail("Success is not what we expect here")
         } catch {
             // Error is the expected result

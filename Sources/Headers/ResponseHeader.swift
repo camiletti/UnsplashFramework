@@ -22,27 +22,44 @@
 //
 
 import Foundation
-@testable import UnsplashFramework
 
-extension URLResponse {
+/// Available response headers as described at https://unsplash.com/documentation
+enum ResponseHeader {
+    case requestLimit(Int)
+    case requestsRemaining(Int)
 
-    static func mockingSuccess(endpoint: Endpoint, parameters: ParametersURLRepresentable?, headers: [String: String]?) -> HTTPURLResponse {
-        let url = URLComponents(unsplashQuery: parameters?.asQueryItems(),
-                                withPath: endpoint.path).url!
+    // MARK: - Declarations
 
-        return HTTPURLResponse(url: url,
-                               statusCode: ResponseStatusCode.success.rawValue,
-                               httpVersion: nil,
-                               headerFields: headers)!
+    enum Key: String, CaseIterable {
+        case requestLimit = "X-Ratelimit-Limit"
+        case requestsRemaining = "X-Ratelimit-Remaining"
     }
 
-    static func mockingFailure(endpoint: Endpoint, parameters: ParametersURLRepresentable?, statusCode: ResponseStatusCode = .internalServerError, headers: [String: String]? = nil) -> HTTPURLResponse {
-        let url = URLComponents(unsplashQuery: parameters?.asQueryItems(),
-                                withPath: endpoint.path).url!
+    // MARK: - Actions
 
-        return HTTPURLResponse(url: url,
-                               statusCode: statusCode.rawValue,
-                               httpVersion: nil,
-                               headerFields: headers)!
+    private static func headerField(for field: Key, value: String) -> ResponseHeader? {
+        switch field {
+        case .requestLimit:
+            if let amount = Int(value) {
+                return .requestLimit(amount)
+            }
+
+        case .requestsRemaining:
+            if let amount = Int(value) {
+                return .requestsRemaining(amount)
+            }
+        }
+
+        return nil
+    }
+
+    static func headers(from response: HTTPURLResponse) -> [ResponseHeader] {
+        Key.allCases.compactMap {
+            guard let value = response.value(forHTTPHeaderField: $0.rawValue) else {
+                return nil
+            }
+
+            return headerField(for: $0, value: value)
+        }
     }
 }

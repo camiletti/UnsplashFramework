@@ -64,7 +64,7 @@ final class UNAPITester: UNAPI {
 
     override func request<T>(_ method: UNAPI.HTTPMethod,
                              endpoint: Endpoint,
-                             parameters: ParametersURLRepresentable?) async throws -> T where T : Decodable {
+                             parameters: ParametersURLRepresentable?) async throws -> (T, [ResponseHeader]) where T : Decodable {
         XCTAssertEqual(method, expectedMethod, file: file, line: line)
         XCTAssertEqual(endpoint.path, expectedEndpoint.path, file: file, line: line)
         XCTAssertEqual(parameters?.asQueryItems(), expectedParameters?.asQueryItems(), file: file, line: line)

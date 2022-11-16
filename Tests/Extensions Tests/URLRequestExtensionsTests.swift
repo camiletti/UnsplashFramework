@@ -32,8 +32,8 @@ final class URLSessionExtensionsTests: XCTestCase {
         // Parameters
         let id = "abc"
         let credentials = UNCredentials(accessKey: "123", secret: "789")
-        let headers: [UNAPI.Header] = [UNAPI.Header.acceptVersion,
-                                       UNAPI.Header.authorization(accessKey: credentials.accessKey)]
+        let headers: [RequestHeader] = [.acceptVersion,
+                                        .authorization(accessKey: credentials.accessKey)]
         // The parameters chosen are a sample of typical parameters. The test will make sure
         // the URLSession extension is converting the parameters into a correct URL format.
         // Tests for each parameter type are tested independently in their own tests.

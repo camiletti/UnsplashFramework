@@ -31,11 +31,13 @@ extension URLSession {
     static func mocking(data: Data?,
                         response: HTTPURLResponse?,
                         error: Error?,
-                        deadline: TimeInterval) -> URLSession {
+                        deadline: TimeInterval,
+                        requestHeaderCheck: (([AnyHashable: Any]) -> ())? = nil) -> URLSession {
         MockURLProtocol.setup(mockedData: data,
                               mockedResponse: response,
                               mockedError: error,
-                              deadline: deadline)
+                              deadline: deadline,
+                              requestHeaderCheck: requestHeaderCheck)
 
         let configuration = URLSessionConfiguration.default
         configuration.protocolClasses = [MockURLProtocol.self]

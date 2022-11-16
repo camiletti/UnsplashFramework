@@ -36,7 +36,7 @@ extension URLRequest {
     static func publicRequest(_ method: UNAPI.HTTPMethod,
                               forEndpoint endpoint: Endpoint,
                               parameters: ParametersURLRepresentable?,
-                              headers: [UNAPI.Header]) -> URLRequest {
+                              headers: [RequestHeader]) -> URLRequest {
         // Create new request
         let url = URLComponents(unsplashQuery: parameters?.asQueryItems(),
                                 withPath: endpoint.path).url!

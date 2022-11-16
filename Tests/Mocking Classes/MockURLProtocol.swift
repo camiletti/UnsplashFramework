@@ -37,22 +37,27 @@ final class MockURLProtocol: URLProtocol {
 
     private static let dispatchQueue = DispatchQueue.global(qos: .background)
 
+    private static var requestHeaderCheck: (([AnyHashable: Any]) -> ())? = nil
+
     // MARK: - Life Cycle
 
     static func setup(mockedData: Data?,
                       mockedResponse: HTTPURLResponse?,
                       mockedError: Error?,
-                      deadline: TimeInterval) {
+                      deadline: TimeInterval,
+                      requestHeaderCheck: (([AnyHashable: Any]) -> ())?) {
         self.mockedData = mockedData
         self.mockedResponse = mockedResponse
         self.mockedError = mockedError
         self.deadline = deadline
+        self.requestHeaderCheck = requestHeaderCheck
     }
 
     // MARK: - Mocking
 
     override class func canInit(with request: URLRequest) -> Bool {
-        true
+        requestHeaderCheck?(request.allHTTPHeaderFields ?? [:])
+        return true
     }
 
     override class func canonicalRequest(for request: URLRequest) -> URLRequest {

@@ -22,27 +22,29 @@
 //
 
 import Foundation
-@testable import UnsplashFramework
 
-extension URLResponse {
+/// Accepted request headers as described at https://unsplash.com/documentation
+enum RequestHeader {
+    case acceptVersion
+    case authorization(accessKey: String)
 
-    static func mockingSuccess(endpoint: Endpoint, parameters: ParametersURLRepresentable?, headers: [String: String]?) -> HTTPURLResponse {
-        let url = URLComponents(unsplashQuery: parameters?.asQueryItems(),
-                                withPath: endpoint.path).url!
+    var fieldName: String {
+        switch self {
+        case .acceptVersion:
+            return "Accept-Version"
 
-        return HTTPURLResponse(url: url,
-                               statusCode: ResponseStatusCode.success.rawValue,
-                               httpVersion: nil,
-                               headerFields: headers)!
+        case .authorization:
+            return "Authorization"
+        }
     }
 
-    static func mockingFailure(endpoint: Endpoint, parameters: ParametersURLRepresentable?, statusCode: ResponseStatusCode = .internalServerError, headers: [String: String]? = nil) -> HTTPURLResponse {
-        let url = URLComponents(unsplashQuery: parameters?.asQueryItems(),
-                                withPath: endpoint.path).url!
+    var fieldValue: String {
+        switch self {
+        case .acceptVersion:
+            return "v1"
 
-        return HTTPURLResponse(url: url,
-                               statusCode: statusCode.rawValue,
-                               httpVersion: nil,
-                               headerFields: headers)!
+        case .authorization(let accessKey):
+            return "Client-ID \(accessKey)"
+        }
     }
 }

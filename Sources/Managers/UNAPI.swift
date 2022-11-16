@@ -40,32 +40,6 @@ open class UNAPI {
         case delete = "DELETE"
     }
 
-    /// Accepted headers as described at https://unsplash.com/documentation
-    enum Header {
-        case acceptVersion
-        case authorization(accessKey: String)
-
-        var fieldName: String {
-            switch self {
-            case .acceptVersion:
-                return "Accept-Version"
-
-            case .authorization:
-                return "Authorization"
-            }
-        }
-
-        var fieldValue: String {
-            switch self {
-            case .acceptVersion:
-                return "v1"
-
-            case .authorization(let accessKey):
-                return "Client-ID \(accessKey)"
-            }
-        }
-    }
-
     /// Scheme as described at https://unsplash.com/documentation#location
     static let scheme = "https"
 
@@ -78,7 +52,7 @@ open class UNAPI {
 
     private let urlSession: URLSession
 
-    private var defaultHeaders: [Header] {
+    private var defaultHeaders: [RequestHeader] {
         [.acceptVersion, .authorization(accessKey: credentials.accessKey)]
     }
 
@@ -101,7 +75,7 @@ open class UNAPI {
     @discardableResult
     func request<T: Decodable>(_ method: HTTPMethod,
                                endpoint: Endpoint,
-                               parameters: ParametersURLRepresentable?) async throws -> T {
+                               parameters: ParametersURLRepresentable?) async throws -> (T, [ResponseHeader]) {
 
         let request = URLRequest.publicRequest(method, forEndpoint: endpoint, parameters: parameters, headers: defaultHeaders)
 
@@ -115,8 +89,12 @@ open class UNAPI {
             throw UNError(reason: .serverError(ResponseStatusCode(rawValue: httpResponse.statusCode)))
         }
 
+        let headers = ResponseHeader.headers(from: httpResponse)
+
         let decoder = JSONDecoder.unsplashDecoder
-        return try decoder.decode(T.self, from: data)
+        let value = try decoder.decode(T.self, from: data)
+
+        return (value, headers)
     }
 
     /// Makes a REST request that expects no returned value
@@ -127,7 +105,7 @@ open class UNAPI {
     ///   - parameters: The parameters to use for the request.
     func request(_ method: HTTPMethod,
                  endpoint: Endpoint,
-                 parameters: ParametersURLRepresentable?) async throws {
+                 parameters: ParametersURLRepresentable?) async throws -> [ResponseHeader] {
 
         let request = URLRequest.publicRequest(method, forEndpoint: endpoint, parameters: parameters, headers: defaultHeaders)
 
@@ -140,5 +118,7 @@ open class UNAPI {
         if ResponseStatusCode.isError(code: httpResponse.statusCode) {
             throw UNError(reason: .serverError(ResponseStatusCode(rawValue: httpResponse.statusCode)))
         }
+
+        return ResponseHeader.headers(from: httpResponse)
     }
 }
