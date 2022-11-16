@@ -60,7 +60,7 @@ The plan is to achieve feature parity with Unsplash REST API
 
 ### Stats
 - [x] Totals
-- [ ] Month
+- [x] Month
 
 ### Authentication
 - [x] Public authentication
