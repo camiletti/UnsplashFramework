@@ -220,4 +220,10 @@ class QueryManager {
                               endpoint: .unsplashTotalStats,
                               parameters: nil)
     }
+
+    func unsplashMonthlyStats() async throws -> UNUnsplashMonthlyStats {
+        try await api.request(.get,
+                              endpoint: .unsplashMonthlyStats,
+                              parameters: nil)
+    }
 }

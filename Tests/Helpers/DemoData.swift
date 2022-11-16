@@ -229,6 +229,13 @@ enum DemoData {
         dataFromJSONFile(named: "TotalStats")
     }
 
+    /// Returns a sample respond of monthly Unsplash stats.
+    ///
+    /// - Returns: JSON Data of monthly Unsplash stats.
+    static var standardMonthlyStatsResponse: Data {
+        dataFromJSONFile(named: "MonthlyStats")
+    }
+
     // MARK: - General purpose models
 
     /// Returns a sample of a CLLocationCoordinates2D.

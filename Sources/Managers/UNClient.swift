@@ -539,5 +539,10 @@ public final class UNClient {
     public func unsplashTotalStats() async throws -> UNUnsplashTotalStats {
         try await queryManager.unsplashTotalStats()
     }
+
+    /// Get the overall Unsplash stats for the past 30 days.
+    public func unsplashMonthlyStats() async throws -> UNUnsplashMonthlyStats {
+        try await queryManager.unsplashMonthlyStats()
+    }
 }
 

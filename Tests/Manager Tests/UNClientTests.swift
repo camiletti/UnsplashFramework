@@ -713,6 +713,8 @@ final class UNClientTests: XCTestCase {
         XCTAssertFalse(photos.isEmpty)
     }
 
+    // MARK: - Stats
+
     func testFetchingTotalUnsplashStats() async throws {
         let endpoint = Endpoint.unsplashTotalStats
         let queryManager = QueryManager.mock(data: DemoData.standardTotalStatsResponse,
@@ -727,5 +729,21 @@ final class UNClientTests: XCTestCase {
         let client = UNClient(queryManager: queryManager)
 
         let _ = try await client.unsplashTotalStats()
+    }
+
+    func testFetchingMonthlyUnsplashStats() async throws {
+        let endpoint = Endpoint.unsplashMonthlyStats
+        let queryManager = QueryManager.mock(data: DemoData.standardMonthlyStatsResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: nil),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: nil)
+        let client = UNClient(queryManager: queryManager)
+
+        let _ = try await client.unsplashMonthlyStats()
     }
 }
