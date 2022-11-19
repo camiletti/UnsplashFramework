@@ -73,13 +73,14 @@ final class URLSessionExtensionsTests: XCTestCase {
             let expectedURL = self.expectedURL(withEndpoint: endpoint, parameters: parameters)
 
             // Function to test
-            let request = URLRequest.publicRequest(.get,
-                                                   forEndpoint: endpoint,
-                                                   parameters: parameters,
-                                                   headers: headers)
+            let request = URLRequest.request(.get,
+                                             forEndpoint: endpoint,
+                                             at: .api,
+                                             parameters: parameters,
+                                             headers: headers)
 
             // Assertions
-            XCTAssert(request.httpMethod == UNAPI.HTTPMethod.get.rawValue)
+            XCTAssert(request.httpMethod == HTTPMethod.get.rawValue)
             XCTAssert(request.url == expectedURL)
             headers.forEach { header in
                 XCTAssert(request.value(forHTTPHeaderField: header.fieldName) == header.fieldValue)
@@ -90,7 +91,7 @@ final class URLSessionExtensionsTests: XCTestCase {
     // MARK: - Helpers
 
     func expectedURL(withEndpoint endpoint: Endpoint, parameters: UNPhotoListParameters) -> URL? {
-        URL(string: UNAPI.scheme + "://" + UNAPI.location + endpoint.path + "?" +
+        URL(string: Host.scheme + "://" + Host.Location.api.string + endpoint.path + "?" +
                 UNPhotoListParameters.QueryParameterName.pageNumber + "=\(parameters.pageNumber!)&" +
                 UNPhotoListParameters.QueryParameterName.photosPerPage + "=\(parameters.photosPerPage!)&" +
                 UNPhotoListParameters.QueryParameterName.sorting + "=\(parameters.sorting!)")

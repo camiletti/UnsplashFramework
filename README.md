@@ -64,8 +64,7 @@ The plan is to achieve feature parity with Unsplash REST API
 
 ### Authentication
 - [x] Public authentication
-- [ ] User authentication
-- [ ] Dynamic authentication
+- [x] User authentication
 
 
 ## Requirement

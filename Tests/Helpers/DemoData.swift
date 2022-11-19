@@ -236,6 +236,15 @@ enum DemoData {
         dataFromJSONFile(named: "MonthlyStats")
     }
 
+    // MARK: - Athorization
+
+    /// Returns a sample response of a successful authorization
+    ///
+    /// - Returns: JSON Data of a successful authorization.
+    static var standardAuthorizationResponse: Data {
+        dataFromJSONFile(named: "Authorization")
+    }
+
     // MARK: - General purpose models
 
     /// Returns a sample of a CLLocationCoordinates2D.

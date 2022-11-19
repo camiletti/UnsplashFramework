@@ -45,36 +45,42 @@ class QueryManager {
     func publicProfile(with parameters: UNUserPublicProfileParameters) async throws -> (UNUserPublicProfile, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .userPublicProfile(username: parameters.username),
+                              at: .api,
                               parameters: parameters)
     }
 
     func portfolioLink(with parameters: UNUserPublicProfileParameters) async throws -> (UNURLWrapper, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .userPortfolioLink(username: parameters.username),
+                              at: .api,
                               parameters: parameters)
     }
 
     func userPhotos(with parameters: UNUserPhotosParameters) async throws -> ([UNPhoto], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .userPhotos(username: parameters.username),
+                              at: .api,
                               parameters: parameters)
     }
 
     func userLikedPhotos(with parameters: UNUserLikesParameters) async throws -> ([UNPhoto], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .userLikedPhotos(username: parameters.username),
+                              at: .api,
                               parameters: parameters)
     }
 
     func collections(with parameters: UNUserCollectionsParameters) async throws -> ([UNCollection], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .userCollections(username: parameters.username),
+                              at: .api,
                               parameters: parameters)
     }
 
     func userStatistics(forUsername username: String, with parameters: UNStatisticsParameters) async throws -> (UNUserStatistics, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .userStatistics(username: username),
+                              at: .api,
                               parameters: parameters)
     }
 
@@ -83,48 +89,56 @@ class QueryManager {
     func editorialPhotosList(with parameters: UNPhotoListParameters) async throws -> ([UNPhoto], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .editorialPhotosList,
+                              at: .api,
                               parameters: parameters)
     }
 
     func photo(withID id: String) async throws -> (UNFullPhoto, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .photo(id: id),
+                              at: .api,
                               parameters: nil)
     }
 
     func randomPhotos(with parameters: UNRandomPhotoParameters) async throws -> ([UNFullPhoto], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .randomPhoto,
+                              at: .api,
                               parameters: parameters)
     }
 
     func userStatistics(forPhotoWithID photoID: String, with parameters: UNStatisticsParameters) async throws -> (UNPhotoStatistics, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .photoStatistics(id: photoID),
+                              at: .api,
                               parameters: parameters)
     }
 
     public func trackPhotoDownloaded(withID photoID: String) async throws -> (UNURLWrapper, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .trackPhotoDownload(id: photoID),
+                              at: .api,
                               parameters: nil)
     }
 
     func updatePhotoInfo(forPhotoWithID photoID: String, with parameters: UNUpdatePhotoInfoParameters) async throws -> (UNPhoto, [ResponseHeader]) {
         try await api.request(.put,
                               endpoint: .photo(id: photoID),
+                              at: .api,
                               parameters: parameters)
     }
 
     func likePhoto(withID photoID: String) async throws -> (UNPhoto, [ResponseHeader]) {
         try await api.request(.post,
                               endpoint: .likePhoto(id: photoID),
+                              at: .api,
                               parameters: nil)
     }
 
     func unlikePhoto(withID photoID: String) async throws -> (UNPhoto, [ResponseHeader]) {
         try await api.request(.delete,
                               endpoint: .likePhoto(id: photoID),
+                              at: .api,
                               parameters: nil)
     }
 
@@ -134,6 +148,7 @@ class QueryManager {
                    with parameters: ParametersURLRepresentable) async throws -> (UNSearchResult<T>, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: searchType.endpoint,
+                              at: .api,
                               parameters: parameters)
     }
 
@@ -142,54 +157,63 @@ class QueryManager {
     func collectionList(parameters: UNCollectionListParameters) async throws -> ([UNCollection], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .collections,
+                              at: .api,
                               parameters: parameters)
     }
 
     func collection(withID id: String) async throws -> (UNCollection, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .collection(id: id),
+                              at: .api,
                               parameters: nil)
     }
 
     func photosInCollection(withID collectionID: String, parameters: UNCollectionPhotosParameters) async throws -> ([UNPhoto], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .photosInCollection(id: collectionID),
+                              at: .api,
                               parameters: parameters)
     }
 
     func relatedCollections(toCollectionWithID collectionID: String) async throws -> ([UNCollection], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .relatedCollections(id: collectionID),
+                              at: .api,
                               parameters: nil)
     }
 
     func createNewCollection(parameters: UNNewCollectionParameters) async throws -> (UNCollection, [ResponseHeader]) {
         try await api.request(.post,
                               endpoint: .collections,
+                              at: .api,
                               parameters: parameters)
     }
 
     func updateCollection(withID collectionID: String, parameters: UNUpdateCollectionParameters) async throws -> (UNCollection, [ResponseHeader]) {
         try await api.request(.put,
                               endpoint: .collection(id: collectionID),
+                              at: .api,
                               parameters: parameters)
     }
 
     func deleteCollection(withID collectionID: String) async throws -> [ResponseHeader] {
         try await api.request(.delete,
                               endpoint: .collection(id: collectionID),
+                              at: .api,
                               parameters: nil)
     }
 
     func addPhotoToCollection(withID collectionID: String, parameters: UNModifyPhotoToCollectionParameters) async throws -> (UNModifyPhotoInCollectionResponse, [ResponseHeader]) {
         try await api.request(.post,
                               endpoint: .addPhotoToCollection(collectionID: collectionID),
+                              at: .api,
                               parameters: parameters)
     }
 
     func removePhotoFromCollection(withID collectionID: String, parameters: UNModifyPhotoToCollectionParameters) async throws -> (UNModifyPhotoInCollectionResponse, [ResponseHeader]) {
         try await api.request(.delete,
                               endpoint: .removePhotoToCollection(collectionID: collectionID),
+                              at: .api,
                               parameters: parameters)
     }
 
@@ -198,18 +222,21 @@ class QueryManager {
     func topicList(parameters: UNTopicListParameters) async throws -> ([UNTopic], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .topicsList,
+                              at: .api,
                               parameters: parameters)
     }
 
     func topic(withIDOrSlug idOrSlug: String) async throws -> (UNTopic, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .topic(idOrSlug: idOrSlug),
+                              at: .api,
                               parameters: nil)
     }
 
     func photosOfTopic(idOrSlug: String, parameters: UNTopicPhotosParameters) async throws -> ([UNPhoto], [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .photosOfTopic(idOrSlug: idOrSlug),
+                              at: .api,
                               parameters: parameters)
     }
 
@@ -218,12 +245,24 @@ class QueryManager {
     func unsplashTotalStats() async throws -> (UNUnsplashTotalStats, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .unsplashTotalStats,
+                              at: .api,
                               parameters: nil)
     }
 
     func unsplashMonthlyStats() async throws -> (UNUnsplashMonthlyStats, [ResponseHeader]) {
         try await api.request(.get,
                               endpoint: .unsplashMonthlyStats,
+                              at: .api,
                               parameters: nil)
+    }
+
+    // MARK: - Authorization
+
+    func authorizationURL(scope: Set<UserAuthorizationScope>, completionURI: String) -> URL {
+        api.authorizationURL(scope: scope, completionURI: completionURI)
+    }
+
+    func handleAuthorizationCallback(url: URL, completionURI: String) async throws {
+        try await api.handleAuthorizationCallback(url: url, completionURI: completionURI)
     }
 }

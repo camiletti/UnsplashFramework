@@ -21,19 +21,14 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
-
-extension URLComponents {
-
-    // MARK: - Life Cycle
-
-    /// Convenient way to initialize an URLComponents for an Unsplash request.
-    init(unsplashQuery queryItems: [URLQueryItem]?, endpoint: Endpoint, at location: Host.Location) {
-        self.init()
-
-        self.scheme = Host.scheme
-        self.host = location.string
-        self.queryItems = queryItems
-        self.path = endpoint.path
-    }
+/// HTTP accepted verbs, as described at https://unsplash.com/documentation#http-verbs
+enum HTTPMethod: String {
+    /// Method for retrieving resources.
+    case get = "GET"
+    /// Method for creating resources.
+    case post = "POST"
+    /// Method for updating resources.
+    case put = "PUT"
+    /// Method for deleting resources.
+    case delete = "DELETE"
 }

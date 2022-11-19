@@ -69,6 +69,7 @@ final class UNAPITests: XCTestCase {
 
         let _: (UNSearchResult<UNPhoto>, _) = try await api.request(.get,
                                                                     endpoint: SearchType.photo.endpoint,
+                                                                    at: .api,
                                                                     parameters: nil)
 
         wait(for: [headerCheckExpectation], timeout: 0.1)
@@ -87,6 +88,7 @@ final class UNAPITests: XCTestCase {
         do {
             let _: (UNSearchResult<UNPhoto>, _) = try await api.request(.get,
                                                                         endpoint: SearchType.photo.endpoint,
+                                                                        at: .api,
                                                                         parameters: nil)
             XCTFail("Success is not what we expect here")
         } catch {

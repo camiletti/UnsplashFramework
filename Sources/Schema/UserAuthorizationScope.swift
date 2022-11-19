@@ -21,19 +21,17 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
+public enum UserAuthorizationScope: String {
+    case `public`
 
-extension URLComponents {
+    case readUser = "read_user"
+    case writeUser = "write_user"
 
-    // MARK: - Life Cycle
+    case readPhotos = "read_photos"
+    case writePhotos = "write_photos"
 
-    /// Convenient way to initialize an URLComponents for an Unsplash request.
-    init(unsplashQuery queryItems: [URLQueryItem]?, endpoint: Endpoint, at location: Host.Location) {
-        self.init()
+    case writeLikes = "write_likes"
 
-        self.scheme = Host.scheme
-        self.host = location.string
-        self.queryItems = queryItems
-        self.path = endpoint.path
-    }
+    case readCollections = "read_collections"
+    case writeCollections = "write_collections"
 }

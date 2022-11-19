@@ -23,17 +23,32 @@
 
 import Foundation
 
-extension URLComponents {
+struct AuthorizationTokenParameters {
 
-    // MARK: - Life Cycle
+    // MARK: - Declarations
 
-    /// Convenient way to initialize an URLComponents for an Unsplash request.
-    init(unsplashQuery queryItems: [URLQueryItem]?, endpoint: Endpoint, at location: Host.Location) {
-        self.init()
+    enum QueryParameterName {
+        static let accessKey = "client_id"
+        static let secret = "client_secret"
+        static let code = "code"
+        static let grantType = "grant_type"
+        static let authorizationCode = "authorization_code"
+    }
 
-        self.scheme = Host.scheme
-        self.host = location.string
-        self.queryItems = queryItems
-        self.path = endpoint.path
+    // MARK: - Properties
+
+    let credentials: UNCredentials
+
+    let code: String
+}
+
+// MARK: - ParametersURLRepresentable
+extension AuthorizationTokenParameters: ParametersURLRepresentable {
+
+    func asQueryItems() -> [URLQueryItem] {
+        [URLQueryItem(name: QueryParameterName.accessKey, value: credentials.accessKey),
+         URLQueryItem(name: QueryParameterName.secret, value: credentials.secret),
+         URLQueryItem(name: QueryParameterName.code, value: code),
+         URLQueryItem(name: QueryParameterName.grantType, value: QueryParameterName.authorizationCode)]
     }
 }

@@ -21,19 +21,15 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
+struct Authorization: Codable {
 
-extension URLComponents {
+    // MARK: - Declarations
 
-    // MARK: - Life Cycle
-
-    /// Convenient way to initialize an URLComponents for an Unsplash request.
-    init(unsplashQuery queryItems: [URLQueryItem]?, endpoint: Endpoint, at location: Host.Location) {
-        self.init()
-
-        self.scheme = Host.scheme
-        self.host = location.string
-        self.queryItems = queryItems
-        self.path = endpoint.path
+    enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
     }
+
+    // MARK: - Properties
+
+    let accessToken: String
 }

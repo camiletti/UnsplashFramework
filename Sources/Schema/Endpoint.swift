@@ -102,6 +102,14 @@ enum Endpoint {
     /// Get the overall Unsplash stats for the past 30 days.
     case unsplashMonthlyStats
 
+    // MARK: - Authorization
+
+    /// Request permission to the user of a certain scope
+    case authorization
+
+    /// Request Unsplash a new access token that includes the requested user priviledges
+    case authorizationToken
+
     // MARK: - Path
 
     /// Returns the path of the endpoint.
@@ -184,6 +192,30 @@ enum Endpoint {
 
         case .unsplashMonthlyStats:
             return "/stats/month"
+
+        case .authorization:
+            return "/oauth/authorize"
+
+        case .authorizationToken:
+            return "/oauth/token"
+        }
+    }
+}
+
+// MARK: - SearchType extension
+extension SearchType {
+
+    /// Extension to get the endpoint for a type of search
+    var endpoint: Endpoint {
+        switch self {
+        case .photo:
+            return .photoSearch
+
+        case .collection:
+            return .collectionSearch
+
+        case .user:
+            return .userSearch
         }
     }
 }

@@ -43,6 +43,8 @@ public struct UNError: Error {
         case noDataReceived
         /// AppID and Secret were not previously set.
         case credentialsNotSet
+        /// The authorization URL could not be processed
+        case incorrectAuthorizationURL
     }
 
     // MARK: - Properties
@@ -103,7 +105,8 @@ extension UNError.Reason: Equatable {
              (.unableToParseDataCorrectly, .unableToParseDataCorrectly),
              (.unknownServerResponse, .unknownServerResponse),
              (.noDataReceived, .noDataReceived),
-             (.credentialsNotSet, .credentialsNotSet):
+             (.credentialsNotSet, .credentialsNotSet),
+             (.incorrectAuthorizationURL, .incorrectAuthorizationURL):
             return true
 
         case (let .serverError(codeA), let .serverError(codeB)):

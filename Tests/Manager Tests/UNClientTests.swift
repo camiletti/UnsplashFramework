@@ -117,12 +117,12 @@ final class UNClientTests: XCTestCase {
         XCTAssertNil(client.requestsRemaining)
 
         let photos = try await client.photos(fromUsername: parameters.username,
-                                        pageNumber: parameters.pageNumber!,
-                                        photosPerPage: parameters.photosPerPage!,
-                                        sortingBy: parameters.sorting!,
-                                        includeStats: parameters.includeStats!,
-                                        statsAmount: parameters.statsAmount!,
-                                        orientationFilter: parameters.orientationFilter)
+                                             pageNumber: parameters.pageNumber!,
+                                             photosPerPage: parameters.photosPerPage!,
+                                             sortingBy: parameters.sorting!,
+                                             includeStats: parameters.includeStats!,
+                                             statsAmount: parameters.statsAmount!,
+                                             orientationFilter: parameters.orientationFilter)
 
         XCTAssertFalse(photos.isEmpty)
 
@@ -970,5 +970,84 @@ final class UNClientTests: XCTestCase {
 
         XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
         XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
+    }
+
+    // MARK: - Authentication
+
+    func testAuthorizationURL() {
+        let scope: Set<UserAuthorizationScope> = [.readPhotos]
+        let completionURI = "unsplashframework://open/auth/completion"
+        let queryManager = QueryManager.mock(data: Data(), // No request should be fired on this test
+                                             response: nil,
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: 0,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: .authorization,
+                                             expectedParameters: nil)
+        let client = UNClient(queryManager: queryManager)
+
+        XCTAssertEqual(client.authorizationURL(scope: scope, completionURI: completionURI).absoluteString,
+                       "https://unsplash.com/oauth/authorize?client_id=123&redirect_uri=unsplashframework%253A%252F%252Fopen%252Fauth%252Fcompletion&response_type=code&scope=read_photos")
+    }
+
+    func testURLIsNotHandledWhenURIDoesNotCoincide() async throws {
+        let url = URL(string: "unsplashframework://open/auth/completion?code=123")!
+        let completionURI = "unsplashframework://open/something_that_is_not_auth"
+        let queryManager = QueryManager.mock(data: Data(), // No request should be fired on this test
+                                             response: nil,
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: 0,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: .authorization,
+                                             expectedParameters: nil)
+        let client = UNClient(queryManager: queryManager)
+
+        do {
+            try await client.handleAuthorizationCallback(url: url, completionURI: completionURI)
+            XCTFail()
+        } catch {}
+    }
+
+    func testURLWithoutCodeFails() async throws {
+        let url = URL(string: "unsplashframework://open/auth/completion")!
+        let completionURI = "unsplashframework://open/auth/completion"
+        let queryManager = QueryManager.mock(data: Data(), // No request should be fired on this test
+                                             response: nil,
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: 0,
+                                             expectedMethod: .get,
+                                             expectedEndpoint: .authorization,
+                                             expectedParameters: nil)
+        let client = UNClient(queryManager: queryManager)
+
+        do {
+            try await client.handleAuthorizationCallback(url: url, completionURI: completionURI)
+            XCTFail()
+        } catch {}
+    }
+
+    func testCorrectURLMakesCorrectRequest() async throws {
+        let code = "123"
+        let url = URL(string: "unsplashframework://open/auth/completion?code=\(code)")!
+        let completionURI = "unsplashframework://open/auth/completion"
+        let endpoint = Endpoint.authorizationToken
+        let parameters = AuthorizationTokenParameters(credentials: Constant.credentials,
+                                                      code: code)
+        let queryManager = QueryManager.mock(data: DemoData.standardAuthorizationResponse,
+                                             response: .mockingSuccess(endpoint: endpoint,
+                                                                       parameters: parameters,
+                                                                       headers: Constant.responseHeaders),
+                                             error: nil,
+                                             credentials: Constant.credentials,
+                                             deadline: Constant.requestDeadline,
+                                             expectedMethod: .post,
+                                             expectedEndpoint: endpoint,
+                                             expectedParameters: parameters)
+        let client = UNClient(queryManager: queryManager)
+
+        try await client.handleAuthorizationCallback(url: url, completionURI: completionURI)
     }
 }

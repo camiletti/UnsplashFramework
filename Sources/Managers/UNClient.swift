@@ -584,6 +584,16 @@ public final class UNClient {
         return extractValueProcessingHeaders(from: response)
     }
 
+    // MARK: - Authorization
+
+    func authorizationURL(scope: Set<UserAuthorizationScope>, completionURI: String) -> URL {
+        queryManager.authorizationURL(scope: scope, completionURI: completionURI)
+    }
+
+    func handleAuthorizationCallback(url: URL, completionURI: String) async throws {
+        try await queryManager.handleAuthorizationCallback(url: url, completionURI: completionURI)
+    }
+
     // MARK: - Helpers
 
     private func extractValueProcessingHeaders<T>(from response: (value: T, headers: [ResponseHeader])) -> T {
@@ -603,4 +613,3 @@ public final class UNClient {
         }
     }
 }
-

@@ -29,7 +29,7 @@ final class UNAPITester: UNAPI {
 
     // MARK: - Properties
 
-    let expectedMethod: UNAPI.HTTPMethod
+    let expectedMethod: HTTPMethod
 
     let expectedEndpoint: Endpoint
 
@@ -43,7 +43,7 @@ final class UNAPITester: UNAPI {
 
     init(credentials: UNCredentials,
          urlSession: URLSession,
-         expectedMethod: UNAPI.HTTPMethod,
+         expectedMethod: HTTPMethod,
          expectedEndpoint: Endpoint,
          expectedParameters: ParametersURLRepresentable?,
          file: StaticString,
@@ -62,12 +62,13 @@ final class UNAPITester: UNAPI {
 
     // MARK: - Mock overrides
 
-    override func request<T>(_ method: UNAPI.HTTPMethod,
+    override func request<T>(_ method: HTTPMethod,
                              endpoint: Endpoint,
+                             at location: Host.Location,
                              parameters: ParametersURLRepresentable?) async throws -> (T, [ResponseHeader]) where T : Decodable {
         XCTAssertEqual(method, expectedMethod, file: file, line: line)
         XCTAssertEqual(endpoint.path, expectedEndpoint.path, file: file, line: line)
         XCTAssertEqual(parameters?.asQueryItems(), expectedParameters?.asQueryItems(), file: file, line: line)
-        return try await super.request(method, endpoint: endpoint, parameters: parameters)
+        return try await super.request(method, endpoint: endpoint, at: location, parameters: parameters)
     }
 }

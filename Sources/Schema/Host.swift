@@ -21,19 +21,25 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
+enum Host {
 
-extension URLComponents {
+    /// Scheme as described at https://unsplash.com/documentation#location
+    static let scheme = "https"
 
-    // MARK: - Life Cycle
+    enum Location {
+        /// API location as described at https://unsplash.com/documentation#location
+        case api
+        /// The web location
+        case web
 
-    /// Convenient way to initialize an URLComponents for an Unsplash request.
-    init(unsplashQuery queryItems: [URLQueryItem]?, endpoint: Endpoint, at location: Host.Location) {
-        self.init()
+        var string: String {
+            switch self {
+            case .api:
+                return "api.unsplash.com"
 
-        self.scheme = Host.scheme
-        self.host = location.string
-        self.queryItems = queryItems
-        self.path = endpoint.path
+            case .web:
+                return "unsplash.com"
+            }
+        }
     }
 }

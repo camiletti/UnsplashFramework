@@ -33,13 +33,15 @@ extension URLRequest {
     ///   - parameters: The parameters for the request.
     ///   - credentials: Unsplash client credentials.
     /// - Returns: A new URLRequest containing the passed information.
-    static func publicRequest(_ method: UNAPI.HTTPMethod,
-                              forEndpoint endpoint: Endpoint,
-                              parameters: ParametersURLRepresentable?,
-                              headers: [RequestHeader]) -> URLRequest {
+    static func request(_ method: HTTPMethod,
+                        forEndpoint endpoint: Endpoint,
+                        at location: Host.Location,
+                        parameters: ParametersURLRepresentable?,
+                        headers: [RequestHeader]) -> URLRequest {
         // Create new request
         let url = URLComponents(unsplashQuery: parameters?.asQueryItems(),
-                                withPath: endpoint.path).url!
+                                endpoint: endpoint,
+                                at: location).url!
         var request = URLRequest(url: url)
 
         // Set method

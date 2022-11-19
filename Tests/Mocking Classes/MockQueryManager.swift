@@ -31,7 +31,7 @@ extension QueryManager {
                      error: Error?,
                      credentials: UNCredentials,
                      deadline: TimeInterval,
-                     expectedMethod: UNAPI.HTTPMethod,
+                     expectedMethod: HTTPMethod,
                      expectedEndpoint: Endpoint,
                      expectedParameters: ParametersURLRepresentable?,
                      file: StaticString = #filePath,

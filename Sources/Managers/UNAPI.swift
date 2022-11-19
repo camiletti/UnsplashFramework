@@ -22,33 +22,12 @@
 //
 
 import Foundation
-import Metal
 
 open class UNAPI {
 
-    // MARK: - Declarations
-
-    /// HTTP accepted verbs, as described at https://unsplash.com/documentation#http-verbs
-    enum HTTPMethod: String {
-        /// Method for retrieving resources.
-        case get = "GET"
-        /// Method for creating resources.
-        case post = "POST"
-        /// Method for updating resources.
-        case put = "PUT"
-        /// Method for deleting resources.
-        case delete = "DELETE"
-    }
-
-    /// Scheme as described at https://unsplash.com/documentation#location
-    static let scheme = "https"
-
-    /// Location as described at https://unsplash.com/documentation#location
-    static let location = "api.unsplash.com"
-
     // MARK: - Properties
 
-    private let credentials: UNCredentials
+    private var credentials: UNCredentials
 
     private let urlSession: URLSession
 
@@ -70,14 +49,20 @@ open class UNAPI {
     /// - Parameters:
     ///   - method: The HTTP method to use.
     ///   - endpoint: The endpoint to call.
+    ///   - location: The schema location at which the request should be directed.
     ///   - parameters: The parameters to use for the request.
     /// - Returns: The value for the requested type.
     @discardableResult
     func request<T: Decodable>(_ method: HTTPMethod,
                                endpoint: Endpoint,
+                               at location: Host.Location,
                                parameters: ParametersURLRepresentable?) async throws -> (T, [ResponseHeader]) {
 
-        let request = URLRequest.publicRequest(method, forEndpoint: endpoint, parameters: parameters, headers: defaultHeaders)
+        let request = URLRequest.request(method,
+                                         forEndpoint: endpoint,
+                                         at: location,
+                                         parameters: parameters,
+                                         headers: defaultHeaders)
 
         let (data, response) = try await urlSession.data(for: request)
 
@@ -105,9 +90,14 @@ open class UNAPI {
     ///   - parameters: The parameters to use for the request.
     func request(_ method: HTTPMethod,
                  endpoint: Endpoint,
+                 at location: Host.Location,
                  parameters: ParametersURLRepresentable?) async throws -> [ResponseHeader] {
 
-        let request = URLRequest.publicRequest(method, forEndpoint: endpoint, parameters: parameters, headers: defaultHeaders)
+        let request = URLRequest.request(method,
+                                         forEndpoint: endpoint,
+                                         at: location,
+                                         parameters: parameters,
+                                         headers: defaultHeaders)
 
         let (_, response) = try await urlSession.data(for: request)
 
@@ -120,5 +110,55 @@ open class UNAPI {
         }
 
         return ResponseHeader.headers(from: httpResponse)
+    }
+
+    // MARK: - Authorization
+
+    /// Creates an authorization URL. This URL should be opened in a web browser so the user can grant the
+    /// requested permissions via Unsplash login. Once the user completes the authorization, Unsplash will call the completionURI.
+    /// `handleAuthorizationCallback` should be called when this happens in order to process the result and obtain upgraded
+    /// credentials with the requested scope.
+    /// - Parameters:
+    ///   - scope: A set with the desired access privileges.
+    ///   - completionURI: The URI that Unsplash will call once the user accepts or denies the request.
+    /// - Returns: An authorization URL that should be opened in a web browser.
+    func authorizationURL(scope: Set<UserAuthorizationScope>, completionURI: String) -> URL {
+        let parameters = AuthorizationAttemptParameters(credentials: credentials,
+                                                        completionURI: completionURI,
+                                                        scope: scope)
+        let authorizationComponents = URLComponents(unsplashQuery: parameters.asQueryItems(),
+                                                    endpoint: .authorization,
+                                                    at: .web)
+        return authorizationComponents.url!
+    }
+
+    /// Handles the callback URL that Unsplash returned after invoking `authorizationURL(scope:completionURI:)`
+    /// - Parameters:
+    ///   - url: The URL that Unsplash has called back with.
+    ///   - completionURI: The same URI that has been used for `authorizationURL(scope:completionURI:)`
+    func handleAuthorizationCallback(url: URL, completionURI: String) async throws {
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        ///
+        ///
+        /// SEARCH WHY url.baseURL is nil
+        ///
+        ///
+        let baseURL = url.absoluteString.components(separatedBy: "?").first
+        guard baseURL == completionURI,
+              let codeItem = components?.queryItems?.first(where: { $0.name == AuthorizationTokenParameters.QueryParameterName.code }),
+              let code = codeItem.value else {
+            throw UNError.init(reason: .incorrectAuthorizationURL)
+        }
+
+        let parameters = AuthorizationTokenParameters(credentials: credentials,
+                                                      code: code)
+
+        let response: (authorization: Authorization, _) = try await request(.post,
+                                                                            endpoint: .authorizationToken,
+                                                                            at: .web,
+                                                                            parameters: parameters)
+
+        credentials = UNCredentials(accessKey: response.authorization.accessToken,
+                                    secret: credentials.secret)
     }
 }

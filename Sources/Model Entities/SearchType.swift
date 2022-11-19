@@ -29,20 +29,4 @@ enum SearchType {
     case collection
     /// Search of users
     case user
-
-    // MARK: - Properties
-
-    /// Extension to get the endpoint for a type of search
-    var endpoint: Endpoint {
-        switch self {
-        case .photo:
-            return .photoSearch
-
-        case .collection:
-            return .collectionSearch
-
-        case .user:
-            return .userSearch
-        }
-    }
 }
