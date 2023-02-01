@@ -30,6 +30,7 @@ struct AuthorizationTokenParameters {
     enum QueryParameterName {
         static let accessKey = "client_id"
         static let secret = "client_secret"
+        static let redirectAuthenticationURI = "redirect_uri"
         static let code = "code"
         static let grantType = "grant_type"
         static let authorizationCode = "authorization_code"
@@ -48,6 +49,7 @@ extension AuthorizationTokenParameters: ParametersURLRepresentable {
     func asQueryItems() -> [URLQueryItem] {
         [URLQueryItem(name: QueryParameterName.accessKey, value: credentials.accessKey),
          URLQueryItem(name: QueryParameterName.secret, value: credentials.secret),
+         URLQueryItem(name: QueryParameterName.redirectAuthenticationURI, value: credentials.redirectAuthenticationURI),
          URLQueryItem(name: QueryParameterName.code, value: code),
          URLQueryItem(name: QueryParameterName.grantType, value: QueryParameterName.authorizationCode)]
     }

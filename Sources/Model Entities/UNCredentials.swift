@@ -34,10 +34,16 @@ public struct UNCredentials {
     /// Unsplash Secret.
     public let secret: String
 
+    /// The redirect URI that Unsplash should call when a user is authenticated in order to access their private information.
+    /// The URI must be specified in the allow-list on the app's dashboard in Unsplash.
+    /// https://unsplash.com/oauth/applications
+    public let redirectAuthenticationURI: String?
+
     // MARK: - Life Cycle
 
-    public init(accessKey: String, secret: String) {
+    public init(accessKey: String, secret: String, redirectAuthenticationURI: String?) {
         self.accessKey = accessKey
         self.secret = secret
+        self.redirectAuthenticationURI = redirectAuthenticationURI
     }
 }

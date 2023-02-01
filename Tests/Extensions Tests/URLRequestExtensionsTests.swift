@@ -31,7 +31,9 @@ final class URLSessionExtensionsTests: XCTestCase {
     func testCreatingAPublicRequestForEveryEndpoint() {
         // Parameters
         let id = "abc"
-        let credentials = UNCredentials(accessKey: "123", secret: "789")
+        let credentials = UNCredentials(accessKey: "123",
+                                        secret: "789",
+                                        redirectAuthenticationURI: "unsplashframework://open/auth")
         let headers: [RequestHeader] = [.acceptVersion,
                                         .authorization(accessKey: credentials.accessKey)]
         // The parameters chosen are a sample of typical parameters. The test will make sure

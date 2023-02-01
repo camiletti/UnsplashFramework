@@ -27,8 +27,10 @@ import XCTest
 final class AuthorizationTokenParametersTests: XCTestCase {
 
     func testAsQueryItems() {
-        let expectedQueryItemsAmount = 4
-        let parameters = AuthorizationTokenParameters(credentials: UNCredentials(accessKey: "123", secret: "abc"),
+        let expectedQueryItemsAmount = 5
+        let parameters = AuthorizationTokenParameters(credentials: UNCredentials(accessKey: "123",
+                                                                                 secret: "abc",
+                                                                                 redirectAuthenticationURI: "unsplashframework://open/auth"),
                                                         code: "qwerty")
 
         let queryItems = parameters.asQueryItems()
@@ -38,12 +40,17 @@ final class AuthorizationTokenParametersTests: XCTestCase {
         let accessKey = queryItems
             .first(where: { $0.name == AuthorizationTokenParameters.QueryParameterName.accessKey })?
             .value
-        XCTAssertEqual(accessKey, "\(parameters.credentials.accessKey)")
+        XCTAssertEqual(accessKey, parameters.credentials.accessKey)
 
         let secret = queryItems
             .first(where: { $0.name == AuthorizationTokenParameters.QueryParameterName.secret })?
             .value
-        XCTAssertEqual(secret, "\(parameters.credentials.secret)")
+        XCTAssertEqual(secret, parameters.credentials.secret)
+
+        let redirectAuthenticationURI = queryItems
+            .first(where: { $0.name == AuthorizationTokenParameters.QueryParameterName.redirectAuthenticationURI })?
+            .value
+        XCTAssertEqual(redirectAuthenticationURI, parameters.credentials.redirectAuthenticationURI)
 
         let code = queryItems
             .first(where: { $0.name == AuthorizationTokenParameters.QueryParameterName.code })?

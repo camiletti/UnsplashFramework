@@ -29,7 +29,7 @@ struct AuthorizationAttemptParameters {
 
     enum QueryParameterName {
         static let accessKey = "client_id"
-        static let completionURI = "redirect_uri"
+        static let redirectAuthenticationURI = "redirect_uri"
         static let responseType = "response_type"
         static let scope = "scope"
     }
@@ -43,8 +43,6 @@ struct AuthorizationAttemptParameters {
 
     let credentials: UNCredentials
 
-    let completionURI: String
-
     let scope: Set<UserAuthorizationScope>
 }
 
@@ -52,9 +50,8 @@ struct AuthorizationAttemptParameters {
 extension AuthorizationAttemptParameters: ParametersURLRepresentable {
 
     func asQueryItems() -> [URLQueryItem] {
-        let escapedCompletionURI = completionURI.addingPercentEncoding(withAllowedCharacters: .alphanumerics)
         var queryItems = [URLQueryItem(name: QueryParameterName.accessKey, value: credentials.accessKey),
-                          URLQueryItem(name: QueryParameterName.completionURI, value: escapedCompletionURI),
+                          URLQueryItem(name: QueryParameterName.redirectAuthenticationURI, value: credentials.redirectAuthenticationURI),
                           URLQueryItem(name: QueryParameterName.responseType, value: Constant.code)]
 
         if !scope.isEmpty {

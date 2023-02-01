@@ -26,10 +26,10 @@ struct Authorization: Codable {
     // MARK: - Declarations
 
     enum CodingKeys: String, CodingKey {
-        case accessToken = "access_token"
+        case accessKey = "access_token"
     }
 
     // MARK: - Properties
 
-    let accessToken: String
+    let accessKey: String
 }

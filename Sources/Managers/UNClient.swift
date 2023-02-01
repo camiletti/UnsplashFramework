@@ -586,12 +586,22 @@ public final class UNClient {
 
     // MARK: - Authorization
 
-    func authorizationURL(scope: Set<UserAuthorizationScope>, completionURI: String) -> URL {
-        queryManager.authorizationURL(scope: scope, completionURI: completionURI)
+    /// Creates an authorization URL. This URL should be opened in a web browser so the user can grant the
+    /// requested permissions via Unsplash login. Once the user completes the authorization, Unsplash will call the redirect URI specified on the credentials.
+    /// `handleAuthorizationCallback(url:)` should be called when this happens in order to process the result and obtain upgraded
+    /// credentials with the requested scope.
+    /// - Parameters:
+    ///   - scope: A set with the desired access privileges.
+    /// - Returns: An authorization URL that should be opened in a web browser.
+    public func authorizationURL(scope: Set<UserAuthorizationScope>) -> URL {
+        queryManager.authorizationURL(scope: scope)
     }
 
-    func handleAuthorizationCallback(url: URL, completionURI: String) async throws {
-        try await queryManager.handleAuthorizationCallback(url: url, completionURI: completionURI)
+    /// Handles the callback URL that Unsplash returned after invoking `authorizationURL(scope:)`
+    /// - Parameters:
+    ///   - url: The URL that Unsplash has called back with.
+    public func handleAuthorizationCallback(url: URL) async throws {
+        try await queryManager.handleAuthorizationCallback(url: url)
     }
 
     // MARK: - Helpers

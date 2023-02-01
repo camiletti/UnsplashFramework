@@ -27,12 +27,12 @@ import XCTest
 final class AuthorizationAttemptParametersTests: XCTestCase {
 
     func testAsQueryItems() {
-        let rawCompletionURI = "UnsplashFramework://open/auth/completed"
+        let expectedRedirectURI = "unsplashframework://open/auth"
         let expectedScope: Set<UserAuthorizationScope> = [.readUser, .readPhotos, .readCollections]
-        let expectedCompletionURI = rawCompletionURI.addingPercentEncoding(withAllowedCharacters: .alphanumerics)
         let expectedQueryItemsAmount = 4
-        let parameters = AuthorizationAttemptParameters(credentials: UNCredentials(accessKey: "123", secret: "abc"),
-                                                        completionURI: rawCompletionURI,
+        let parameters = AuthorizationAttemptParameters(credentials: UNCredentials(accessKey: "123",
+                                                                                   secret: "abc",
+                                                                                   redirectAuthenticationURI: expectedRedirectURI),
                                                         scope: expectedScope)
 
         let queryItems = parameters.asQueryItems()
@@ -42,12 +42,12 @@ final class AuthorizationAttemptParametersTests: XCTestCase {
         let accessKey = queryItems
             .first(where: { $0.name == AuthorizationAttemptParameters.QueryParameterName.accessKey })?
             .value
-        XCTAssertEqual(accessKey, "\(parameters.credentials.accessKey)")
+        XCTAssertEqual(accessKey, parameters.credentials.accessKey)
 
-        let completionURI = queryItems
-            .first(where: { $0.name == AuthorizationAttemptParameters.QueryParameterName.completionURI })?
+        let redirectURI = queryItems
+            .first(where: { $0.name == AuthorizationAttemptParameters.QueryParameterName.redirectAuthenticationURI })?
             .value
-        XCTAssertEqual(completionURI, expectedCompletionURI)
+        XCTAssertEqual(redirectURI, expectedRedirectURI)
 
         let responseType = queryItems
             .first(where: { $0.name == AuthorizationAttemptParameters.QueryParameterName.responseType })?

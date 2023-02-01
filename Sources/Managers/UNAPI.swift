@@ -115,16 +115,14 @@ open class UNAPI {
     // MARK: - Authorization
 
     /// Creates an authorization URL. This URL should be opened in a web browser so the user can grant the
-    /// requested permissions via Unsplash login. Once the user completes the authorization, Unsplash will call the completionURI.
-    /// `handleAuthorizationCallback` should be called when this happens in order to process the result and obtain upgraded
+    /// requested permissions via Unsplash login. Once the user completes the authorization, Unsplash will call the redirect URI specified on the credentials.
+    /// `handleAuthorizationCallback(url:)` should be called when this happens in order to process the result and obtain upgraded
     /// credentials with the requested scope.
     /// - Parameters:
     ///   - scope: A set with the desired access privileges.
-    ///   - completionURI: The URI that Unsplash will call once the user accepts or denies the request.
     /// - Returns: An authorization URL that should be opened in a web browser.
-    func authorizationURL(scope: Set<UserAuthorizationScope>, completionURI: String) -> URL {
+    func authorizationURL(scope: Set<UserAuthorizationScope>) -> URL {
         let parameters = AuthorizationAttemptParameters(credentials: credentials,
-                                                        completionURI: completionURI,
                                                         scope: scope)
         let authorizationComponents = URLComponents(unsplashQuery: parameters.asQueryItems(),
                                                     endpoint: .authorization,
@@ -132,19 +130,13 @@ open class UNAPI {
         return authorizationComponents.url!
     }
 
-    /// Handles the callback URL that Unsplash returned after invoking `authorizationURL(scope:completionURI:)`
+    /// Handles the callback URL that Unsplash returned after invoking `authorizationURL(scope:)`
     /// - Parameters:
     ///   - url: The URL that Unsplash has called back with.
-    ///   - completionURI: The same URI that has been used for `authorizationURL(scope:completionURI:)`
-    func handleAuthorizationCallback(url: URL, completionURI: String) async throws {
+    func handleAuthorizationCallback(url: URL) async throws {
         let components = URLComponents(url: url, resolvingAgainstBaseURL: true)
-        ///
-        ///
-        /// SEARCH WHY url.baseURL is nil
-        ///
-        ///
         let baseURL = url.absoluteString.components(separatedBy: "?").first
-        guard baseURL == completionURI,
+        guard baseURL == credentials.redirectAuthenticationURI,
               let codeItem = components?.queryItems?.first(where: { $0.name == AuthorizationTokenParameters.QueryParameterName.code }),
               let code = codeItem.value else {
             throw UNError.init(reason: .incorrectAuthorizationURL)
@@ -158,7 +150,8 @@ open class UNAPI {
                                                                             at: .web,
                                                                             parameters: parameters)
 
-        credentials = UNCredentials(accessKey: response.authorization.accessToken,
-                                    secret: credentials.secret)
+        credentials = UNCredentials(accessKey: response.authorization.accessKey,
+                                    secret: credentials.secret,
+                                    redirectAuthenticationURI: credentials.redirectAuthenticationURI)
     }
 }

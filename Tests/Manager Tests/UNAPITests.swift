@@ -36,7 +36,9 @@ final class UNAPITests: XCTestCase {
     // MARK: - Tests
 
     func testHeaders() async throws {
-        let credentials = UNCredentials(accessKey: "appID", secret: "secret")
+        let credentials = UNCredentials(accessKey: "appID",
+                                        secret: "secret",
+                                        redirectAuthenticationURI: "unsplashframework://open/auth")
         let headerCheckExpectation = expectation(description: "Header check should have been executed")
         let expectedHeaders: [String: Any] = [RequestHeader.acceptVersion.fieldName: RequestHeader.acceptVersion.fieldValue,
                                               RequestHeader.authorization(accessKey: credentials.accessKey).fieldName: RequestHeader.authorization(accessKey: credentials.accessKey).fieldValue]
@@ -78,7 +80,8 @@ final class UNAPITests: XCTestCase {
     func testResultIsFailureWhenAnErrorIsReceived() async throws {
         let expectedError = UNError(reason: .serverNotReached)
         let credentials = UNCredentials(accessKey: "accessKey",
-                                        secret: "secret")
+                                        secret: "secret",
+                                        redirectAuthenticationURI: "unsplashframework://open/auth")
         let urlSession = URLSession.mocking(data: DemoData.standardPhotoSearchResponse,
                                             response: nil,
                                             error: expectedError,

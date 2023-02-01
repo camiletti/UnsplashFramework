@@ -258,11 +258,11 @@ class QueryManager {
 
     // MARK: - Authorization
 
-    func authorizationURL(scope: Set<UserAuthorizationScope>, completionURI: String) -> URL {
-        api.authorizationURL(scope: scope, completionURI: completionURI)
+    func authorizationURL(scope: Set<UserAuthorizationScope>) -> URL {
+        api.authorizationURL(scope: scope)
     }
 
-    func handleAuthorizationCallback(url: URL, completionURI: String) async throws {
-        try await api.handleAuthorizationCallback(url: url, completionURI: completionURI)
+    func handleAuthorizationCallback(url: URL) async throws {
+        try await api.handleAuthorizationCallback(url: url)
     }
 }
