@@ -1,0 +1,44 @@
+name: "UnsplashFramework CI"
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - ".github/workflows/**"
+      - "Package.swift"
+      - "Source/**"
+      - "Tests/**"
+  pull_request:
+    paths:
+      - ".github/workflows/**"
+      - "Package.swift"
+      - "Source/**"
+      - "Tests/**"
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  SPM:
+    name: Test SPM
+    runs-on: ${{ matrix.runsOn }}
+    env:
+      DEVELOPER_DIR: "/Applications/${{ matrix.xcode }}.app/Contents/Developer"
+    timeout-minutes: 10
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - xcode: "Xcode_14.2"
+            runsOn: macOS-12
+            name: "macOS 12, SPM 5.7.2 Test"
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Test SPM
+        run: swift test -c debug
