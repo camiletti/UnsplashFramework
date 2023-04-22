@@ -993,6 +993,7 @@ final class UNClientTests: XCTestCase {
     }
 
     func testURLIsNotHandledWhenURIDoesNotCoincide() async throws {
+        let errorExpectation = expectation(description: "Error is expected")
         let url = URL(string: "unsplashframework://open/something_that_is_not_auth")!
         let queryManager = QueryManager.mock(data: Data(), // No request should be fired on this test
                                              response: nil,
@@ -1007,10 +1008,15 @@ final class UNClientTests: XCTestCase {
         do {
             try await client.handleAuthorizationCallback(url: url)
             XCTFail()
-        } catch {}
+        } catch {
+            errorExpectation.fulfill()
+        }
+
+        wait(for: [errorExpectation], timeout: 0.1)
     }
 
     func testURLWithoutCodeFails() async throws {
+        let errorExpectation = expectation(description: "Error is expected")
         let url = URL(string: "unsplashframework://open/auth")!
         let queryManager = QueryManager.mock(data: Data(), // No request should be fired on this test
                                              response: nil,
@@ -1025,7 +1031,11 @@ final class UNClientTests: XCTestCase {
         do {
             try await client.handleAuthorizationCallback(url: url)
             XCTFail()
-        } catch {}
+        } catch {
+            errorExpectation.fulfill()
+        }
+
+        wait(for: [errorExpectation], timeout: 0.1)
     }
 
     func testCorrectURLMakesCorrectRequest() async throws {

@@ -78,6 +78,7 @@ final class UNAPITests: XCTestCase {
     }
 
     func testResultIsFailureWhenAnErrorIsReceived() async throws {
+        let errorExpectation = expectation(description: "Error is expected")
         let expectedError = UNError(reason: .serverNotReached)
         let credentials = UNCredentials(accessKey: "accessKey",
                                         secret: "secret",
@@ -95,7 +96,9 @@ final class UNAPITests: XCTestCase {
                                                                         parameters: nil)
             XCTFail("Success is not what we expect here")
         } catch {
-            // Error is the expected result
+            errorExpectation.fulfill()
         }
+
+        wait(for: [errorExpectation], timeout: 0.1)
     }
 }
