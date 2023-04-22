@@ -2,18 +2,17 @@
 ![UnsplashFramework-Dark](https://raw.githubusercontent.com/camiletti/UnsplashFramework/master/UnsplashFrameworkLogo-Dark.png#gh-dark-mode-only)
 
 <p align="center">
-	<a href="https://travis-ci.org/camiletti/UnsplashFramework"><img src="https://travis-ci.org/camiletti/UnsplashFramework.svg?branch=master" /></a>
+	<a href="https://github.com/camiletti/UnsplashFramework/actions/workflows/ci.yml"><img src="https://github.com/camiletti/UnsplashFramework/actions/workflows/ci.yml/badge.svg?event=push" /></a>
     <a href="#SPM"><img src="https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat" /></a>
-	<a href="https://developer.apple.com/swift"><img src="https://img.shields.io/badge/swift-5.5-orange.svg?style=flat" /></a>
-	<a href="#-license"><img src="https://img.shields.io/cocoapods/l/UnsplashFramework.svg" /></a>
+	<a href="https://swiftpackageindex.com/camiletti/UnsplashFramework"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fcamiletti%2FUnsplashFramework%2Fbadge%3Ftype%3Dswift-versions" /></a>
+	<a href="https://swiftpackageindex.com/camiletti/UnsplashFramework"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fcamiletti%2FUnsplashFramework%2Fbadge%3Ftype%3Dplatforms" /></a>
+    <a href="#-license"><img src="https://img.shields.io/github/license/camiletti/UnsplashFramework" /></a>   
 </p>
 
 
 ## 📷 Introduction
 The idea behind this project is to make an easy-to-use, well tested and well documented client framework for Unsplash.
 Please read Unsplash's [Guidelines & Credition](https://unsplash.com/documentation#guidelines--crediting) before using it.
-
-> Currently in development stage
 
 
 ## 🛠 Features
@@ -71,7 +70,7 @@ The plan is to achieve feature parity with Unsplash REST API
 
 - iOS 15.0+
 - Swift 5.7+
-- Xcode 14.0+
+- Xcode 14.2+
 
 
 ## ⬇️ Installation
@@ -87,7 +86,7 @@ dependencies: [
 ```
 
 
-## 🎛 Use
+## 🎛 Examples of use
 ```swift
 import UnsplashFramework
 ```
@@ -102,13 +101,14 @@ let client = UNClient(with: credentials)
 ```
 
 
-### Listing photos
+### Listing photos from a user
 
 
 ```swift
-let photos = try await client.listPhotos(page: 1,
-                                         photosPerPage: 1,
-                                         sortingBy: .popular)
+let photos = try await client.photos(fromUsername: "camiletti",
+                                     page: 1,
+                                     includeStats: true,
+                                     sortingBy: .latest)
 ```
 
 
@@ -116,7 +116,7 @@ let photos = try await client.listPhotos(page: 1,
 
 
 ```swift
-let profile = try await client.publicProfile(forUsername "unsplash")
+let profile = try await client.publicProfile(forUsername: "camiletti")
 ```
 
 
@@ -127,7 +127,7 @@ let profile = try await client.publicProfile(forUsername "unsplash")
 let photos = try await client.searchPhotos(query: "forest",
                                            page: 1,
                                            photosPerPage: 10,
-                                           collections: [],
+                                           orderedBy: .relevance,
                                            orientation: .landscape)
 
 // Searching collections
@@ -157,7 +157,7 @@ let users = try await client.searchUsers(query: "camiletti",
 UnsplashFramework is under MIT license.
 
 ```
-Copyright 2022 Pablo Camiletti
+Copyright 2023 Pablo Camiletti
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
