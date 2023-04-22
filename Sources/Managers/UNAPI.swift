@@ -55,7 +55,7 @@ open class UNAPI {
     @discardableResult
     func request<T: Decodable>(_ method: HTTPMethod,
                                endpoint: Endpoint,
-                               at location: Host.Location,
+                               at location: UnsplashHost.Location,
                                parameters: ParametersURLRepresentable?) async throws -> (T, [ResponseHeader]) {
 
         let request = URLRequest.request(method,
@@ -90,7 +90,7 @@ open class UNAPI {
     ///   - parameters: The parameters to use for the request.
     func request(_ method: HTTPMethod,
                  endpoint: Endpoint,
-                 at location: Host.Location,
+                 at location: UnsplashHost.Location,
                  parameters: ParametersURLRepresentable?) async throws -> [ResponseHeader] {
 
         let request = URLRequest.request(method,

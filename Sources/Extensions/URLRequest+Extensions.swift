@@ -35,7 +35,7 @@ extension URLRequest {
     /// - Returns: A new URLRequest containing the passed information.
     static func request(_ method: HTTPMethod,
                         forEndpoint endpoint: Endpoint,
-                        at location: Host.Location,
+                        at location: UnsplashHost.Location,
                         parameters: ParametersURLRepresentable?,
                         headers: [RequestHeader]) -> URLRequest {
         // Create new request

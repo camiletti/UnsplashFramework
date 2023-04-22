@@ -64,7 +64,7 @@ final class UNAPITester: UNAPI {
 
     override func request<T>(_ method: HTTPMethod,
                              endpoint: Endpoint,
-                             at location: Host.Location,
+                             at location: UnsplashFramework.UnsplashHost.Location,
                              parameters: ParametersURLRepresentable?) async throws -> (T, [ResponseHeader]) where T : Decodable {
         XCTAssertEqual(method, expectedMethod, file: file, line: line)
         XCTAssertEqual(endpoint.path, expectedEndpoint.path, file: file, line: line)

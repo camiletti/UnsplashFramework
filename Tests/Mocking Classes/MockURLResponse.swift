@@ -27,7 +27,7 @@ import Foundation
 extension URLResponse {
 
     static func mockingSuccess(endpoint: Endpoint,
-                               at location: Host.Location = .api,
+                               at location: UnsplashHost.Location = .api,
                                parameters: ParametersURLRepresentable?,
                                headers: [String: String]?) -> HTTPURLResponse {
         let url = URLComponents(unsplashQuery: parameters?.asQueryItems(),
@@ -41,7 +41,7 @@ extension URLResponse {
     }
 
     static func mockingFailure(endpoint: Endpoint,
-                               at location: Host.Location = .api,
+                               at location: UnsplashHost.Location = .api,
                                parameters: ParametersURLRepresentable?,
                                statusCode: ResponseStatusCode = .internalServerError,
                                headers: [String: String]? = nil) -> HTTPURLResponse {

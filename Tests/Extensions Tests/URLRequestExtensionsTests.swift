@@ -93,7 +93,7 @@ final class URLSessionExtensionsTests: XCTestCase {
     // MARK: - Helpers
 
     func expectedURL(withEndpoint endpoint: Endpoint, parameters: UNPhotoListParameters) -> URL? {
-        URL(string: Host.scheme + "://" + Host.Location.api.string + endpoint.path + "?" +
+        URL(string: UnsplashHost.scheme + "://" + UnsplashHost.Location.api.string + endpoint.path + "?" +
                 UNPhotoListParameters.QueryParameterName.pageNumber + "=\(parameters.pageNumber!)&" +
                 UNPhotoListParameters.QueryParameterName.photosPerPage + "=\(parameters.photosPerPage!)&" +
                 UNPhotoListParameters.QueryParameterName.sorting + "=\(parameters.sorting!)")

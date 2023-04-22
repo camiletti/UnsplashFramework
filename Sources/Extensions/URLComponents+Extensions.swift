@@ -28,10 +28,10 @@ extension URLComponents {
     // MARK: - Life Cycle
 
     /// Convenient way to initialize an URLComponents for an Unsplash request.
-    init(unsplashQuery queryItems: [URLQueryItem]?, endpoint: Endpoint, at location: Host.Location) {
+    init(unsplashQuery queryItems: [URLQueryItem]?, endpoint: Endpoint, at location: UnsplashHost.Location) {
         self.init()
 
-        self.scheme = Host.scheme
+        self.scheme = UnsplashHost.scheme
         self.host = location.string
         self.queryItems = queryItems
         self.path = endpoint.path

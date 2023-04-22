@@ -21,7 +21,7 @@
 //  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-enum Host {
+enum UnsplashHost {
 
     /// Scheme as described at https://unsplash.com/documentation#location
     static let scheme = "https"
