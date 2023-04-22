@@ -24,7 +24,7 @@
 import Foundation
 
 /// The UNClient is the point of access to every Unsplash request.
-public final class UNClient {
+public class UNClient {
 
     // MARK: - Properties
 
@@ -35,7 +35,7 @@ public final class UNClient {
     /// The value will be nil until the first request is done
     public private(set) var requestsLimit: Int?
 
-    /// Numbero of requests left for the current hour interval for the Access Key in use
+    /// Number of requests left for the current hour interval for the Access Key in use
     ///
     /// The value will be nil until the first request is done
     public private(set) var requestsRemaining: Int?
