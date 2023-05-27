@@ -59,7 +59,7 @@ public class UNClient {
     public func publicProfile(forUsername username: String) async throws -> UNUserPublicProfile {
         let parameters = UNUserPublicProfileParameters(username: username)
         let response = try await queryManager.publicProfile(with: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     /// Retrieve a single user’s portfolio link (if set).
@@ -68,7 +68,7 @@ public class UNClient {
     public func portfolioLink(forUsername username: String) async throws -> URL? {
         let parameters = UNUserPublicProfileParameters(username: username)
         let response = try await queryManager.portfolioLink(with: parameters)
-        return extractValueProcessingHeaders(from: response).url
+        return extractValue(from: response).url
     }
 
     /// Get a list of photos uploaded by a user.
@@ -89,7 +89,7 @@ public class UNClient {
                        includeStats: Bool = false,
                        statsInterval: UNStatisticsInterval = .days,
                        statsAmount: Int? = nil,
-                       orientationFilter: UNPhotoOrientation? = nil) async throws -> [UNPhoto] {
+                       orientationFilter: UNPhotoOrientation? = nil) async throws -> UNPaginatedResult<UNPhoto> {
         let parameters = UNUserPhotosParameters(username: username,
                                                 pageNumber: pageNumber,
                                                 photosPerPage: photosPerPage,
@@ -99,7 +99,7 @@ public class UNClient {
                                                 statsAmount: statsAmount,
                                                 orientationFilter: orientationFilter)
         let response = try await queryManager.userPhotos(with: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractPage(from: response)
     }
 
     /// Get a list of photos liked by a user.
@@ -114,14 +114,14 @@ public class UNClient {
                             pageNumber: Int = 1,
                             photosPerPage: Int = 10,
                             sortingBy sortOrder: UNSort = .latest,
-                            orientationFilter: UNPhotoOrientation? = nil) async throws -> [UNPhoto] {
+                            orientationFilter: UNPhotoOrientation? = nil) async throws -> UNPaginatedResult<UNPhoto> {
         let parameters = UNUserLikesParameters(username: username,
                                                pageNumber: pageNumber,
                                                photosPerPage: photosPerPage,
                                                sorting: sortOrder,
                                                orientationFilter: orientationFilter)
         let response = try await queryManager.userLikedPhotos(with: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractPage(from: response)
     }
 
     /// Get a list of collections created by the user.
@@ -133,12 +133,12 @@ public class UNClient {
     /// - Returns: An array with the user's collections in a given page.
     public func collections(byUsername username: String,
                             pageNumber: Int = 1,
-                            collectionsPerPage: Int = 10) async throws -> [UNCollection] {
+                            collectionsPerPage: Int = 10) async throws -> UNPaginatedResult<UNCollection> {
         let parameters = UNUserCollectionsParameters(username: username,
                                                      pageNumber: pageNumber,
                                                      collectionsPerPage: collectionsPerPage)
         let response = try await queryManager.collections(with: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractPage(from: response)
     }
 
     /// Retrieve the consolidated number of downloads, views and likes of all user’s
@@ -156,7 +156,7 @@ public class UNClient {
         let parameters = UNStatisticsParameters(interval: interval,
                                                 quantity: quantity)
         let response = try await queryManager.userStatistics(forUsername: username, with: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     // MARK: - Listing photos
@@ -170,13 +170,13 @@ public class UNClient {
     /// - Returns: A single page from the list of all editorial photos.
     public func editorialPhotosList(pageNumber: Int,
                                     photosPerPage: Int = 10,
-                                    sortingBy sortOrder: UNSort) async throws -> [UNPhoto] {
+                                    sortingBy sortOrder: UNSort) async throws -> UNPaginatedResult<UNPhoto> {
         let parameters = UNPhotoListParameters(pageNumber: pageNumber,
                                                photosPerPage: photosPerPage,
                                                sorting: sortOrder)
 
         let response = try await queryManager.editorialPhotosList(with: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractPage(from: response)
     }
 
     /// Retrieve a single photo.
@@ -184,7 +184,7 @@ public class UNClient {
     /// - Returns: A single photo by the given ID.
     public func photo(withID id: String) async throws -> UNFullPhoto {
         let response = try await queryManager.photo(withID: id)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     /// Retrieve random photos, given optional filters.
@@ -211,7 +211,7 @@ public class UNClient {
                                                  contentFilter: contentFilter,
                                                  amountOfRandomPhotos: amountOfRandomPhotos)
         let response = try await queryManager.randomPhotos(with: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     /// Retrieve a single random photos, given optional filters.
@@ -236,7 +236,7 @@ public class UNClient {
                                                  contentFilter: contentFilter,
                                                  amountOfRandomPhotos: amountOfRandomPhotos)
         let response = try await queryManager.randomPhotos(with: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     /// Retrieve total number of downloads, views and likes of a
@@ -254,7 +254,7 @@ public class UNClient {
         let parameters = UNStatisticsParameters(interval: interval,
                                                 quantity: quantity)
         let response = try await queryManager.userStatistics(forPhotoWithID: photoID, with: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     /// To abide by the API guidelines, you need call this function
@@ -269,7 +269,7 @@ public class UNClient {
     /// - Returns: The download URL for the photo.
     public func trackPhotoDownloaded(withID photoID: String) async throws -> URL? {
         let response = try await queryManager.trackPhotoDownloaded(withID: photoID)
-        return extractValueProcessingHeaders(from: response).url
+        return extractValue(from: response).url
     }
 
     /// Update a photo on behalf of the logged-in user. This requires the `write_photos` scope.
@@ -294,7 +294,7 @@ public class UNClient {
                                                      location: location,
                                                      cameraDetails: cameraDetails)
         let response = try await queryManager.updatePhotoInfo(forPhotoWithID: photoID, with: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     /// Like a photo on behalf of the logged-in user. This requires the write_likes scope.
@@ -305,7 +305,7 @@ public class UNClient {
     /// - Returns: The liked photo.
     public func likePhoto(withID id: String) async throws -> UNPhoto {
         let response = try await queryManager.likePhoto(withID: id)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     /// Remove a user’s like of a photo. This requires the write_likes scope.
@@ -316,7 +316,7 @@ public class UNClient {
     /// - Returns: The unliked photo.
     public func unlikePhoto(withID id: String) async throws -> UNPhoto {
         let response = try await queryManager.unlikePhoto(withID: id)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     // MARK: - Search
@@ -352,7 +352,7 @@ public class UNClient {
 
         let response: (UNSearchResult<UNPhoto>, [ResponseHeader]) = try await queryManager.search(.photo,
                                                                                                   with: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     /// Get a single page of collection results for a query.
@@ -362,14 +362,14 @@ public class UNClient {
     ///   - page: Page number to retrieve.
     ///   - collectionsPerPage: Number of items per page.
     public func searchCollections(query: String,
-                                  page: Int = 1,
+                                  pageNumber: Int = 1,
                                   collectionsPerPage: Int = 10) async throws-> UNSearchResult<UNCollection> {
         let parameters = UNCollectionSearchParameters(query: query,
-                                                      pageNumber: page,
+                                                      pageNumber: pageNumber,
                                                       collectionsPerPage: collectionsPerPage)
         let response: (UNSearchResult<UNCollection>, [ResponseHeader]) = try await queryManager.search(.collection,
                                                                                                        with: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     /// Get a single page of users results for a query.
@@ -380,15 +380,15 @@ public class UNClient {
     ///   - usersPerPage: Number of items per page.
     ///   - completion: The completion handler that will be called with the results (Executed on the main thread).
     public func searchUsers(query: String,
-                            page: Int = 1,
+                            pageNumber: Int = 1,
                             usersPerPage: Int = 10) async throws -> UNSearchResult<UNUser> {
         let parameters = UNUserSearchParameters(query: query,
-                                                pageNumber: page,
+                                                pageNumber: pageNumber,
                                                 usersPerPage: usersPerPage)
 
         let response: (UNSearchResult<UNUser>, [ResponseHeader]) = try await queryManager.search(.user,
                                                                                                  with: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     // MARK: - Collections
@@ -399,12 +399,12 @@ public class UNClient {
     ///   - collectionsPerPage: Number of items per page.
     /// - Returns: Array with collections
     public func collectionList(pageNumber: Int = 1,
-                               collectionsPerPage: Int = 10) async throws -> [UNCollection] {
+                               collectionsPerPage: Int = 10) async throws -> UNPaginatedResult<UNCollection> {
         let parameters = UNCollectionListParameters(pageNumber: pageNumber,
                                                     collectionsPerPage: collectionsPerPage)
 
         let response = try await queryManager.collectionList(parameters: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractPage(from: response)
     }
 
     /// Retrieve a single collection. To view a user’s private collections, the `read_collections` scope is required.
@@ -412,7 +412,7 @@ public class UNClient {
     /// - Returns: A single collection
     public func collection(withID id: String) async throws -> UNCollection {
         let response = try await queryManager.collection(withID: id)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     /// Retrieve a collection’s photos.
@@ -423,15 +423,15 @@ public class UNClient {
     ///   - orientation: Filter by photo orientation.
     /// - Returns: A collection’s photos.
     public func photosInCollection(withID collectionID: String,
-                                   page: Int = 1,
+                                   pageNumber: Int = 1,
                                    photosPerPage: Int = 10,
-                                   orientation: UNPhotoOrientation? = nil) async throws -> [UNPhoto] {
-        let parameters = UNCollectionPhotosParameters(pageNumber: page,
+                                   orientation: UNPhotoOrientation? = nil) async throws -> UNPaginatedResult<UNPhoto> {
+        let parameters = UNCollectionPhotosParameters(pageNumber: pageNumber,
                                                       photosPerPage: photosPerPage,
                                                       orientation: orientation)
 
         let response = try await queryManager.photosInCollection(withID: collectionID, parameters: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractPage(from: response)
     }
 
     /// Retrieve a list of collections related to this one.
@@ -439,7 +439,7 @@ public class UNClient {
     /// - Returns: A list of collections related to this one.
     public func relatedCollections(toCollectionWithID collectionID: String) async throws -> [UNCollection] {
         let response = try await queryManager.relatedCollections(toCollectionWithID: collectionID)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     /// Create a new collection. This requires the `write_collections` scope.
@@ -455,7 +455,7 @@ public class UNClient {
         let parameters = UNNewCollectionParameters(title: title, description: description, isPrivate: isPrivate)
 
         let response = try await queryManager.createNewCollection(parameters: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     /// Update an existing collection belonging to the logged-in user. This requires the `write_collections` scope.
@@ -473,7 +473,7 @@ public class UNClient {
         let parameters = UNUpdateCollectionParameters(title: title, description: description, isPrivate: isPrivate)
 
         let response = try await queryManager.updateCollection(withID: collectionID,  parameters: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     /// Delete a collection belonging to the logged-in user. This requires the `write_collections` scope.
@@ -481,7 +481,7 @@ public class UNClient {
     ///   - collectionID: The collection’s ID.
     public func deleteCollection(withID collectionID: String) async throws {
         let headers = try await queryManager.deleteCollection(withID: collectionID)
-        processHeaders(headers)
+        processRequestLimits(headers)
     }
 
     /// Add a photo to one of the logged-in user’s collections. Requires the `write_collections` scope.
@@ -493,12 +493,13 @@ public class UNClient {
     ///   - collectionID: The photo’s ID.
     /// - Returns: The photo that was added and the collection.
     @discardableResult
-    public func addPhoto(withID photoID: String, toCollectionWithID collectionID: String) async throws -> (UNPhoto, UNCollection) {
+    public func addPhoto(withID photoID: String,
+                         toCollectionWithID collectionID: String) async throws -> (UNPhoto, UNCollection) {
         let parameters = UNModifyPhotoToCollectionParameters(photoID: photoID)
 
         let response = try await queryManager.addPhotoToCollection(withID: collectionID,
                                                                    parameters: parameters)
-        let value = extractValueProcessingHeaders(from: response)
+        let value = extractValue(from: response)
         return (value.photo, value.collection)
     }
 
@@ -508,13 +509,14 @@ public class UNClient {
     ///   - collectionID: The photo’s ID.
     /// - Returns: The photo that was removed and its collection.
     @discardableResult
-    public func removePhoto(withID photoID: String, fromCollectionWithID collectionID: String) async throws -> (UNPhoto, UNCollection) {
+    public func removePhoto(withID photoID: String,
+                            fromCollectionWithID collectionID: String) async throws -> (UNPhoto, UNCollection) {
         let parameters = UNModifyPhotoToCollectionParameters(photoID: photoID)
 
         let response = try await queryManager.removePhotoFromCollection(withID: collectionID,
                                                                         parameters: parameters)
 
-        let value = extractValueProcessingHeaders(from: response)
+        let value = extractValue(from: response)
         return (value.photo, value.collection)
     }
 
@@ -530,14 +532,14 @@ public class UNClient {
     public func topicList(idsOrSlugs: [String]?,
                           pageNumber: Int = 1,
                           topicsPerPage: Int = 10,
-                          sortingBy sortOrder: UNTopicSort = .position) async throws -> [UNTopic] {
+                          sortingBy sortOrder: UNTopicSort = .position) async throws -> UNPaginatedResult<UNTopic> {
         let parameters = UNTopicListParameters(idsOrSlugs: idsOrSlugs,
                                                pageNumber: pageNumber,
                                                topicsPerPage: topicsPerPage,
                                                sorting: sortOrder)
 
         let response = try await queryManager.topicList(parameters: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractPage(from: response)
     }
 
     /// Get a topic
@@ -545,7 +547,7 @@ public class UNClient {
     /// - Returns: A single topic
     public func topic(withIDOrSlug idOrSlug: String) async throws -> UNTopic {
         let response = try await queryManager.topic(withIDOrSlug: idOrSlug)
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     /// Retrieve a topic’s photos.
@@ -560,14 +562,14 @@ public class UNClient {
                               pageNumber: Int = 1,
                               photosPerPage: Int = 10,
                               orientation: UNPhotoOrientation? = nil,
-                              sortingBy sortOrder: UNSort = .latest) async throws -> [UNPhoto] {
+                              sortingBy sortOrder: UNSort = .latest) async throws -> UNPaginatedResult<UNPhoto> {
         let parameters = UNTopicPhotosParameters(pageNumber: pageNumber,
                                                  photosPerPage: photosPerPage,
                                                  orientation: orientation,
                                                  order: sortOrder)
 
         let response = try await queryManager.photosOfTopic(idOrSlug: idOrSlug, parameters: parameters)
-        return extractValueProcessingHeaders(from: response)
+        return extractPage(from: response)
     }
 
     // MARK: - Stats
@@ -575,13 +577,13 @@ public class UNClient {
     /// Get a list of counts for all of Unsplash.
     public func unsplashTotalStats() async throws -> UNUnsplashTotalStats {
         let response = try await queryManager.unsplashTotalStats()
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     /// Get the overall Unsplash stats for the past 30 days.
     public func unsplashMonthlyStats() async throws -> UNUnsplashMonthlyStats {
         let response = try await queryManager.unsplashMonthlyStats()
-        return extractValueProcessingHeaders(from: response)
+        return extractValue(from: response)
     }
 
     // MARK: - Authorization
@@ -606,12 +608,18 @@ public class UNClient {
 
     // MARK: - Helpers
 
-    private func extractValueProcessingHeaders<T>(from response: (value: T, headers: [ResponseHeader])) -> T {
-        processHeaders(response.headers)
+    private func extractPage<T>(from response: (value: [T], headers: [ResponseHeader])) -> UNPaginatedResult<T> {
+        processRequestLimits(response.headers)
+        let pageInfo = extractPageInfo(from: response.headers)
+        return UNPaginatedResult(pageInfo: pageInfo, elements: response.value)
+    }
+
+    private func extractValue<T>(from response: (value: T, headers: [ResponseHeader])) -> T {
+        processRequestLimits(response.headers)
         return response.value
     }
 
-    private func processHeaders(_ headers: [ResponseHeader]) {
+    private func processRequestLimits(_ headers: [ResponseHeader]) {
         for header in headers {
             switch header {
             case .requestsRemaining(let amount):
@@ -619,7 +627,38 @@ public class UNClient {
 
             case .requestLimit(let amount):
                 self.requestsLimit = amount
+
+            case .totalNumberOfElements,
+                 .elementsPerPage:
+                break
             }
         }
+    }
+
+    private func extractPageInfo(from headers: [ResponseHeader]) -> UNPageInfo {
+        var totalNumberOfElements: Int?
+        var elementsPerPage: Int?
+
+        for header in headers {
+            switch header {
+            case .requestsRemaining,
+                 .requestLimit:
+                break
+
+            case .totalNumberOfElements(let amount):
+                totalNumberOfElements = amount
+
+            case .elementsPerPage(let amount):
+                elementsPerPage = amount
+            }
+        }
+
+        guard let totalNumberOfElements,
+              let elementsPerPage else {
+            assertionFailure("Page values couldn't be extracted")
+            return UNPageInfo(elementsPerPage: 0, totalNumberOfElements: 0)
+        }
+
+        return UNPageInfo(elementsPerPage: elementsPerPage, totalNumberOfElements: totalNumberOfElements)
     }
 }

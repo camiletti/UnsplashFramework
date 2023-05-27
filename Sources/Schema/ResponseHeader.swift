@@ -27,12 +27,16 @@ import Foundation
 enum ResponseHeader {
     case requestLimit(Int)
     case requestsRemaining(Int)
+    case totalNumberOfElements(Int)
+    case elementsPerPage(Int)
 
     // MARK: - Declarations
 
     enum Key: String, CaseIterable {
         case requestLimit = "X-Ratelimit-Limit"
         case requestsRemaining = "X-Ratelimit-Remaining"
+        case totalNumberOfElements = "X-Total"
+        case elementsPerPage = "X-Per-Page"
     }
 
     // MARK: - Actions
@@ -47,6 +51,16 @@ enum ResponseHeader {
         case .requestsRemaining:
             if let amount = Int(value) {
                 return .requestsRemaining(amount)
+            }
+
+        case .totalNumberOfElements:
+            if let amount = Int(value) {
+                return .totalNumberOfElements(amount)
+            }
+
+        case .elementsPerPage:
+            if let amount = Int(value) {
+                return .elementsPerPage(amount)
             }
         }
 

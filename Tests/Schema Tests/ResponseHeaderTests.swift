@@ -28,7 +28,9 @@ final class ResponseHeaderTests: XCTestCase {
 
     func testHeaderParsing() {
         var rawHeaders: [String: String] = [ResponseHeader.Key.requestLimit.rawValue: "50",
-                                            ResponseHeader.Key.requestsRemaining.rawValue: "25"]
+                                            ResponseHeader.Key.requestsRemaining.rawValue: "25",
+                                            ResponseHeader.Key.totalNumberOfElements.rawValue: "101",
+                                            ResponseHeader.Key.elementsPerPage.rawValue: "10"]
 
         let response = URLResponse.mockingSuccess(endpoint: .editorialPhotosList,
                                                   parameters: nil,
@@ -48,6 +50,16 @@ final class ResponseHeaderTests: XCTestCase {
                 let expectedRemaining = Int(rawHeaders[ResponseHeader.Key.requestsRemaining.rawValue]!)!
                 XCTAssertEqual(amount, expectedRemaining)
                 rawHeaders.removeValue(forKey: ResponseHeader.Key.requestsRemaining.rawValue)
+
+            case .totalNumberOfElements(let amount):
+                let expectedTotalNumberOfElements = Int(rawHeaders[ResponseHeader.Key.totalNumberOfElements.rawValue]!)!
+                XCTAssertEqual(amount, expectedTotalNumberOfElements)
+                rawHeaders.removeValue(forKey: ResponseHeader.Key.totalNumberOfElements.rawValue)
+
+            case .elementsPerPage(let amount):
+                let expectedElementsPerPage = Int(rawHeaders[ResponseHeader.Key.elementsPerPage.rawValue]!)!
+                XCTAssertEqual(amount, expectedElementsPerPage)
+                rawHeaders.removeValue(forKey: ResponseHeader.Key.elementsPerPage.rawValue)
             }
         }
 

@@ -38,6 +38,10 @@ final class UNClientTests: XCTestCase {
         static let requestRemaining = 25
         static let responseHeaders = [ResponseHeader.Key.requestLimit.rawValue: "\(requestsLimit)",
                                       ResponseHeader.Key.requestsRemaining.rawValue: "\(requestRemaining)"]
+        static let responsePageHeaders = [ResponseHeader.Key.requestLimit.rawValue: "\(requestsLimit)",
+                                          ResponseHeader.Key.requestsRemaining.rawValue: "\(requestRemaining)",
+                                          ResponseHeader.Key.totalNumberOfElements.rawValue: "\(101)",
+                                          ResponseHeader.Key.elementsPerPage.rawValue: "\(10)"]
     }
 
     // MARK: - Users
@@ -106,7 +110,7 @@ final class UNClientTests: XCTestCase {
         let queryManager = QueryManager.mock(data: DemoData.userPhotosResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
                                                                        parameters: parameters,
-                                                                       headers: Constant.responseHeaders),
+                                                                       headers: Constant.responsePageHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -118,15 +122,15 @@ final class UNClientTests: XCTestCase {
         XCTAssertNil(client.requestsLimit)
         XCTAssertNil(client.requestsRemaining)
 
-        let photos = try await client.photos(fromUsername: parameters.username,
-                                             pageNumber: parameters.pageNumber!,
-                                             photosPerPage: parameters.photosPerPage!,
-                                             sortingBy: parameters.sorting!,
-                                             includeStats: parameters.includeStats!,
-                                             statsAmount: parameters.statsAmount!,
-                                             orientationFilter: parameters.orientationFilter)
+        let photosResult = try await client.photos(fromUsername: parameters.username,
+                                                   pageNumber: parameters.pageNumber!,
+                                                   photosPerPage: parameters.photosPerPage!,
+                                                   sortingBy: parameters.sorting!,
+                                                   includeStats: parameters.includeStats!,
+                                                   statsAmount: parameters.statsAmount!,
+                                                   orientationFilter: parameters.orientationFilter)
 
-        XCTAssertFalse(photos.isEmpty)
+        XCTAssertFalse(photosResult.elements.isEmpty)
 
         XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
         XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
@@ -142,7 +146,7 @@ final class UNClientTests: XCTestCase {
         let queryManager = QueryManager.mock(data: DemoData.userLikesResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
                                                                        parameters: parameters,
-                                                                       headers: Constant.responseHeaders),
+                                                                       headers: Constant.responsePageHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -154,13 +158,13 @@ final class UNClientTests: XCTestCase {
         XCTAssertNil(client.requestsLimit)
         XCTAssertNil(client.requestsRemaining)
 
-        let photos = try await client.photosLiked(byUsername: parameters.username,
-                                                  pageNumber: parameters.pageNumber!,
-                                                  photosPerPage: parameters.photosPerPage!,
-                                                  sortingBy: parameters.sorting!,
-                                                  orientationFilter: parameters.orientationFilter)
+        let photosResult = try await client.photosLiked(byUsername: parameters.username,
+                                                        pageNumber: parameters.pageNumber!,
+                                                        photosPerPage: parameters.photosPerPage!,
+                                                        sortingBy: parameters.sorting!,
+                                                        orientationFilter: parameters.orientationFilter)
 
-        XCTAssertFalse(photos.isEmpty)
+        XCTAssertFalse(photosResult.elements.isEmpty)
 
         XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
         XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
@@ -174,7 +178,7 @@ final class UNClientTests: XCTestCase {
         let queryManager = QueryManager.mock(data: DemoData.userCollectionsResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
                                                                        parameters: parameters,
-                                                                       headers: Constant.responseHeaders),
+                                                                       headers: Constant.responsePageHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -186,11 +190,11 @@ final class UNClientTests: XCTestCase {
         XCTAssertNil(client.requestsLimit)
         XCTAssertNil(client.requestsRemaining)
 
-        let collections = try await client.collections(byUsername: parameters.username,
-                                                       pageNumber: parameters.pageNumber!,
-                                                       collectionsPerPage: parameters.collectionsPerPage!)
+        let collectionsResult = try await client.collections(byUsername: parameters.username,
+                                                             pageNumber: parameters.pageNumber!,
+                                                             collectionsPerPage: parameters.collectionsPerPage!)
 
-        XCTAssertFalse(collections.isEmpty)
+        XCTAssertFalse(collectionsResult.elements.isEmpty)
 
         XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
         XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
@@ -234,7 +238,7 @@ final class UNClientTests: XCTestCase {
         let queryManager = QueryManager.mock(data: DemoData.standardPhotoListResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
                                                                        parameters: parameters,
-                                                                       headers: Constant.responseHeaders),
+                                                                       headers: Constant.responsePageHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -246,10 +250,10 @@ final class UNClientTests: XCTestCase {
         XCTAssertNil(client.requestsLimit)
         XCTAssertNil(client.requestsRemaining)
 
-        let photos = try await client.editorialPhotosList(pageNumber: parameters.pageNumber!,
-                                                          photosPerPage: parameters.photosPerPage!,
-                                                          sortingBy: parameters.sorting!)
-        XCTAssertFalse(photos.isEmpty)
+        let photosResult = try await client.editorialPhotosList(pageNumber: parameters.pageNumber!,
+                                                                photosPerPage: parameters.photosPerPage!,
+                                                                sortingBy: parameters.sorting!)
+        XCTAssertFalse(photosResult.elements.isEmpty)
 
         XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
         XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
@@ -558,7 +562,7 @@ final class UNClientTests: XCTestCase {
         XCTAssertNil(client.requestsRemaining)
 
         let collectionsSearchResult = try await client.searchCollections(query: parameters.query,
-                                                                         page: parameters.pageNumber!,
+                                                                         pageNumber: parameters.pageNumber!,
                                                                          collectionsPerPage: parameters.collectionsPerPage!)
 
         XCTAssertFalse(collectionsSearchResult.elements.isEmpty)
@@ -588,7 +592,7 @@ final class UNClientTests: XCTestCase {
         XCTAssertNil(client.requestsRemaining)
 
         let usersSearchResult = try await client.searchUsers(query: parameters.query,
-                                                             page: parameters.pageNumber!,
+                                                             pageNumber: parameters.pageNumber!,
                                                              usersPerPage: parameters.usersPerPage!)
 
         XCTAssertFalse(usersSearchResult.elements.isEmpty)
@@ -606,7 +610,7 @@ final class UNClientTests: XCTestCase {
         let queryManager = QueryManager.mock(data: DemoData.standardCollectionListResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
                                                                        parameters: parameters,
-                                                                       headers: Constant.responseHeaders),
+                                                                       headers: Constant.responsePageHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -618,10 +622,10 @@ final class UNClientTests: XCTestCase {
         XCTAssertNil(client.requestsLimit)
         XCTAssertNil(client.requestsRemaining)
 
-        let collections = try await client.collectionList(pageNumber: parameters.pageNumber!,
-                                                          collectionsPerPage: parameters.collectionsPerPage!)
+        let collectionsResult = try await client.collectionList(pageNumber: parameters.pageNumber!,
+                                                                collectionsPerPage: parameters.collectionsPerPage!)
 
-        XCTAssertFalse(collections.isEmpty)
+        XCTAssertFalse(collectionsResult.elements.isEmpty)
 
         XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
         XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
@@ -660,7 +664,7 @@ final class UNClientTests: XCTestCase {
         let queryManager = QueryManager.mock(data: DemoData.standardPhotosInCollectionResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
                                                                        parameters: parameters,
-                                                                       headers: Constant.responseHeaders),
+                                                                       headers: Constant.responsePageHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -672,12 +676,12 @@ final class UNClientTests: XCTestCase {
         XCTAssertNil(client.requestsLimit)
         XCTAssertNil(client.requestsRemaining)
 
-        let photos = try await client.photosInCollection(withID: collectionID,
-                                                         page: parameters.pageNumber!,
-                                                         photosPerPage: parameters.photosPerPage!,
-                                                         orientation: parameters.orientation!)
+        let photosResult = try await client.photosInCollection(withID: collectionID,
+                                                               pageNumber: parameters.pageNumber!,
+                                                               photosPerPage: parameters.photosPerPage!,
+                                                               orientation: parameters.orientation!)
 
-        XCTAssertFalse(photos.isEmpty)
+        XCTAssertFalse(photosResult.elements.isEmpty)
 
         XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
         XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
@@ -848,7 +852,7 @@ final class UNClientTests: XCTestCase {
         let queryManager = QueryManager.mock(data: DemoData.standardTopicList,
                                              response: .mockingSuccess(endpoint: endpoint,
                                                                        parameters: parameters,
-                                                                       headers: Constant.responseHeaders),
+                                                                       headers: Constant.responsePageHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -860,12 +864,12 @@ final class UNClientTests: XCTestCase {
         XCTAssertNil(client.requestsLimit)
         XCTAssertNil(client.requestsRemaining)
 
-        let topics = try await client.topicList(idsOrSlugs: parameters.idsOrSlugs,
-                                                pageNumber: parameters.pageNumber!,
-                                                topicsPerPage: parameters.topicsPerPage!,
-                                                sortingBy: parameters.sorting!)
+        let topicsResult = try await client.topicList(idsOrSlugs: parameters.idsOrSlugs,
+                                                      pageNumber: parameters.pageNumber!,
+                                                      topicsPerPage: parameters.topicsPerPage!,
+                                                      sortingBy: parameters.sorting!)
 
-        XCTAssertFalse(topics.isEmpty)
+        XCTAssertFalse(topicsResult.elements.isEmpty)
 
         XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
         XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
@@ -905,7 +909,7 @@ final class UNClientTests: XCTestCase {
         let queryManager = QueryManager.mock(data: DemoData.standardPhotosOfTopicResponse,
                                              response: .mockingSuccess(endpoint: endpoint,
                                                                        parameters: parameters,
-                                                                       headers: Constant.responseHeaders),
+                                                                       headers: Constant.responsePageHeaders),
                                              error: nil,
                                              credentials: Constant.credentials,
                                              deadline: Constant.requestDeadline,
@@ -917,13 +921,13 @@ final class UNClientTests: XCTestCase {
         XCTAssertNil(client.requestsLimit)
         XCTAssertNil(client.requestsRemaining)
 
-        let photos = try await client.photosOfTopic(idOrSlug: topicSlug,
-                                                    pageNumber: parameters.pageNumber!,
-                                                    photosPerPage: parameters.photosPerPage!,
-                                                    orientation: parameters.orientation!,
-                                                    sortingBy: parameters.order!)
+        let photosResult = try await client.photosOfTopic(idOrSlug: topicSlug,
+                                                          pageNumber: parameters.pageNumber!,
+                                                          photosPerPage: parameters.photosPerPage!,
+                                                          orientation: parameters.orientation!,
+                                                          sortingBy: parameters.order!)
 
-        XCTAssertFalse(photos.isEmpty)
+        XCTAssertFalse(photosResult.elements.isEmpty)
 
         XCTAssertEqual(client.requestsLimit, Constant.requestsLimit)
         XCTAssertEqual(client.requestsRemaining, Constant.requestRemaining)
