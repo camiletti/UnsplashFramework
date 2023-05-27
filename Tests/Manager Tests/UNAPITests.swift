@@ -74,7 +74,7 @@ final class UNAPITests: XCTestCase {
                                                                     at: .api,
                                                                     parameters: nil)
 
-        wait(for: [headerCheckExpectation], timeout: 0.1)
+        await fulfillment(of: [headerCheckExpectation], timeout: 0.1)
     }
 
     func testResultIsFailureWhenAnErrorIsReceived() async throws {
@@ -99,6 +99,6 @@ final class UNAPITests: XCTestCase {
             errorExpectation.fulfill()
         }
 
-        wait(for: [errorExpectation], timeout: 0.1)
+        await fulfillment(of: [errorExpectation], timeout: 0.1)
     }
 }

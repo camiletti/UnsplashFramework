@@ -1016,7 +1016,7 @@ final class UNClientTests: XCTestCase {
             errorExpectation.fulfill()
         }
 
-        wait(for: [errorExpectation], timeout: 0.1)
+        await fulfillment(of: [errorExpectation], timeout: 0.1)
     }
 
     func testURLWithoutCodeFails() async throws {
@@ -1039,7 +1039,7 @@ final class UNClientTests: XCTestCase {
             errorExpectation.fulfill()
         }
 
-        wait(for: [errorExpectation], timeout: 0.1)
+        await fulfillment(of: [errorExpectation], timeout: 0.1)
     }
 
     func testCorrectURLMakesCorrectRequest() async throws {
