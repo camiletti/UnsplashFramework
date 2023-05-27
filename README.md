@@ -147,9 +147,9 @@ let users = try await client.searchUsers(query: "camiletti",
 [Full documentation here](https://swiftpackageindex.com/camiletti/UnsplashFramework/0.4.0/documentation/unsplashframework)
 
 
-## 🐦 Contact
+## 🦣 Contact
 
-[@camiletti_p](https://twitter.com/camiletti_p)
+[@camiletti](https://mastodon.cloud/@camiletti)
 
 
 ## 📄 License
