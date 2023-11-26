@@ -25,11 +25,20 @@ import Foundation
 
 public struct UNPageInfo {
 
+    // MARK: - Properties
+
     public let elementsPerPage: Int
 
     public let totalNumberOfElements: Int
 
     public var numberOfPages: Int {
         Int(ceilf(Float(totalNumberOfElements) / Float(elementsPerPage)))
+    }
+
+    // MARK: - Life Cycle
+
+    public init(elementsPerPage: Int, totalNumberOfElements: Int) {
+        self.elementsPerPage = elementsPerPage
+        self.totalNumberOfElements = totalNumberOfElements
     }
 }

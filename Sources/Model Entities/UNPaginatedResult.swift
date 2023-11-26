@@ -25,7 +25,16 @@ import Foundation
 
 public struct UNPaginatedResult<Element: Decodable> {
 
+    // MARK: - Properties
+
     public let pageInfo: UNPageInfo
 
     public let elements: [Element]
+
+    // MARK: - Life Cycle
+
+    public init(pageInfo: UNPageInfo, elements: [Element]) {
+        self.pageInfo = pageInfo
+        self.elements = elements
+    }
 }
