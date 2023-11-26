@@ -69,8 +69,7 @@ The plan is to achieve feature parity with Unsplash REST API
 ## Requirement
 
 - iOS 15.0+
-- Swift 5.7+
-- Xcode 14.2+
+- Xcode 15.0+
 
 
 ## ⬇️ Installation
@@ -157,7 +156,7 @@ let users = try await client.searchUsers(query: "camiletti",
 UnsplashFramework is under MIT license.
 
 ```
-Copyright 2023 Pablo Camiletti
+Copyright 2024 Pablo Camiletti
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
