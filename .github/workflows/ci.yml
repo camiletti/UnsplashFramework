@@ -33,9 +33,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - xcode: "Xcode_14.3"
+          - xcode: "Xcode_15.0.1"
             runsOn: macos-13
-            name: "macOS 13, SPM 5.8 Test"
+            name: "macOS 13, SPM 5.9 Test"
 
     steps:
       - uses: actions/checkout@v3
